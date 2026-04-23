@@ -5,9 +5,9 @@
 const CONFIG = {
 
     // ---------- PROFILE ----------
-    name: "BEAST",
+    name: "kR4N30",
     tagline: "JOIN DISCORD SERVER FOR FULL SOURCE CODE OF THIS WEBSITE.",
-    avatarUrl: "https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/916e35b2-1d46-4786-8f74-d7b19ffd2be8.png",
+    avatarUrl: "https://i1.sndcdn.com/artworks-000218816095-1y0cjt-t240x240.jpg",
 
     // ---------- SOCIALS ----------
     socials: {
