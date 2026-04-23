@@ -1,26 +1,18 @@
 // ============================================================
-// MAIN APP — FINAL PRO (STABLE & CLEAN)
+// MAIN APP — CON EFECTO DE ENTRADA
 // ============================================================
 
-// ==========================
-// STATE
-// ==========================
 let player = null;
 let playerReady = false;
 let isMuted = !CONFIG.videoSound;
 let videoStarted = false;
 
-// ==========================
-// HELPERS
-// ==========================
 const $ = id => document.getElementById(id);
 const canVibrate = 'vibrate' in navigator;
 
 function vibrate(pattern = 20) { if (canVibrate) navigator.vibrate(pattern); }
 
-// ==========================
-// SOCIAL DEFINITIONS
-// ==========================
+// Social definitions
 const SOCIAL_DEFS = {
     instagram: {
         label: 'Instagram',
@@ -34,9 +26,10 @@ const SOCIAL_DEFS = {
     }
 };
 
-// ==========================
-// PROFILE INIT
-// ==========================
+function getInitials(name) {
+    return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
 function initProfile() {
     const root = document.documentElement;
     if (!root.dataset.themeLoaded) {
@@ -53,10 +46,16 @@ function initProfile() {
     if (typeof initLanguageSwitcher === 'function') {
         initLanguageSwitcher();
     }
-}
 
-function getInitials(name) {
-    return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    // Añadir efecto de entrada al contenido inicial
+    setTimeout(() => {
+        const container = document.getElementById('app-content');
+        if (container) {
+            container.style.opacity = '1';
+            container.style.transform = 'scale(1) translateY(0)';
+            container.style.filter = 'blur(0)';
+        }
+    }, 100);
 }
 
 function initAvatar() {
@@ -117,9 +116,7 @@ function initLinks() {
     container.replaceChildren(fragment);
 }
 
-// ==========================
-// YOUTUBE PLAYER
-// ==========================
+// YouTube Player
 function onYouTubeIframeAPIReady() {
     if (!window.YT || !YT.Player) return;
     player = new YT.Player('yt-player', {
@@ -159,9 +156,7 @@ function updateSoundIcon() {
     off.style.display = isMuted ? '' : 'none';
 }
 
-// ==========================
-// OVERLAY
-// ==========================
+// Overlay
 function initEnterOverlay() {
     const overlay = $('enter-overlay');
     if (!overlay) return;
@@ -185,9 +180,7 @@ function startVideoSafe() {
     tryPlay();
 }
 
-// ==========================
-// INIT APP
-// ==========================
+// Init App
 function initApp() {
     initEnterOverlay();
     const soundBtn = $('sound-btn');
@@ -195,14 +188,10 @@ function initApp() {
     if (typeof initRouter === 'function') initRouter();
 }
 
-// ==========================
-// GLOBAL EXPORTS
-// ==========================
+// Global exports
 window.toggleSound = toggleSound;
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 window.initProfile = initProfile;
 
-// ==========================
-// START
-// ==========================
+// Start
 document.addEventListener('DOMContentLoaded', initApp);
