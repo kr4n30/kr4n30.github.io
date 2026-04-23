@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
+    <title>Profile SPA</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -21,7 +21,9 @@
     <div id="enter-overlay">
         <div id="enter-box">
             <div id="enter-pulse"></div>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="42" height="42"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="42" height="42">
+                <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
             <span>tap to enter</span>
         </div>
     </div>
@@ -33,47 +35,28 @@
 
     <!-- Sound toggle -->
     <button id="sound-btn" title="Toggle sound">
-  <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-  </svg>
-  <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-    <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-  </svg>
-</button>
+        <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+        <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
+    </button>
 
-    <!-- ── MAIN CARD ── -->
+    <!-- ── CONTENEDOR DINÁMICO SPA ── -->
     <div id="stage">
-        <div class="card">
-            <!-- Avatar -->
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatar-el"></div>
-            </div>
-
-            <!-- Name + tagline -->
-            <div class="name" id="name-el"></div>
-            <div class="tagline" id="tagline-el"></div>
-
-            <div class="divider"></div>
-
-            <!-- Social icons -->
-            <div class="socials" id="socials-el"></div>
-
-            <!-- Extra links -->
-            <div class="links" id="links-el"></div>
-        </div>
+        <div id="app-content"></div>
     </div>
 
-    <!-- Config -->
+    <!-- Scripts -->
     <script src="config.js"></script>
-
-    <!-- YouTube IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
-
-    <!-- Main Script -->
-    <script src="script.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 

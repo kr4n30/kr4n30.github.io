@@ -306,6 +306,7 @@ body::after {
     justify-content: center;
     gap: 14px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .social-btn {
@@ -451,4 +452,31 @@ body::after {
 .link-btn .lbl {
     position: relative;
     z-index: 1;
+}
+
+
+/* Animación de entrada para secciones */
+
+.card {
+    animation: cardIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+
+/* Responsive */
+
+@media (max-width: 520px) {
+    .card {
+        padding: 32px 24px 30px;
+    }
+    .name {
+        font-size: 1.6rem;
+    }
+    .social-btn {
+        width: 44px;
+        height: 44px;
+    }
+    .social-btn svg {
+        width: 20px;
+        height: 20px;
+    }
 }
