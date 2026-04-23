@@ -32,17 +32,15 @@ const CONFIG = {
     glowColor: "rgba(167, 139, 250, 0.6)",
 
     // ---------- TRANSLATIONS ----------
-    defaultLanguage: "es", // 'es' or 'en'
+    defaultLanguage: "es",
 
     translations: {
         es: {
-            // Home page
             home: {
                 welcome: "✨ GRACIAS POR VISITAR MI PÁGINA WEB ✨",
                 description: "Aquí podrás encontrar más sobre mí y sobre mi trayectoria profesional.",
                 highlight: "💫 Desarrollo web • Creatividad • Innovación 💫"
             },
-            // About page
             about: {
                 title: "📖 Sobre Mí",
                 greeting: "👋 ¡Hola! Soy",
@@ -52,44 +50,51 @@ const CONFIG = {
                 description3: "💡 Me especializo en crear experiencias web inmersivas con fondos animados, efectos visuales y arquitectura limpia.",
                 availability: "⚡ Disponible para colaboraciones"
             },
-            // Projects page
             projects: {
                 title: "🚀 Mis Proyectos",
                 projects: [{
                         name: "🎨 Creative Portfolio",
-                        description: "SPA modular con fondo YouTube"
+                        description: "SPA modular con fondo YouTube",
+                        fullDescription: "Un portfolio personal moderno con video de fondo de YouTube, efectos de glassmorphism, sistema de traducción integrado y navegación SPA sin frameworks. Totalmente responsive y optimizado para móviles.",
+                        technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"],
+                        link: "#",
+                        github: "https://github.com/"
                     },
                     {
                         name: "🎮 Discord Bot",
-                        description: "Bot de música y moderación"
+                        description: "Bot de música y moderación",
+                        fullDescription: "Bot completo para Discord con comandos de música (reproducción desde YouTube/Spotify), sistema de moderación automática, logs de auditoría y comandos personalizables. Soporta más de 1000 servidores simultáneamente.",
+                        technologies: ["Node.js", "Discord.js", "Lavalink", "MongoDB"],
+                        link: "#",
+                        github: "https://github.com/"
                     },
                     {
                         name: "📱 Mobile App",
-                        description: "React Native + Firebase"
+                        description: "React Native + Firebase",
+                        fullDescription: "Aplicación móvil multiplataforma para iOS y Android con autenticación en tiempo real, notificaciones push, almacenamiento en la nube y sincronización de datos entre dispositivos.",
+                        technologies: ["React Native", "Firebase", "Redux", "Expo"],
+                        link: "#",
+                        github: "https://github.com/"
                     }
                 ],
                 backButton: "Volver al inicio"
             },
-            // Navigation
             nav: {
                 home: "Inicio",
                 about: "Sobre Mí",
                 projects: "Proyectos"
             },
-            // Language
             language: {
                 es: "ESPAÑOL",
                 en: "ENGLISH"
             }
         },
         en: {
-            // Home page
             home: {
                 welcome: "✨ THANK YOU FOR VISITING MY WEBSITE ✨",
                 description: "Here you can find more about me and my professional journey.",
                 highlight: "💫 Web Development • Creativity • Innovation 💫"
             },
-            // About page
             about: {
                 title: "📖 About Me",
                 greeting: "👋 Hello! I'm",
@@ -99,31 +104,40 @@ const CONFIG = {
                 description3: "💡 I specialize in creating immersive web experiences with animated backgrounds, visual effects, and clean architecture.",
                 availability: "⚡ Available for collaborations"
             },
-            // Projects page
             projects: {
                 title: "🚀 My Projects",
                 projects: [{
                         name: "🎨 Creative Portfolio",
-                        description: "Modular SPA with YouTube background"
+                        description: "Modular SPA with YouTube background",
+                        fullDescription: "A modern personal portfolio with YouTube background video, glassmorphism effects, integrated translation system, and framework-free SPA navigation. Fully responsive and mobile-optimized.",
+                        technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"],
+                        link: "#",
+                        github: "https://github.com/"
                     },
                     {
                         name: "🎮 Discord Bot",
-                        description: "Music & moderation bot"
+                        description: "Music & moderation bot",
+                        fullDescription: "Complete Discord bot with music commands (YouTube/Spotify playback), automatic moderation system, audit logs, and customizable commands. Supports over 1000 servers simultaneously.",
+                        technologies: ["Node.js", "Discord.js", "Lavalink", "MongoDB"],
+                        link: "#",
+                        github: "https://github.com/"
                     },
                     {
                         name: "📱 Mobile App",
-                        description: "React Native + Firebase"
+                        description: "React Native + Firebase",
+                        fullDescription: "Cross-platform mobile application for iOS and Android with real-time authentication, push notifications, cloud storage, and data synchronization across devices.",
+                        technologies: ["React Native", "Firebase", "Redux", "Expo"],
+                        link: "#",
+                        github: "https://github.com/"
                     }
                 ],
                 backButton: "Back to home"
             },
-            // Navigation
             nav: {
                 home: "Home",
                 about: "About",
                 projects: "Projects"
             },
-            // Language
             language: {
                 es: "SPANISH",
                 en: "ENGLISH"

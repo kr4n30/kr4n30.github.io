@@ -4,9 +4,6 @@
 
 let currentLanguage = CONFIG.defaultLanguage || 'es';
 
-/**
- * Obtiene una traducción específica
- */
 function t(page, key) {
     try {
         const translation = CONFIG.translations[currentLanguage][page][key];
@@ -21,9 +18,6 @@ function t(page, key) {
     }
 }
 
-/**
- * Obtiene un array de traducciones
- */
 function tArray(page, key) {
     try {
         const translation = CONFIG.translations[currentLanguage][page][key];
@@ -38,19 +32,15 @@ function tArray(page, key) {
     }
 }
 
-/**
- * Cambia el idioma actual
- */
 function setLanguage(lang) {
     if (lang === 'es' || lang === 'en') {
         currentLanguage = lang;
         localStorage.setItem('preferredLanguage', lang);
 
-        // Actualizar toda la interfaz
         updateAllTranslations();
 
-        // Actualizar estado activo de los botones de idioma
-        document.querySelectorAll('.lang-btn').forEach(btn => {
+        // Actualizar estado activo de los botones de idioma (ambos tipos)
+        document.querySelectorAll('.lang-btn-top, .lang-btn').forEach(btn => {
             if (btn.dataset.lang === lang) {
                 btn.classList.add('active');
             } else {
@@ -60,12 +50,18 @@ function setLanguage(lang) {
 
         // Feedback háptico
         if (navigator.vibrate) navigator.vibrate(20);
+
+        // Efecto visual adicional
+        const activeBtn = document.querySelector(`.lang-btn-top[data-lang="${lang}"]`);
+        if (activeBtn) {
+            activeBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                if (activeBtn) activeBtn.style.transform = '';
+            }, 150);
+        }
     }
 }
 
-/**
- * Actualiza todas las traducciones en la página actual
- */
 function updateAllTranslations() {
     const currentSection = window.location.hash.slice(1) || 'home';
 
@@ -81,13 +77,9 @@ function updateAllTranslations() {
             break;
     }
 
-    // Actualizar navegación
     updateNavTranslations();
 }
 
-/**
- * Actualiza traducciones de la página Home
- */
 function updateHomeTranslations() {
     const taglineEl = document.getElementById('tagline-el');
     if (!taglineEl) return;
@@ -101,20 +93,15 @@ function updateHomeTranslations() {
     `;
 }
 
-/**
- * Actualiza traducciones de la página About
- */
 function updateAboutTranslations() {
     const aboutContent = document.getElementById('about-content');
     if (!aboutContent) return;
 
     const aboutTexts = CONFIG.translations[currentLanguage].about;
 
-    // Actualizar título
     const titleEl = document.getElementById('about-title');
     if (titleEl) titleEl.textContent = aboutTexts.title;
 
-    // Actualizar contenido
     aboutContent.innerHTML = `
         <p style="margin-bottom: 15px; line-height: 1.6;">
             ${aboutTexts.greeting} <strong>${aboutTexts.name}</strong>, ${aboutTexts.description1}
@@ -132,9 +119,6 @@ function updateAboutTranslations() {
     `;
 }
 
-/**
- * Actualiza traducciones de la página Projects
- */
 function updateProjectsTranslations() {
     const projectsContent = document.getElementById('projects-content');
     if (!projectsContent) return;
@@ -142,34 +126,50 @@ function updateProjectsTranslations() {
     const projectsTexts = CONFIG.translations[currentLanguage].projects;
     const projectsList = tArray('projects', 'projects');
 
-    // Actualizar título
     const titleEl = document.getElementById('projects-title');
     if (titleEl) titleEl.textContent = projectsTexts.title;
 
-    // Actualizar botón de volver
     const backButton = document.getElementById('back-button');
     if (backButton) {
         const span = backButton.querySelector('.lbl');
         if (span) span.textContent = projectsTexts.backButton;
     }
 
-    // Actualizar lista de proyectos
     let projectsHtml = '';
-    projectsList.forEach(project => {
+    projectsList.forEach((project, index) => {
         projectsHtml += `
-            <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent);">
+            <div class="project-card" data-project-index="${index}" style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent); cursor: pointer; transition: all 0.25s ease;">
                 <div style="font-weight: bold; margin-bottom: 5px;">${project.name}</div>
                 <div style="font-size: 0.85rem; color: var(--sub);">${project.description}</div>
+                <div style="margin-top: 10px; font-size: 0.7rem; color: var(--accent);">🔗 ${currentLanguage === 'es' ? 'Haz clic para más detalles' : 'Click for more details'}</div>
             </div>
         `;
     });
 
     projectsContent.innerHTML = projectsHtml;
+
+    // Añadir event listeners a los proyectos
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const index = parseInt(card.dataset.projectIndex);
+            const project = projectsList[index];
+            if (project && typeof openModal === 'function') {
+                openModal(project);
+            }
+        });
+
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateX(5px)';
+            card.style.background = 'rgba(167, 139, 250, 0.1)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateX(0)';
+            card.style.background = 'rgba(255,255,255,0.03)';
+        });
+    });
 }
 
-/**
- * Actualiza traducciones de la navegación
- */
 function updateNavTranslations() {
     const navTexts = CONFIG.translations[currentLanguage].nav;
 
@@ -182,9 +182,6 @@ function updateNavTranslations() {
     });
 }
 
-/**
- * Inicializa los botones de idioma
- */
 function initLanguageSwitcher() {
     // Cargar idioma guardado
     const savedLang = localStorage.getItem('preferredLanguage');
@@ -192,13 +189,12 @@ function initLanguageSwitcher() {
         currentLanguage = savedLang;
     }
 
-    // Configurar botones
-    const langBtns = document.querySelectorAll('.lang-btn');
+    // Configurar botones de idioma (ambos tipos)
+    const langBtns = document.querySelectorAll('.lang-btn-top, .lang-btn');
     langBtns.forEach(btn => {
         btn.removeEventListener('click', handleLangClick);
         btn.addEventListener('click', handleLangClick);
 
-        // Marcar botón activo
         if (btn.dataset.lang === currentLanguage) {
             btn.classList.add('active');
         }
@@ -212,6 +208,7 @@ function initLanguageSwitcher() {
 
 function handleLangClick(e) {
     e.preventDefault();
+    e.stopPropagation();
     const lang = this.dataset.lang;
     setLanguage(lang);
 }
