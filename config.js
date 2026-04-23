@@ -82,10 +82,24 @@ const CONFIG = {
             },
             projects: {
                 title: "🚀 Proyectos Destacados",
-                projects: [
-                    { name: "🎨 Portfolio SPA", description: "Portfolio personal con efecto glassmorphism", fullDescription: "Un portfolio moderno con video de fondo, sistema de traducción integrado, navegación SPA y diseño totalmente responsive.", technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"] },
-                    { name: "🤖 Discord Bot", description: "Bot multipropósito con sistema de música", fullDescription: "Bot completo para Discord con comandos de música, moderación automática, sistema de niveles y economía.", technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink"] },
-                    { name: "📱 TaskFlow App", description: "Aplicación de gestión de tareas multiplataforma", fullDescription: "Aplicación móvil para gestión de tareas con sincronización en tiempo real, notificaciones push y modo oscuro.", technologies: ["React Native", "Firebase", "Redux", "Expo"] }
+                projects: [{
+                        name: "Creative Portfolio",
+                        description: "Portfolio personal con efecto glassmorphism y video de fondo",
+                        fullDescription: "Un portfolio moderno con video de fondo de YouTube, sistema de traducción integrado, navegación SPA y diseño totalmente responsive. Incluye efectos de glassmorphism, animaciones suaves y modales interactivos.",
+                        technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API", "SPA"]
+                    },
+                    {
+                        name: "Discord Bot",
+                        description: "Bot multipropósito con sistema de música y economía",
+                        fullDescription: "Bot completo para Discord con comandos de música (YouTube/Spotify), moderación automática, sistema de niveles, economía virtual y comandos personalizables. Soporta más de 1000 servidores.",
+                        technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink", "Express"]
+                    },
+                    {
+                        name: "TaskFlow App",
+                        description: "Aplicación de gestión de tareas multiplataforma",
+                        fullDescription: "Aplicación móvil para gestión de tareas con sincronización en tiempo real, notificaciones push, autenticación biométrica, modo oscuro y widgets interactivos.",
+                        technologies: ["React Native", "Firebase", "Redux", "Expo", "TypeScript"]
+                    }
                 ],
                 backButton: "Volver al inicio"
             },
@@ -138,10 +152,24 @@ const CONFIG = {
             },
             projects: {
                 title: "🚀 Featured Projects",
-                projects: [
-                    { name: "🎨 Portfolio SPA", description: "Personal portfolio with glassmorphism effect", fullDescription: "A modern portfolio with background video, integrated translation system, SPA navigation, and fully responsive design.", technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"] },
-                    { name: "🤖 Discord Bot", description: "Multi-purpose bot with music system", fullDescription: "Complete Discord bot with music commands, automatic moderation, leveling system, and economy.", technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink"] },
-                    { name: "📱 TaskFlow App", description: "Cross-platform task management app", fullDescription: "Mobile app for task management with real-time sync, push notifications, and dark mode.", technologies: ["React Native", "Firebase", "Redux", "Expo"] }
+                projects: [{
+                        name: "Creative Portfolio",
+                        description: "Personal portfolio with glassmorphism effect and video background",
+                        fullDescription: "A modern portfolio with YouTube background video, integrated translation system, SPA navigation, and fully responsive design. Includes glassmorphism effects, smooth animations, and interactive modals.",
+                        technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API", "SPA"]
+                    },
+                    {
+                        name: "Discord Bot",
+                        description: "Multi-purpose bot with music and economy system",
+                        fullDescription: "Complete Discord bot with music commands (YouTube/Spotify), automatic moderation, leveling system, virtual economy, and customizable commands. Supports over 1000 servers.",
+                        technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink", "Express"]
+                    },
+                    {
+                        name: "TaskFlow App",
+                        description: "Cross-platform task management application",
+                        fullDescription: "Mobile app for task management with real-time sync, push notifications, biometric authentication, dark mode, and interactive widgets.",
+                        technologies: ["React Native", "Firebase", "Redux", "Expo", "TypeScript"]
+                    }
                 ],
                 backButton: "Back to home"
             },
