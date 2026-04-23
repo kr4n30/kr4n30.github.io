@@ -36,185 +36,205 @@ const CONFIG = {
 
     translations: {
         es: {
-            // Home page
             home: {
-                welcome: "✨ GRACIAS POR VISITAR MI PÁGINA WEB ✨",
-                description: "Aquí podrás encontrar más sobre mí y sobre mi trayectoria profesional.",
-                highlight: "💫 Desarrollo web • Creatividad • Innovación 💫"
+                welcome: "✨ BIENVENIDO A MI PORTAFOLIO ✨",
+                description: "Explora mi trabajo, habilidades y trayectoria en el mundo del desarrollo.",
+                highlight: "💫 Código • Creatividad • Innovación 💫"
             },
-            // About page
             about: {
                 title: "📖 Sobre Mí",
                 greeting: "👋 ¡Hola! Soy",
-                name: "BEAST",
+                name: "kR4N30",
                 description1: "desarrollador creativo apasionado por la tecnología y el diseño.",
                 description2: "🚀 Este portfolio es una Single Page Application modular construida con JavaScript vanilla, sin frameworks.",
                 description3: "💡 Me especializo en crear experiencias web inmersivas con fondos animados, efectos visuales y arquitectura limpia.",
-                availability: "⚡ Disponible para colaboraciones"
+                availability: "⚡ Disponible para colaboraciones y proyectos freelance"
             },
-            // Skills Sections
             skills: {
-                title: "💻 Mis Habilidades",
+                title: "💻 Stack Tecnológico",
                 web: {
                     name: "🌐 Desarrollo Web",
-                    title: "Desarrollo Web Full Stack",
-                    description: "Especialista en crear aplicaciones web modernas, responsivas y de alto rendimiento.",
-                    fullDescription: "Como desarrollador web full stack, tengo experiencia en todo el ciclo de vida del desarrollo de aplicaciones web. Desde la planificación y diseño hasta la implementación y mantenimiento. Me especializo en crear experiencias de usuario fluidas con arquitecturas limpias y escalables.",
-                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "SQL"],
-                    experience: "3+ años de experiencia",
-                    projects: "15+ proyectos completados"
+                    title: "Full Stack Developer",
+                    description: "Creación de aplicaciones web modernas, responsivas y de alto rendimiento.",
+                    fullDescription: "Como desarrollador Full Stack, construyo aplicaciones web completas desde el frontend hasta el backend. Utilizo las últimas tecnologías para crear experiencias rápidas, escalables y con excelente UX/UI.",
+                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "PostgreSQL"],
+                    experience: "3+ años",
+                    projects: "15+ proyectos"
                 },
                 java: {
-                    name: "☕ Desarrollo Java",
-                    title: "Desarrollo Java Enterprise",
-                    description: "Experto en aplicaciones empresariales robustas y escalables con Java.",
-                    fullDescription: "Con Java he desarrollado desde aplicaciones desktop hasta sistemas empresariales complejos. Mi experiencia incluye el uso de frameworks modernos como Spring Boot, Hibernate y Maven. Me enfoco en crear código limpio, mantenible y con altos estándares de seguridad.",
-                    technologies: ["Java 8/11/17", "Spring Boot", "Spring MVC", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito"],
-                    experience: "4+ años de experiencia",
-                    projects: "10+ proyectos completados"
+                    name: "☕ Java",
+                    title: "Java Enterprise Developer",
+                    description: "Aplicaciones empresariales robustas y escalables.",
+                    fullDescription: "Con Java desarrollo soluciones empresariales de alta calidad. Especializado en Spring Boot, microservicios y arquitecturas orientadas a objetos. Construyo sistemas seguros, mantenibles y con alto rendimiento.",
+                    technologies: ["Java 8/11/17", "Spring Boot", "Spring Cloud", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito", "Microservices"],
+                    experience: "4+ años",
+                    projects: "10+ proyectos"
                 },
                 python: {
-                    name: "🐍 Desarrollo Python",
-                    title: "Desarrollo Python Multiplataforma",
-                    description: "Versátil en desarrollo backend, análisis de datos y automatización con Python.",
-                    fullDescription: "Python es mi herramienta para soluciones rápidas y eficientes. Desarrollo desde APIs REST con Django/Flask hasta scripts de automatización y análisis de datos con Pandas y NumPy. Me encanta la versatilidad y la legibilidad que Python ofrece.",
-                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery"],
-                    experience: "3+ años de experiencia",
-                    projects: "12+ proyectos completados"
+                    name: "🐍 Python",
+                    title: "Python Developer",
+                    description: "Backend, automatización y análisis de datos.",
+                    fullDescription: "Python es mi herramienta para soluciones versátiles. Desarrollo APIs REST, sistemas de automatización, scripts de procesamiento de datos y aplicaciones backend escalables con frameworks modernos.",
+                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery", "Redis"],
+                    experience: "3+ años",
+                    projects: "12+ proyectos"
                 }
             },
-            // Projects page (mantenemos los proyectos existentes)
             projects: {
-                title: "🚀 Mis Proyectos",
+                title: "🚀 Proyectos Destacados",
                 projects: [{
-                        name: "🎨 Creative Portfolio",
-                        description: "SPA modular con fondo YouTube",
-                        fullDescription: "Un portfolio personal moderno con video de fondo de YouTube, efectos de glassmorphism, sistema de traducción integrado y navegación SPA sin frameworks. Totalmente responsive y optimizado para móviles.",
+                        name: "🎨 Portfolio SPA",
+                        description: "Portfolio personal con efecto glassmorphism",
+                        fullDescription: "Un portfolio moderno con video de fondo, sistema de traducción integrado, navegación SPA y diseño totalmente responsive. Construido con JavaScript vanilla sin frameworks.",
                         technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
                     },
                     {
-                        name: "🎮 Discord Bot",
-                        description: "Bot de música y moderación",
-                        fullDescription: "Bot completo para Discord con comandos de música (reproducción desde YouTube/Spotify), sistema de moderación automática, logs de auditoría y comandos personalizables. Soporta más de 1000 servidores simultáneamente.",
-                        technologies: ["Node.js", "Discord.js", "Lavalink", "MongoDB"],
+                        name: "🤖 Discord Bot",
+                        description: "Bot multipropósito con sistema de música",
+                        fullDescription: "Bot completo para Discord con comandos de música, moderación automática, sistema de niveles y economía. Soporta más de 1000 servidores simultáneamente.",
+                        technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
                     },
                     {
-                        name: "📱 Mobile App",
-                        description: "React Native + Firebase",
-                        fullDescription: "Aplicación móvil multiplataforma para iOS y Android con autenticación en tiempo real, notificaciones push, almacenamiento en la nube y sincronización de datos entre dispositivos.",
+                        name: "📱 TaskFlow App",
+                        description: "Aplicación de gestión de tareas multiplataforma",
+                        fullDescription: "Aplicación móvil para gestión de tareas con sincronización en tiempo real, notificaciones push, autenticación biométrica y modo oscuro.",
                         technologies: ["React Native", "Firebase", "Redux", "Expo"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
+                    },
+                    {
+                        name: "☕ Spring E-Commerce",
+                        description: "Plataforma de comercio electrónico con Java",
+                        fullDescription: "E-commerce completo con Spring Boot, seguridad JWT, pasarela de pagos integrada, panel de administración y sistema de recomendaciones.",
+                        technologies: ["Java", "Spring Boot", "MySQL", "Redis", "JWT"],
+                        link: "#",
+                        github: "#"
+                    },
+                    {
+                        name: "🐍 Data Dashboard",
+                        description: "Dashboard interactivo con Python",
+                        fullDescription: "Dashboard para visualización de datos en tiempo real con gráficos interactivos, filtros dinámicos y exportación de reportes.",
+                        technologies: ["Python", "Django", "Pandas", "Chart.js", "PostgreSQL"],
+                        link: "#",
+                        github: "#"
                     }
                 ],
                 backButton: "Volver al inicio"
             },
-            // Navigation
             nav: {
                 home: "Inicio",
                 about: "Sobre Mí",
-                skills: "Habilidades",
+                skills: "Skills",
                 projects: "Proyectos"
             },
-            // Language
             language: {
-                es: "ESPAÑOL",
-                en: "ENGLISH"
+                es: "ES",
+                en: "EN"
             }
         },
         en: {
-            // Home page
             home: {
-                welcome: "✨ THANK YOU FOR VISITING MY WEBSITE ✨",
-                description: "Here you can find more about me and my professional journey.",
-                highlight: "💫 Web Development • Creativity • Innovation 💫"
+                welcome: "✨ WELCOME TO MY PORTFOLIO ✨",
+                description: "Explore my work, skills, and journey in the development world.",
+                highlight: "💫 Code • Creativity • Innovation 💫"
             },
-            // About page
             about: {
                 title: "📖 About Me",
                 greeting: "👋 Hello! I'm",
-                name: "BEAST",
+                name: "kR4N30",
                 description1: "a creative developer passionate about technology and design.",
                 description2: "🚀 This portfolio is a modular Single Page Application built with vanilla JavaScript, no frameworks.",
                 description3: "💡 I specialize in creating immersive web experiences with animated backgrounds, visual effects, and clean architecture.",
-                availability: "⚡ Available for collaborations"
+                availability: "⚡ Available for collaborations and freelance projects"
             },
-            // Skills Sections
             skills: {
-                title: "💻 My Skills",
+                title: "💻 Tech Stack",
                 web: {
                     name: "🌐 Web Development",
-                    title: "Full Stack Web Development",
-                    description: "Specialist in creating modern, responsive, high-performance web applications.",
-                    fullDescription: "As a full stack web developer, I have experience in the entire lifecycle of web application development. From planning and design to implementation and maintenance. I specialize in creating smooth user experiences with clean and scalable architectures.",
-                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "SQL"],
-                    experience: "3+ years experience",
-                    projects: "15+ completed projects"
+                    title: "Full Stack Developer",
+                    description: "Building modern, responsive, high-performance web applications.",
+                    fullDescription: "As a Full Stack developer, I build complete web applications from frontend to backend. I use the latest technologies to create fast, scalable experiences with excellent UX/UI.",
+                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "PostgreSQL"],
+                    experience: "3+ years",
+                    projects: "15+ projects"
                 },
                 java: {
-                    name: "☕ Java Development",
-                    title: "Enterprise Java Development",
-                    description: "Expert in robust and scalable enterprise applications with Java.",
-                    fullDescription: "With Java I have developed from desktop applications to complex enterprise systems. My experience includes using modern frameworks like Spring Boot, Hibernate, and Maven. I focus on creating clean, maintainable code with high security standards.",
-                    technologies: ["Java 8/11/17", "Spring Boot", "Spring MVC", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito"],
-                    experience: "4+ years experience",
-                    projects: "10+ completed projects"
+                    name: "☕ Java",
+                    title: "Java Enterprise Developer",
+                    description: "Robust and scalable enterprise applications.",
+                    fullDescription: "With Java I develop high-quality enterprise solutions. Specialized in Spring Boot, microservices, and object-oriented architectures. I build secure, maintainable, high-performance systems.",
+                    technologies: ["Java 8/11/17", "Spring Boot", "Spring Cloud", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito", "Microservices"],
+                    experience: "4+ years",
+                    projects: "10+ projects"
                 },
                 python: {
-                    name: "🐍 Python Development",
-                    title: "Multiplatform Python Development",
-                    description: "Versatile in backend development, data analysis, and automation with Python.",
-                    fullDescription: "Python is my tool for fast and efficient solutions. I develop from REST APIs with Django/Flask to automation scripts and data analysis with Pandas and NumPy. I love the versatility and readability that Python offers.",
-                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery"],
-                    experience: "3+ years experience",
-                    projects: "12+ completed projects"
+                    name: "🐍 Python",
+                    title: "Python Developer",
+                    description: "Backend, automation, and data analysis.",
+                    fullDescription: "Python is my tool for versatile solutions. I develop REST APIs, automation systems, data processing scripts, and scalable backend applications with modern frameworks.",
+                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery", "Redis"],
+                    experience: "3+ years",
+                    projects: "12+ projects"
                 }
             },
-            // Projects page
             projects: {
-                title: "🚀 My Projects",
+                title: "🚀 Featured Projects",
                 projects: [{
-                        name: "🎨 Creative Portfolio",
-                        description: "Modular SPA with YouTube background",
-                        fullDescription: "A modern personal portfolio with YouTube background video, glassmorphism effects, integrated translation system, and framework-free SPA navigation. Fully responsive and mobile-optimized.",
+                        name: "🎨 Portfolio SPA",
+                        description: "Personal portfolio with glassmorphism effect",
+                        fullDescription: "A modern portfolio with background video, integrated translation system, SPA navigation, and fully responsive design. Built with vanilla JavaScript without frameworks.",
                         technologies: ["HTML5", "CSS3", "JavaScript", "YouTube API"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
                     },
                     {
-                        name: "🎮 Discord Bot",
-                        description: "Music & moderation bot",
-                        fullDescription: "Complete Discord bot with music commands (YouTube/Spotify playback), automatic moderation system, audit logs, and customizable commands. Supports over 1000 servers simultaneously.",
-                        technologies: ["Node.js", "Discord.js", "Lavalink", "MongoDB"],
+                        name: "🤖 Discord Bot",
+                        description: "Multi-purpose bot with music system",
+                        fullDescription: "Complete Discord bot with music commands, automatic moderation, leveling system, and economy. Supports over 1000 servers simultaneously.",
+                        technologies: ["Node.js", "Discord.js", "MongoDB", "Lavalink"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
                     },
                     {
-                        name: "📱 Mobile App",
-                        description: "React Native + Firebase",
-                        fullDescription: "Cross-platform mobile application for iOS and Android with real-time authentication, push notifications, cloud storage, and data synchronization across devices.",
+                        name: "📱 TaskFlow App",
+                        description: "Cross-platform task management app",
+                        fullDescription: "Mobile app for task management with real-time sync, push notifications, biometric authentication, and dark mode.",
                         technologies: ["React Native", "Firebase", "Redux", "Expo"],
                         link: "#",
-                        github: "https://github.com/"
+                        github: "#"
+                    },
+                    {
+                        name: "☕ Spring E-Commerce",
+                        description: "E-commerce platform with Java",
+                        fullDescription: "Complete e-commerce with Spring Boot, JWT security, integrated payment gateway, admin panel, and recommendation system.",
+                        technologies: ["Java", "Spring Boot", "MySQL", "Redis", "JWT"],
+                        link: "#",
+                        github: "#"
+                    },
+                    {
+                        name: "🐍 Data Dashboard",
+                        description: "Interactive dashboard with Python",
+                        fullDescription: "Real-time data visualization dashboard with interactive charts, dynamic filters, and report export.",
+                        technologies: ["Python", "Django", "Pandas", "Chart.js", "PostgreSQL"],
+                        link: "#",
+                        github: "#"
                     }
                 ],
                 backButton: "Back to home"
             },
-            // Navigation
             nav: {
                 home: "Home",
                 about: "About",
                 skills: "Skills",
                 projects: "Projects"
             },
-            // Language
             language: {
-                es: "SPANISH",
-                en: "ENGLISH"
+                es: "ES",
+                en: "EN"
             }
         }
     }

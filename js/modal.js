@@ -1,168 +1,163 @@
 // ============================================
-// MODAL SYSTEM
+// MODAL SYSTEM (IMPROVED)
 // ============================================
 
 let currentModal = null;
 
-/**
- * Abre un modal con información del proyecto
- */
+// ==========================
+// HELPERS
+// ==========================
+function vibrate(pattern = 20) {
+    if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+function createOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    return overlay;
+}
+
+function attachModalEvents(overlay) {
+    const closeBtn = overlay.querySelector('.modal-close');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+    });
+
+    const escHandler = function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    };
+
+    document.addEventListener('keydown', escHandler);
+    overlay._escHandler = escHandler;
+}
+
+// ==========================
+// CORE MODAL BUILDER
+// ==========================
+function buildModal(title, bodyHtml) {
+    const overlay = createOverlay();
+
+    overlay.innerHTML = `
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>${title}</h2>
+                <button class="modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${bodyHtml}
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // trigger animation
+    overlay.offsetHeight;
+    overlay.classList.add('active');
+
+    attachModalEvents(overlay);
+
+    currentModal = overlay;
+
+    vibrate();
+
+    return overlay;
+}
+
+// ==========================
+// PROJECT MODAL
+// ==========================
 function openModal(project) {
-    if (currentModal) {
-        closeModal();
-    }
+    if (currentModal) closeModal();
 
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
+    const body = `
+        <p>${project.fullDescription || project.description}</p>
 
-    const modalHtml = `
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2>${project.name}</h2>
-                <button class="modal-close">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
+        ${project.technologies ? `
+            <div class="modal-tech">
+                ${project.technologies.map(function (t) {
+                    return `<span class="tech-tag">${t}</span>`;
+                }).join('')}
             </div>
-            <div class="modal-body">
-                <p>${project.fullDescription || project.description}</p>
-                ${project.technologies ? `
-                    <div class="modal-tech">
-                        ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                    </div>
-                ` : ''}
-                <div class="modal-links">
-                    ${project.link && project.link !== '#' ? `
-                        <a href="${project.link}" target="_blank" class="modal-link">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                <polyline points="15 3 21 3 21 9"/>
-                                <line x1="10" y1="14" x2="21" y2="3"/>
-                            </svg>
-                            Ver proyecto
-                        </a>
-                    ` : ''}
-                    ${project.github && project.github !== '#' ? `
-                        <a href="${project.github}" target="_blank" class="modal-link">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.21.68-.48 0-.24-.01-.88-.01-1.72-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
-                            </svg>
-                            GitHub
-                        </a>
-                    ` : ''}
-                </div>
-            </div>
+        ` : ''}
+
+        <div class="modal-links">
+            ${project.link && project.link !== '#' ? `
+                <a href="${project.link}" target="_blank" class="modal-link">
+                    🔗 Ver proyecto
+                </a>
+            ` : ''}
+
+            ${project.github && project.github !== '#' ? `
+                <a href="${project.github}" target="_blank" class="modal-link">
+                    💻 GitHub
+                </a>
+            ` : ''}
         </div>
     `;
-    
-    overlay.innerHTML = modalHtml;
-    document.body.appendChild(overlay);
-    
-    overlay.offsetHeight;
-    overlay.classList.add('active');
-    
-    currentModal = overlay;
-    
-    const closeBtn = overlay.querySelector('.modal-close');
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeModal();
-        }
-    });
-    
-    const escHandler = (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-            document.removeEventListener('keydown', escHandler);
-        }
-    };
-    document.addEventListener('keydown', escHandler);
-    overlay.escHandler = escHandler;
-    
-    if (navigator.vibrate) navigator.vibrate(20);
+
+    buildModal(project.name, body);
 }
 
-/**
- * Abre un modal con información de la skill
- */
+// ==========================
+// SKILL MODAL
+// ==========================
 function openSkillModal(skill) {
-    if (currentModal) {
-        closeModal();
-    }
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    
-    const modalHtml = `
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2>${skill.title}</h2>
-                <button class="modal-close">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>${skill.fullDescription}</p>
-                <div style="display: flex; gap: 15px; margin: 15px 0; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <div><span style="color: var(--accent);">📅 Experiencia:</span> ${skill.experience}</div>
-                    <div><span style="color: var(--accent);">📁 Proyectos:</span> ${skill.projects}</div>
-                </div>
-                <div class="modal-tech">
-                    ${skill.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                </div>
-            </div>
+    if (currentModal) closeModal();
+
+    const body = `
+        <p>${skill.fullDescription}</p>
+
+        <div class="modal-meta">
+            <div>📅 ${skill.experience}</div>
+            <div>📁 ${skill.projects}</div>
+        </div>
+
+        <div class="modal-tech">
+            ${skill.technologies.map(function (t) {
+                return `<span class="tech-tag">${t}</span>`;
+            }).join('')}
         </div>
     `;
-    
-    overlay.innerHTML = modalHtml;
-    document.body.appendChild(overlay);
-    
-    overlay.offsetHeight;
-    overlay.classList.add('active');
-    
-    currentModal = overlay;
-    
-    const closeBtn = overlay.querySelector('.modal-close');
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeModal();
-        }
-    });
-    
-    const escHandler = (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-            document.removeEventListener('keydown', escHandler);
-        }
-    };
-    document.addEventListener('keydown', escHandler);
-    overlay.escHandler = escHandler;
-    
-    if (navigator.vibrate) navigator.vibrate(20);
+
+    buildModal(skill.title, body);
 }
 
+// ==========================
+// CLOSE
+// ==========================
 function closeModal() {
-    if (currentModal) {
-        currentModal.classList.remove('active');
-        if (currentModal.escHandler) {
-            document.removeEventListener('keydown', currentModal.escHandler);
-        }
-        setTimeout(() => {
-            if (currentModal && currentModal.parentNode) {
-                currentModal.parentNode.removeChild(currentModal);
-            }
-            currentModal = null;
-        }, 300);
+    if (!currentModal) return;
+
+    currentModal.classList.remove('active');
+
+    if (currentModal._escHandler) {
+        document.removeEventListener('keydown', currentModal._escHandler);
     }
+
+    setTimeout(function () {
+        if (currentModal && currentModal.parentNode) {
+            currentModal.parentNode.removeChild(currentModal);
+        }
+        currentModal = null;
+    }, 300);
 }
 
+// ==========================
+// GLOBAL EXPORT
+// ==========================
 window.openModal = openModal;
 window.openSkillModal = openSkillModal;
 window.closeModal = closeModal;

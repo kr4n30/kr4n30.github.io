@@ -1,269 +1,256 @@
 // ============================================================
-//  INTERNATIONALIZATION (i18n) MODULE
+//  INTERNATIONALIZATION (i18n) MODULE - STABLE VERSION
 // ============================================================
 
-let currentLanguage = CONFIG.defaultLanguage || 'es';
+var SUPPORTED_LANGS = ['es', 'en'];
 
+var currentLanguage = getInitialLanguage();
+
+/**
+ * Idioma inicial
+ */
+function getInitialLanguage() {
+    var saved = localStorage.getItem('preferredLanguage');
+    if (SUPPORTED_LANGS.indexOf(saved) !== -1) return saved;
+    if (SUPPORTED_LANGS.indexOf(CONFIG.defaultLanguage) !== -1) return CONFIG.defaultLanguage;
+    return 'es';
+}
+
+/**
+ * Traducción string
+ */
 function t(page, key) {
     try {
-        const translation = CONFIG.translations[currentLanguage][page][key];
-        if (!translation) {
-            console.warn(`Translation missing: ${currentLanguage}.${page}.${key}`);
+        var value = CONFIG.translations[currentLanguage][page][key];
+        if (!value) {
+            console.warn('[i18n] Missing: ' + currentLanguage + '.' + page + '.' + key);
             return key;
         }
-        return translation;
-    } catch (error) {
-        console.error('Translation error:', error);
+        return value;
+    } catch (e) {
+        console.error('[i18n] Error:', e);
         return key;
     }
 }
 
-function tObject(page, key) {
+/**
+ * Traducción objeto
+ */
+function tObject(page) {
     try {
-        const translation = CONFIG.translations[currentLanguage][page][key];
-        if (!translation) {
-            console.warn(`Translation missing: ${currentLanguage}.${page}.${key}`);
+        var value = CONFIG.translations[currentLanguage][page];
+        if (!value) {
+            console.warn('[i18n] Missing object: ' + currentLanguage + '.' + page);
             return {};
         }
-        return translation;
-    } catch (error) {
-        console.error('Translation error:', error);
+        return value;
+    } catch (e) {
+        console.error('[i18n] Error:', e);
         return {};
     }
 }
 
+/**
+ * Cambiar idioma
+ */
 function setLanguage(lang) {
-    if (lang === 'es' || lang === 'en') {
-        currentLanguage = lang;
-        localStorage.setItem('preferredLanguage', lang);
+    if (SUPPORTED_LANGS.indexOf(lang) === -1 || lang === currentLanguage) return;
 
-        updateAllTranslations();
+    currentLanguage = lang;
+    localStorage.setItem('preferredLanguage', lang);
 
-        document.querySelectorAll('.lang-btn-top, .lang-btn').forEach(btn => {
-            if (btn.dataset.lang === lang) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
+    syncLangButtons();
+    updateAllTranslations();
 
-        if (navigator.vibrate) navigator.vibrate(20);
-
-        const activeBtn = document.querySelector(`.lang-btn-top[data-lang="${lang}"]`);
-        if (activeBtn) {
-            activeBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                if (activeBtn) activeBtn.style.transform = '';
-            }, 150);
-        }
-    }
+    if (navigator.vibrate) navigator.vibrate(15);
 }
 
-function updateAllTranslations() {
-    const currentSection = window.location.hash.slice(1) || 'home';
+/**
+ * Botones activos
+ */
+function syncLangButtons() {
+    var buttons = document.querySelectorAll('.lang-btn-top, .lang-btn');
 
-    switch (currentSection) {
-        case 'home':
-            updateHomeTranslations();
-            break;
-        case 'about':
-            updateAboutTranslations();
-            break;
-        case 'skills':
-            updateSkillsTranslations();
-            break;
-        case 'projects':
-            updateProjectsTranslations();
-            break;
-    }
+    buttons.forEach(function(btn) {
+        if (btn.dataset.lang === currentLanguage) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+/**
+ * Render principal
+ */
+function updateAllTranslations() {
+    var section = window.location.hash.replace('#', '') || 'home';
+
+    var map = {
+        home: updateHomeTranslations,
+        about: updateAboutTranslations,
+        skills: updateSkillsTranslations,
+        projects: updateProjectsTranslations
+    };
+
+    if (map[section]) map[section]();
 
     updateNavTranslations();
 }
 
+/**
+ * HOME
+ */
 function updateHomeTranslations() {
-    const taglineEl = document.getElementById('tagline-el');
-    if (!taglineEl) return;
+    var el = document.getElementById('tagline-el');
+    if (!el) return;
 
-    const homeTexts = CONFIG.translations[currentLanguage].home;
+    var data = tObject('home');
 
-    taglineEl.innerHTML = `
-        <div class="tagline-main">${homeTexts.welcome}</div>
-        <div class="tagline-text">${homeTexts.description}</div>
-        <div class="tagline-highlight">${homeTexts.highlight}</div>
-    `;
+    el.innerHTML =
+        '<div class="tagline-main">' + data.welcome + '</div>' +
+        '<div class="tagline-text">' + data.description + '</div>' +
+        '<div class="tagline-highlight">' + data.highlight + '</div>';
 }
 
+/**
+ * ABOUT
+ */
 function updateAboutTranslations() {
-    const aboutContent = document.getElementById('about-content');
-    if (!aboutContent) return;
+    var container = document.getElementById('about-content');
+    if (!container) return;
 
-    const aboutTexts = CONFIG.translations[currentLanguage].about;
+    var data = tObject('about');
 
-    const titleEl = document.getElementById('about-title');
-    if (titleEl) titleEl.textContent = aboutTexts.title;
+    var title = document.getElementById('about-title');
+    if (title) title.textContent = data.title;
 
-    aboutContent.innerHTML = `
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            ${aboutTexts.greeting} <strong>${aboutTexts.name}</strong>, ${aboutTexts.description1}
-        </p>
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            ${aboutTexts.description2}
-        </p>
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            ${aboutTexts.description3}
-        </p>
-        <div class="divider"></div>
-        <p style="font-size: 0.9rem; color: var(--accent);">
-            ${aboutTexts.availability}
-        </p>
-    `;
+    container.innerHTML =
+        '<p>' + data.greeting + ' <strong>' + data.name + '</strong>, ' + data.description1 + '</p>' +
+        '<p>' + data.description2 + '</p>' +
+        '<p>' + data.description3 + '</p>' +
+        '<div class="divider"></div>' +
+        '<p class="availability">' + data.availability + '</p>';
 }
 
+/**
+ * SKILLS
+ */
 function updateSkillsTranslations() {
-    const skillsContent = document.getElementById('skills-content');
-    if (!skillsContent) return;
+    var container = document.getElementById('skills-content');
+    if (!container) return;
 
-    const skillsTexts = CONFIG.translations[currentLanguage].skills;
-    const titleEl = document.getElementById('skills-title');
-    if (titleEl) titleEl.textContent = skillsTexts.title;
+    var data = tObject('skills');
 
-    const skills = ['web', 'java', 'python'];
+    var title = document.getElementById('skills-title');
+    if (title) title.textContent = data.title;
 
-    let skillsHtml = '';
-    skills.forEach(skillKey => {
-                const skill = skillsTexts[skillKey];
-                if (skill) {
-                    skillsHtml += `
-                <div class="skill-card" data-skill="${skillKey}" style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 18px; border-left: 3px solid var(--accent); cursor: pointer; transition: all 0.25s ease;">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                        <span style="font-size: 1.8rem;">${skill.name.split(' ')[0]}</span>
-                        <div style="font-weight: bold; font-size: 1.1rem;">${skill.title}</div>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--sub); margin-bottom: 12px;">${skill.description}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-                        ${skill.technologies.slice(0, 4).map(tech => `<span style="background: rgba(167, 139, 250, 0.15); padding: 3px 10px; border-radius: 20px; font-size: 0.7rem;">${tech}</span>`).join('')}
-                        ${skill.technologies.length > 4 ? `<span style="background: rgba(255,255,255,0.08); padding: 3px 10px; border-radius: 20px; font-size: 0.7rem;">+${skill.technologies.length - 4}</span>` : ''}
-                    </div>
-                    <div style="margin-top: 12px; font-size: 0.7rem; color: var(--accent);">🔗 ${currentLanguage === 'es' ? 'Haz clic para más detalles' : 'Click for more details'}</div>
-                </div>
-            `;
-        }
+    var fragment = document.createDocumentFragment();
+
+    ['web', 'java', 'python'].forEach(function(key) {
+        var skill = data[key];
+        if (!skill) return;
+
+        var card = document.createElement('div');
+        card.className = 'skill-card';
+        card.dataset.skill = key;
+
+        card.innerHTML =
+            '<div class="skill-header">' +
+            '<span class="emoji">' + skill.name.split(' ')[0] + '</span>' +
+            '<div class="title">' + skill.title + '</div>' +
+            '</div>' +
+            '<div class="desc">' + skill.description + '</div>' +
+            '<div class="tech">' +
+            skill.technologies.slice(0, 4).map(function(t) {
+                return '<span>' + t + '</span>';
+            }).join('') +
+            '</div>' +
+            '<div class="hint">🔗 ' +
+            (currentLanguage === 'es' ?
+                'Haz clic para más detalles' :
+                'Click for more details') +
+            '</div>';
+
+        card.addEventListener('click', function() {
+            if (typeof openSkillModal === 'function') openSkillModal(skill);
+        });
+
+        fragment.appendChild(card);
     });
-    
-    skillsContent.innerHTML = skillsHtml;
-    
-    // Añadir event listeners a las tarjetas de habilidades
-    document.querySelectorAll('.skill-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const skillKey = card.dataset.skill;
-            const skill = skillsTexts[skillKey];
-            if (skill && typeof openSkillModal === 'function') {
-                openSkillModal(skill);
-            }
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateX(5px)';
-            card.style.background = 'rgba(167, 139, 250, 0.1)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateX(0)';
-            card.style.background = 'rgba(255,255,255,0.03)';
-        });
-    });
+
+    container.innerHTML = '';
+    container.appendChild(fragment);
 }
 
+/**
+ * PROJECTS
+ */
 function updateProjectsTranslations() {
-    const projectsContent = document.getElementById('projects-content');
-    if (!projectsContent) return;
-    
-    const projectsTexts = CONFIG.translations[currentLanguage].projects;
-    const projectsList = projectsTexts.projects || [];
-    
-    const titleEl = document.getElementById('projects-title');
-    if (titleEl) titleEl.textContent = projectsTexts.title;
-    
-    const backButton = document.getElementById('back-button');
-    if (backButton) {
-        const span = backButton.querySelector('.lbl');
-        if (span) span.textContent = projectsTexts.backButton;
-    }
-    
-    let projectsHtml = '';
-    projectsList.forEach((project, index) => {
-        projectsHtml += `
-            <div class="project-card" data-project-index="${index}" style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent); cursor: pointer; transition: all 0.25s ease;">
-                <div style="font-weight: bold; margin-bottom: 5px;">${project.name}</div>
-                <div style="font-size: 0.85rem; color: var(--sub);">${project.description}</div>
-                <div style="margin-top: 10px; font-size: 0.7rem; color: var(--accent);">🔗 ${currentLanguage === 'es' ? 'Haz clic para más detalles' : 'Click for more details'}</div>
-            </div>
-        `;
+    var container = document.getElementById('projects-content');
+    if (!container) return;
+
+    var data = tObject('projects');
+
+    var title = document.getElementById('projects-title');
+    if (title) title.textContent = data.title;
+
+    var fragment = document.createDocumentFragment();
+
+    (data.projects || []).forEach(function(project) {
+        var card = document.createElement('div');
+        card.className = 'project-card';
+
+        card.innerHTML =
+            '<div class="title">' + project.name + '</div>' +
+            '<div class="desc">' + project.description + '</div>' +
+            '<div class="hint">🔗 ' +
+            (currentLanguage === 'es' ?
+                'Haz clic para más detalles' :
+                'Click for more details') +
+            '</div>';
+
+        card.addEventListener('click', function() {
+            if (typeof openModal === 'function') openModal(project);
+        });
+
+        fragment.appendChild(card);
     });
-    
-    projectsContent.innerHTML = projectsHtml;
-    
-    document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const index = parseInt(card.dataset.projectIndex);
-            const project = projectsList[index];
-            if (project && typeof openModal === 'function') {
-                openModal(project);
-            }
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateX(5px)';
-            card.style.background = 'rgba(167, 139, 250, 0.1)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateX(0)';
-            card.style.background = 'rgba(255,255,255,0.03)';
-        });
-    });
+
+    container.innerHTML = '';
+    container.appendChild(fragment);
 }
 
+/**
+ * NAV
+ */
 function updateNavTranslations() {
-    const navTexts = CONFIG.translations[currentLanguage].nav;
-    
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        const navSection = btn.dataset.nav;
-        const span = btn.querySelector('span');
-        if (span && navTexts[navSection]) {
-            span.textContent = navTexts[navSection];
-        }
+    var nav = tObject('nav');
+
+    document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        var key = btn.dataset.nav;
+        var span = btn.querySelector('span');
+        if (span && nav[key]) span.textContent = nav[key];
     });
 }
 
+/**
+ * INIT
+ */
 function initLanguageSwitcher() {
-    const savedLang = localStorage.getItem('preferredLanguage');
-    if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
-        currentLanguage = savedLang;
-    }
-    
-    const langBtns = document.querySelectorAll('.lang-btn-top, .lang-btn');
-    langBtns.forEach(btn => {
-        btn.removeEventListener('click', handleLangClick);
-        btn.addEventListener('click', handleLangClick);
-        
-        if (btn.dataset.lang === currentLanguage) {
-            btn.classList.add('active');
-        }
+    syncLangButtons();
+
+    document.querySelectorAll('.lang-btn-top, .lang-btn').forEach(function(btn) {
+        btn.onclick = function(e) {
+            e.preventDefault();
+            setLanguage(btn.dataset.lang);
+        };
     });
-    
-    setTimeout(() => {
-        updateAllTranslations();
-    }, 100);
+
+    updateAllTranslations();
 }
 
-function handleLangClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const lang = this.dataset.lang;
-    setLanguage(lang);
-}
-
+// Global
 window.t = t;
 window.tObject = tObject;
 window.setLanguage = setLanguage;

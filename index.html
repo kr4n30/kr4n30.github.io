@@ -3,37 +3,32 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile SPA</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-
-    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-    <!-- ── CLICK TO ENTER OVERLAY ── -->
+    <!-- OVERLAY -->
     <div id="enter-overlay">
         <div id="enter-box">
             <div id="enter-pulse"></div>
             <svg viewBox="0 0 24 24" fill="currentColor" width="42" height="42">
-                <polygon points="5 3 19 12 5 21 5 3" />
+                <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
             <span>tap to enter</span>
         </div>
     </div>
 
-    <!-- ── BACKGROUND VIDEO ── -->
+    <!-- VIDEO -->
     <div id="yt-bg">
         <div id="yt-player"></div>
     </div>
 
-    <!-- Sound toggle -->
+    <!-- SOUND -->
     <button id="sound-btn" title="Toggle sound">
         <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -47,12 +42,48 @@
         </svg>
     </button>
 
-    <!-- ── CONTENEDOR DINÁMICO SPA ── -->
+    <!-- APP -->
     <div id="stage">
-        <div id="app-content"></div>
+        <div class="card">
+
+            <!-- LANG -->
+            <div class="lang-switcher-top">
+                <button type="button" class="lang-btn-top" data-lang="es">🇪🇸 ES</button>
+                <button type="button" class="lang-btn-top" data-lang="en">🇬🇧 EN</button>
+            </div>
+
+            <!-- AVATAR -->
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatar-el"></div>
+                <div class="avatar-status"></div>
+            </div>
+
+            <!-- NAME -->
+            <div class="name" id="name-el"></div>
+
+            <!-- 🔥 CONTENIDO DINÁMICO -->
+            <div id="app-content"></div>
+
+            <!-- NAV -->
+            <div class="nav-buttons">
+                <button type="button" class="nav-btn" data-nav="home">
+                    <span data-i18n="nav.home">Inicio</span>
+                </button>
+                <button type="button" class="nav-btn" data-nav="about">
+                    <span data-i18n="nav.about">Sobre Mí</span>
+                </button>
+                <button type="button" class="nav-btn" data-nav="skills">
+                    <span data-i18n="nav.skills">Skills</span>
+                </button>
+                <button type="button" class="nav-btn" data-nav="projects">
+                    <span data-i18n="nav.projects">Proyectos</span>
+                </button>
+            </div>
+
+        </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts (ORDEN IMPORTANTE) -->
     <script src="config.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="js/modal.js"></script>
