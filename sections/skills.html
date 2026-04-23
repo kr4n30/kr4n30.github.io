@@ -17,17 +17,15 @@
 
     <div class="name" id="name-el"></div>
 
-    <div class="tagline" id="tagline-el"></div>
+    <div class="section-title" id="skills-title">💻 Mis Habilidades</div>
 
-    <div class="divider"></div>
-
-    <div class="socials" id="socials-el"></div>
-
-    <div class="links" id="links-el"></div>
+    <div id="skills-content" style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
+        <!-- Las tarjetas de habilidades se llenan dinámicamente con JS -->
+    </div>
 
     <!-- Navigation Buttons -->
     <div class="nav-buttons">
-        <button class="nav-btn" data-nav="home" data-active="true">
+        <button class="nav-btn" data-nav="home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M3 9.5L12 3L21 9.5V20H3V9.5Z"/>
                 <path d="M9 20V12H15V20"/>
@@ -41,7 +39,7 @@
             </svg>
             <span>Sobre Mí</span>
         </button>
-        <button class="nav-btn" data-nav="skills">
+        <button class="nav-btn" data-nav="skills" data-active="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
             </svg>

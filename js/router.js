@@ -6,6 +6,7 @@
 const ROUTES = {
     home: { file: 'sections/home.html', title: 'Inicio' },
     about: { file: 'sections/about.html', title: 'Acerca de' },
+    skills: { file: 'sections/skills.html', title: 'Habilidades' },
     projects: { file: 'sections/projects.html', title: 'Proyectos' }
 };
 

@@ -36,11 +36,13 @@ const CONFIG = {
 
     translations: {
         es: {
+            // Home page
             home: {
                 welcome: "✨ GRACIAS POR VISITAR MI PÁGINA WEB ✨",
                 description: "Aquí podrás encontrar más sobre mí y sobre mi trayectoria profesional.",
                 highlight: "💫 Desarrollo web • Creatividad • Innovación 💫"
             },
+            // About page
             about: {
                 title: "📖 Sobre Mí",
                 greeting: "👋 ¡Hola! Soy",
@@ -50,6 +52,38 @@ const CONFIG = {
                 description3: "💡 Me especializo en crear experiencias web inmersivas con fondos animados, efectos visuales y arquitectura limpia.",
                 availability: "⚡ Disponible para colaboraciones"
             },
+            // Skills Sections
+            skills: {
+                title: "💻 Mis Habilidades",
+                web: {
+                    name: "🌐 Desarrollo Web",
+                    title: "Desarrollo Web Full Stack",
+                    description: "Especialista en crear aplicaciones web modernas, responsivas y de alto rendimiento.",
+                    fullDescription: "Como desarrollador web full stack, tengo experiencia en todo el ciclo de vida del desarrollo de aplicaciones web. Desde la planificación y diseño hasta la implementación y mantenimiento. Me especializo en crear experiencias de usuario fluidas con arquitecturas limpias y escalables.",
+                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "SQL"],
+                    experience: "3+ años de experiencia",
+                    projects: "15+ proyectos completados"
+                },
+                java: {
+                    name: "☕ Desarrollo Java",
+                    title: "Desarrollo Java Enterprise",
+                    description: "Experto en aplicaciones empresariales robustas y escalables con Java.",
+                    fullDescription: "Con Java he desarrollado desde aplicaciones desktop hasta sistemas empresariales complejos. Mi experiencia incluye el uso de frameworks modernos como Spring Boot, Hibernate y Maven. Me enfoco en crear código limpio, mantenible y con altos estándares de seguridad.",
+                    technologies: ["Java 8/11/17", "Spring Boot", "Spring MVC", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito"],
+                    experience: "4+ años de experiencia",
+                    projects: "10+ proyectos completados"
+                },
+                python: {
+                    name: "🐍 Desarrollo Python",
+                    title: "Desarrollo Python Multiplataforma",
+                    description: "Versátil en desarrollo backend, análisis de datos y automatización con Python.",
+                    fullDescription: "Python es mi herramienta para soluciones rápidas y eficientes. Desarrollo desde APIs REST con Django/Flask hasta scripts de automatización y análisis de datos con Pandas y NumPy. Me encanta la versatilidad y la legibilidad que Python ofrece.",
+                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery"],
+                    experience: "3+ años de experiencia",
+                    projects: "12+ proyectos completados"
+                }
+            },
+            // Projects page (mantenemos los proyectos existentes)
             projects: {
                 title: "🚀 Mis Proyectos",
                 projects: [{
@@ -79,22 +113,27 @@ const CONFIG = {
                 ],
                 backButton: "Volver al inicio"
             },
+            // Navigation
             nav: {
                 home: "Inicio",
                 about: "Sobre Mí",
+                skills: "Habilidades",
                 projects: "Proyectos"
             },
+            // Language
             language: {
                 es: "ESPAÑOL",
                 en: "ENGLISH"
             }
         },
         en: {
+            // Home page
             home: {
                 welcome: "✨ THANK YOU FOR VISITING MY WEBSITE ✨",
                 description: "Here you can find more about me and my professional journey.",
                 highlight: "💫 Web Development • Creativity • Innovation 💫"
             },
+            // About page
             about: {
                 title: "📖 About Me",
                 greeting: "👋 Hello! I'm",
@@ -104,6 +143,38 @@ const CONFIG = {
                 description3: "💡 I specialize in creating immersive web experiences with animated backgrounds, visual effects, and clean architecture.",
                 availability: "⚡ Available for collaborations"
             },
+            // Skills Sections
+            skills: {
+                title: "💻 My Skills",
+                web: {
+                    name: "🌐 Web Development",
+                    title: "Full Stack Web Development",
+                    description: "Specialist in creating modern, responsive, high-performance web applications.",
+                    fullDescription: "As a full stack web developer, I have experience in the entire lifecycle of web application development. From planning and design to implementation and maintenance. I specialize in creating smooth user experiences with clean and scalable architectures.",
+                    technologies: ["HTML5", "CSS3", "JavaScript", "React", "Vue.js", "Node.js", "Express", "MongoDB", "SQL"],
+                    experience: "3+ years experience",
+                    projects: "15+ completed projects"
+                },
+                java: {
+                    name: "☕ Java Development",
+                    title: "Enterprise Java Development",
+                    description: "Expert in robust and scalable enterprise applications with Java.",
+                    fullDescription: "With Java I have developed from desktop applications to complex enterprise systems. My experience includes using modern frameworks like Spring Boot, Hibernate, and Maven. I focus on creating clean, maintainable code with high security standards.",
+                    technologies: ["Java 8/11/17", "Spring Boot", "Spring MVC", "Hibernate", "JPA", "Maven", "Gradle", "JUnit", "Mockito"],
+                    experience: "4+ years experience",
+                    projects: "10+ completed projects"
+                },
+                python: {
+                    name: "🐍 Python Development",
+                    title: "Multiplatform Python Development",
+                    description: "Versatile in backend development, data analysis, and automation with Python.",
+                    fullDescription: "Python is my tool for fast and efficient solutions. I develop from REST APIs with Django/Flask to automation scripts and data analysis with Pandas and NumPy. I love the versatility and readability that Python offers.",
+                    technologies: ["Python 3", "Django", "Flask", "FastAPI", "Pandas", "NumPy", "SQLAlchemy", "Docker", "Celery"],
+                    experience: "3+ years experience",
+                    projects: "12+ completed projects"
+                }
+            },
+            // Projects page
             projects: {
                 title: "🚀 My Projects",
                 projects: [{
@@ -133,11 +204,14 @@ const CONFIG = {
                 ],
                 backButton: "Back to home"
             },
+            // Navigation
             nav: {
                 home: "Home",
                 about: "About",
+                skills: "Skills",
                 projects: "Projects"
             },
+            // Language
             language: {
                 es: "SPANISH",
                 en: "ENGLISH"
