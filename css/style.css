@@ -172,20 +172,21 @@ body::after {
 }
 
 
-/* Stage */
+/* STAGE */
 
 #stage {
     position: relative;
     z-index: 10;
     height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: flex-start;
+    padding: 40px 20px;
+    overflow-y: auto;
 }
 
 
-/* Card */
+/* CARD */
 
 .card {
     position: relative;
@@ -199,24 +200,30 @@ body::after {
     backdrop-filter: blur(20px) saturate(180%);
     box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.1), 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 80px rgba(131, 58, 180, 0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-height: 90vh;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) rgba(255, 255, 255, 0.1);
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: visible;
 }
 
-.card::-webkit-scrollbar {
-    width: 5px;
-}
-
-.card::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-.card::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 10px;
+@media (max-height: 700px) {
+    .card {
+        max-height: 85vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) rgba(255, 255, 255, 0.1);
+    }
+    .card::-webkit-scrollbar {
+        width: 5px;
+    }
+    .card::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    .card::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
 }
 
 
@@ -544,31 +551,108 @@ body::after {
 }
 
 
-/* Section Title */
+/* ============================================ */
+
+
+/* SECTION TITLE - PRO */
+
+
+/* ============================================ */
 
 .section-title {
     font-family: 'Syne', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 20px;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     background: linear-gradient(135deg, #ffffff, #a180ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
+.section-title::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    opacity: 0.5;
+}
 
-/* About Content */
-
-.about-content p {
-    margin-bottom: 15px;
-    line-height: 1.65;
-    font-size: 0.88rem;
+.section-title::before {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: linear-gradient(to left, var(--accent), transparent);
+    opacity: 0.5;
 }
 
 
-/* Skills Grid */
+/* ============================================ */
+
+
+/* ABOUT GRID - PRO CARDS */
+
+
+/* ============================================ */
+
+.about-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.about-card {
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+    text-align: left;
+}
+
+.about-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 25px var(--glow);
+}
+
+.about-card span {
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+.about-card p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.about-card.highlight {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    box-shadow: 0 0 20px var(--glow);
+}
+
+
+/* ============================================ */
+
+
+/* SKILLS GRID */
+
+
+/* ============================================ */
 
 .skills-grid {
     display: flex;
@@ -583,6 +667,7 @@ body::after {
     border-left: 3px solid var(--accent);
     cursor: pointer;
     transition: all 0.25s ease;
+    text-align: left;
 }
 
 .skill-card:hover {
@@ -634,7 +719,13 @@ body::after {
 }
 
 
-/* Projects Grid */
+/* ============================================ */
+
+
+/* PROJECTS GRID */
+
+
+/* ============================================ */
 
 .projects-grid {
     display: flex;
@@ -649,6 +740,7 @@ body::after {
     border-left: 3px solid var(--accent);
     cursor: pointer;
     transition: all 0.25s ease;
+    text-align: left;
 }
 
 .project-card:hover {
@@ -732,7 +824,13 @@ body::after {
 }
 
 
-/* Modal */
+/* ============================================ */
+
+
+/* MODAL SYSTEM */
+
+
+/* ============================================ */
 
 .modal-overlay {
     position: fixed;
@@ -836,7 +934,7 @@ body::after {
     color: var(--accent);
 }
 
-.modal-stats {
+.modal-meta {
     display: flex;
     gap: 15px;
     margin: 15px 0;
@@ -845,17 +943,59 @@ body::after {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.modal-stats span {
-    color: var(--accent);
+.modal-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.modal-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.modal-link:hover {
+    background: rgba(167, 139, 250, 0.2);
+    border-color: var(--accent);
+    transform: translateY(-2px);
 }
 
 
-/* Responsive */
+/* ============================================ */
+
+
+/* RESPONSIVE */
+
+
+/* ============================================ */
+
+@media (max-width: 768px) {
+    #stage {
+        padding: 30px 20px;
+    }
+    .card {
+        padding: 30px 28px 28px;
+        max-width: 95%;
+    }
+}
 
 @media (max-width: 600px) {
+    #stage {
+        padding: 20px 16px;
+    }
     .card {
-        padding: 30px 22px 26px;
-        max-height: 85vh;
+        padding: 28px 20px 24px;
     }
     .avatar-wrap {
         width: 80px;
@@ -875,6 +1015,10 @@ body::after {
     }
     .section-title {
         font-size: 1.2rem;
+    }
+    .section-title::before,
+    .section-title::after {
+        max-width: 40px;
     }
     .nav-btn span {
         display: none;
@@ -910,8 +1054,11 @@ body::after {
 }
 
 @media (max-width: 380px) {
+    #stage {
+        padding: 16px 12px;
+    }
     .card {
-        padding: 24px 18px 22px;
+        padding: 24px 16px 20px;
     }
     .avatar-wrap {
         width: 70px;
@@ -936,9 +1083,14 @@ body::after {
 }
 
 @media (max-height: 600px) and (orientation: landscape) {
+    #stage {
+        padding: 16px 20px;
+        align-items: flex-start;
+    }
     .card {
-        max-height: 92vh;
         padding: 20px 24px;
+        max-height: 90vh;
+        overflow-y: auto;
     }
     .avatar-wrap {
         width: 60px;
@@ -956,11 +1108,50 @@ body::after {
     }
     .tagline {
         margin-bottom: 16px;
+        font-size: 0.75rem;
     }
     .socials {
         margin-bottom: 12px;
+        gap: 8px;
+    }
+    .social-btn {
+        width: 36px;
+        height: 36px;
+    }
+    .social-btn svg {
+        width: 16px;
+        height: 16px;
     }
     .nav-buttons {
         margin-top: 16px;
+        gap: 6px;
+    }
+    .nav-btn {
+        padding: 6px 10px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .card {
+        max-width: 560px;
+        padding: 48px 44px 44px;
+    }
+    .name {
+        font-size: 2.2rem;
+    }
+    .tagline {
+        font-size: 1rem;
+    }
+    .social-btn {
+        width: 56px;
+        height: 56px;
+    }
+    .social-btn svg {
+        width: 26px;
+        height: 26px;
+    }
+    .nav-btn {
+        padding: 12px 18px;
+        font-size: 0.9rem;
     }
 }
