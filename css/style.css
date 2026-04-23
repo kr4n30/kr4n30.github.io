@@ -571,3 +571,331 @@ body::after {
         padding: 10px;
     }
 }
+
+
+/* ── LANGUAGE SWITCHER ── */
+
+.lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.lang-btn:hover {
+    background: rgba(167, 139, 250, 0.2);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.3), rgba(139, 92, 246, 0.2));
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+}
+
+
+/* ── ENHANCED TAGLINE ── */
+
+.tagline {
+    color: rgba(225, 225, 255, 0.88);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    mix-blend-mode: lighten;
+}
+
+.tagline-main {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+.tagline-text {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.tagline-highlight {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 5px;
+}
+
+
+/* ── ABOUT PAGE STYLES ── */
+
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(130deg, #ffffff, #a180ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.about-content ul {
+    margin: 10px 0 0 20px;
+    list-style: none;
+}
+
+.about-content li {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding-left: 20px;
+    position: relative;
+}
+
+.about-content li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+
+/* ── PROJECTS PAGE STYLES ── */
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 15px;
+    transition: all 0.25s ease;
+}
+
+.project-item:hover {
+    background: rgba(167, 139, 250, 0.08);
+    border-color: var(--accent);
+    transform: translateX(5px);
+}
+
+.project-item h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--accent);
+}
+
+.project-item p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+
+/* ── NAVIGATION BUTTONS ── */
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: center;
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.nav-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.nav-btn span {
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.nav-btn:hover {
+    background: rgba(167, 139, 250, 0.15);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.nav-btn:hover svg {
+    transform: scale(1.05);
+}
+
+.nav-btn[data-active="true"] {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25), rgba(139, 92, 246, 0.2));
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
+}
+
+.nav-btn[data-active="true"] svg {
+    stroke: var(--accent);
+}
+
+.nav-btn:active {
+    transform: scale(0.96);
+    transition: transform 0.06s;
+}
+
+
+/* Responsive */
+
+@media (max-width: 520px) {
+    .nav-buttons {
+        gap: 8px;
+        margin-top: 24px;
+    }
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    .nav-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    .nav-btn span {
+        display: none;
+    }
+    .nav-btn {
+        flex: 0 1 auto;
+        padding: 10px;
+    }
+    .lang-btn {
+        padding: 4px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+
+/* Añade estos estilos a tu CSS existente */
+
+
+/* Language Switcher */
+
+.lang-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.lang-btn:hover {
+    background: rgba(167, 139, 250, 0.2);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.3), rgba(139, 92, 246, 0.2));
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+}
+
+
+/* Section Title */
+
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    background: linear-gradient(130deg, #ffffff, #a180ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+
+/* Tagline styles */
+
+.tagline {
+    color: rgba(225, 225, 255, 0.88);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    mix-blend-mode: lighten;
+}
+
+.tagline-main {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: var(--accent);
+}
+
+.tagline-text {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.tagline-highlight {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}

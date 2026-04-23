@@ -58,14 +58,13 @@ const SOCIAL_DEFS = {
 
 /**
  * Inicializa el contenido dinámico del perfil (avatar, nombre, socials, links)
- * Se ejecuta después de cargar cada sección
  */
 function initProfile() {
     // Aplicar variables CSS desde config
     document.documentElement.style.setProperty('--accent', CONFIG.accentColor);
     document.documentElement.style.setProperty('--glow', CONFIG.glowColor);
 
-    // ── Avatar ──
+    // Avatar
     const avatarEl = document.getElementById('avatar-el');
     if (avatarEl) {
         if (CONFIG.avatarUrl) {
@@ -75,28 +74,11 @@ function initProfile() {
         }
     }
 
-    // ── Name ──
+    // Name
     const nameEl = document.getElementById('name-el');
     if (nameEl) nameEl.textContent = CONFIG.name;
 
-    // ── Tagline con efecto máquina de escribir ──
-    const taglineEl = document.getElementById('tagline-el');
-    if (taglineEl) {
-        taglineEl.textContent = '';
-        const taglineText = CONFIG.tagline;
-        let tagPos = 0;
-
-        function typeTagline() {
-            if (tagPos <= taglineText.length && taglineEl) {
-                taglineEl.textContent = taglineText.slice(0, tagPos);
-                tagPos += 1;
-                setTimeout(typeTagline, 60);
-            }
-        }
-        setTimeout(typeTagline, 250);
-    }
-
-    // ── Social icons ──
+    // Social icons
     const socialsEl = document.getElementById('socials-el');
     if (socialsEl) {
         socialsEl.innerHTML = '';
@@ -119,7 +101,7 @@ function initProfile() {
         });
     }
 
-    // ── Extra links ──
+    // Extra links
     const linksEl = document.getElementById('links-el');
     if (linksEl && CONFIG.links) {
         linksEl.innerHTML = '';
@@ -135,6 +117,11 @@ function initProfile() {
             });
             linksEl.appendChild(a);
         });
+    }
+
+    // Inicializar sistema de idiomas
+    if (typeof initLanguageSwitcher === 'function') {
+        initLanguageSwitcher();
     }
 }
 

@@ -5,21 +5,42 @@
 
     <div class="name" id="name-el"></div>
 
-    <div class="divider"></div>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button class="lang-btn" data-lang="es">🇪🇸 <span data-i18n="lang-es">ESPAÑOL</span></button>
+        <button class="lang-btn" data-lang="en">🇬🇧 <span data-i18n="lang-en">ENGLISH</span></button>
+    </div>
 
-    <div style="text-align: left; padding: 10px 0;">
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            👋 ¡Hola! Soy <strong id="about-name">BEAST</strong>, desarrollador creativo apasionado por la tecnología y el diseño.
-        </p>
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            🚀 Este portfolio es una Single Page Application modular construida con JavaScript vanilla, sin frameworks.
-        </p>
-        <p style="margin-bottom: 15px; line-height: 1.6;">
-            💡 Me especializo en crear experiencias web inmersivas con fondos animados, efectos visuales y arquitectura limpia.
-        </p>
-        <div class="divider"></div>
-        <p style="font-size: 0.9rem; color: var(--accent);">
-            ⚡ Disponible para colaboraciones
-        </p>
+    <div class="section-title" id="about-title">📖 Sobre Mí</div>
+
+    <div id="about-content" style="text-align: left; padding: 10px 0;">
+        <!-- El contenido se llena dinámicamente con JS -->
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button class="nav-btn" data-nav="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 9.5L12 3L21 9.5V20H3V9.5Z"/>
+                <path d="M9 20V12H15V20"/>
+            </svg>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-btn" data-nav="about" data-active="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M5 20v-2a7 7 0 0 1 14 0v2"/>
+            </svg>
+            <span>Sobre Mí</span>
+        </button>
+        <button class="nav-btn" data-nav="projects">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Proyectos</span>
+        </button>
     </div>
 </div>

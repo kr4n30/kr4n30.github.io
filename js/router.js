@@ -14,13 +14,10 @@ let isTransitioning = false;
 
 /**
  * Carga una sección HTML desde el servidor y la inyecta en el contenedor
- * @param {string} sectionName - Nombre de la sección (home, about, projects)
  */
 async function loadSection(sectionName) {
-    // Prevenir múltiples cargas simultáneas
     if (isTransitioning) return;
 
-    // Validar que la sección existe
     if (!ROUTES[sectionName]) {
         console.error(`Sección "${sectionName}" no encontrada`);
         sectionName = 'home';
@@ -33,12 +30,10 @@ async function loadSection(sectionName) {
 
     isTransitioning = true;
 
-    // Animación de salida suave
     container.style.opacity = '0';
     container.style.transform = 'translateY(10px)';
 
     try {
-        // Fetch del HTML de la sección
         const response = await fetch(route.file);
 
         if (!response.ok) {
@@ -47,23 +42,22 @@ async function loadSection(sectionName) {
 
         const html = await response.text();
 
-        // Pequeño delay para la animación
         setTimeout(() => {
-            // Inyectar el HTML
             container.innerHTML = html;
 
-            // Actualizar título de la página
             document.title = `${CONFIG.name} | ${route.title}`;
 
-            // Ejecutar la función de inicialización del perfil
             if (typeof initProfile === 'function') {
                 initProfile();
             }
 
-            // Re-inicializar navegación dentro de la sección (para links con data-nav)
             initNavigationLinks();
 
-            // Animación de entrada
+            // Reinicializar el selector de idioma después de cargar la sección
+            if (typeof initLanguageSwitcher === 'function') {
+                initLanguageSwitcher();
+            }
+
             container.style.opacity = '1';
             container.style.transform = 'translateY(0)';
 
@@ -93,8 +87,6 @@ async function loadSection(sectionName) {
 
 /**
  * Navega a una sección actualizando la URL y cargando el contenido
- * @param {string} sectionName - Nombre de la sección
- * @param {boolean} pushState - Si debe agregar al historial (default true)
  */
 function navigateTo(sectionName, pushState = true) {
     if (!ROUTES[sectionName]) {
@@ -102,7 +94,6 @@ function navigateTo(sectionName, pushState = true) {
     }
 
     if (pushState) {
-        // Actualizar URL sin recargar la página
         const newUrl = `${window.location.pathname}#${sectionName}`;
         window.history.pushState({ section: sectionName }, '', newUrl);
     }
@@ -114,25 +105,40 @@ function navigateTo(sectionName, pushState = true) {
  * Inicializa los links de navegación dentro del contenido dinámico
  */
 function initNavigationLinks() {
-    // Buscar todos los elementos con data-nav
     const navLinks = document.querySelectorAll('[data-nav]');
 
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const section = link.getAttribute('data-nav');
-            if (section && ROUTES[section]) {
-                navigateTo(section);
-            }
-        });
+        link.removeEventListener('click', handleNavClick);
+        link.addEventListener('click', handleNavClick);
     });
 }
 
+function handleNavClick(e) {
+    e.preventDefault();
+    const section = this.getAttribute('data-nav');
+
+    if (section && ROUTES[section]) {
+        document.querySelectorAll('[data-nav]').forEach(btn => {
+            btn.removeAttribute('data-active');
+        });
+        this.setAttribute('data-active', 'true');
+
+        navigateTo(section);
+    }
+
+    if (navigator.vibrate) navigator.vibrate(20);
+}
+
 /**
- * Maneja el evento popstate (botón atrás/adelante del navegador)
+ * Maneja el evento popstate
  */
 function handlePopState() {
-    const hash = window.location.hash.slice(1); // Remover el '#'
+    const hash = window.location.hash.slice(1);
     const section = hash && ROUTES[hash] ? hash : 'home';
     navigateTo(section, false);
 }
+
+// Exponer funciones globalmente
+window.navigateTo = navigateTo;
+window.handlePopState = handlePopState;
+window.initNavigationLinks = initNavigationLinks;

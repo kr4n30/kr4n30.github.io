@@ -5,33 +5,51 @@
 
     <div class="name" id="name-el"></div>
 
-    <div class="divider"></div>
+    <!-- Language Switcher -->
+    <div class="lang-switcher">
+        <button class="lang-btn" data-lang="es">🇪🇸 <span data-i18n="lang-es">ESPAÑOL</span></button>
+        <button class="lang-btn" data-lang="en">🇬🇧 <span data-i18n="lang-en">ENGLISH</span></button>
+    </div>
 
-    <div style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+    <div class="section-title" id="projects-title">🚀 Mis Proyectos</div>
 
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent);">
-            <div style="font-weight: bold; margin-bottom: 5px;">🎨 Creative Portfolio</div>
-            <div style="font-size: 0.85rem; color: var(--sub);">SPA modular con fondo YouTube</div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent);">
-            <div style="font-weight: bold; margin-bottom: 5px;">🎮 Discord Bot</div>
-            <div style="font-size: 0.85rem; color: var(--sub);">Bot de música y moderación</div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; border-left: 3px solid var(--accent);">
-            <div style="font-weight: bold; margin-bottom: 5px;">📱 Mobile App</div>
-            <div style="font-size: 0.85rem; color: var(--sub);">React Native + Firebase</div>
-        </div>
-
+    <div id="projects-content" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+        <!-- El contenido se llena dinámicamente con JS -->
     </div>
 
     <div class="divider" style="margin-top: 20px;"></div>
 
-    <div class="links" id="projects-links">
-        <a href="#" class="link-btn" data-nav="home">
+    <div class="links">
+        <a href="#" class="link-btn" data-nav="home" id="back-button">
             <span class="icon">🏠</span>
             <span class="lbl">Volver al inicio</span>
         </a>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button class="nav-btn" data-nav="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 9.5L12 3L21 9.5V20H3V9.5Z"/>
+                <path d="M9 20V12H15V20"/>
+            </svg>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-btn" data-nav="about">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M5 20v-2a7 7 0 0 1 14 0v2"/>
+            </svg>
+            <span>Sobre Mí</span>
+        </button>
+        <button class="nav-btn" data-nav="projects" data-active="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Proyectos</span>
+        </button>
     </div>
 </div>
