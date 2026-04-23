@@ -480,3 +480,94 @@ body::after {
         height: 20px;
     }
 }
+
+
+/* ── NAVIGATION BUTTONS ── */
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: center;
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.nav-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.nav-btn span {
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.nav-btn:hover {
+    background: rgba(167, 139, 250, 0.15);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.nav-btn:hover svg {
+    transform: scale(1.05);
+}
+
+.nav-btn[data-active="true"] {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25), rgba(139, 92, 246, 0.2));
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
+}
+
+.nav-btn[data-active="true"] svg {
+    stroke: var(--accent);
+}
+
+.nav-btn:active {
+    transform: scale(0.96);
+    transition: transform 0.06s;
+}
+
+
+/* Responsive */
+
+@media (max-width: 520px) {
+    .nav-buttons {
+        gap: 8px;
+        margin-top: 24px;
+    }
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    .nav-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    .nav-btn span {
+        display: none;
+    }
+    .nav-btn {
+        flex: 0 1 auto;
+        padding: 10px;
+    }
+}
