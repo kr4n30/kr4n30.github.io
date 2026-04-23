@@ -1511,3 +1511,263 @@ body::after {
         font-size: 0.9rem;
     }
 }
+
+
+/* ============================================ */
+
+
+/* HOME SECTION - HERO IMPACTANTE */
+
+
+/* ============================================ */
+
+
+/* Hero Section */
+
+.hero-section {
+    margin-bottom: 24px;
+}
+
+.greeting {
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+}
+
+.typing-container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.typing-prefix {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.typing-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffffff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2rem;
+    background-color: var(--accent);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* Quick Stats */
+
+.quick-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 24px 0;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    background: linear-gradient(135deg, #ffffff, var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--sub);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+
+/* CTA Button */
+
+.cta-section {
+    margin: 20px 0 16px;
+}
+
+.cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(139, 92, 246, 0.08));
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 40px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.cta-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.cta-btn:hover {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.3), rgba(139, 92, 246, 0.15));
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(167, 139, 250, 0.25);
+}
+
+.cta-btn:hover svg {
+    transform: translateX(4px);
+}
+
+.cta-btn:active {
+    transform: translateY(0);
+}
+
+
+/* Tech Strip */
+
+.tech-strip {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tech-items {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.tech-items span {
+    transition: color 0.2s ease;
+}
+
+.tech-items span:hover {
+    color: var(--accent);
+}
+
+
+/* ============================================ */
+
+
+/* ANIMACIONES ADICIONALES */
+
+
+/* ============================================ */
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.hero-section,
+.quick-stats,
+.cta-section,
+.tech-strip {
+    animation: fadeInUp 0.5s ease backwards;
+}
+
+.hero-section {
+    animation-delay: 0.05s;
+}
+
+.quick-stats {
+    animation-delay: 0.1s;
+}
+
+.cta-section {
+    animation-delay: 0.15s;
+}
+
+.tech-strip {
+    animation-delay: 0.2s;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .quick-stats {
+        gap: 20px;
+    }
+    .stat-value {
+        font-size: 1.3rem;
+    }
+    .stat-label {
+        font-size: 0.6rem;
+    }
+    .typing-text {
+        font-size: 1rem;
+    }
+    .typing-prefix {
+        font-size: 0.9rem;
+    }
+    .cta-btn {
+        padding: 12px 20px;
+        font-size: 0.85rem;
+    }
+    .tech-items {
+        gap: 6px;
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .quick-stats {
+        gap: 15px;
+    }
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    .typing-text {
+        font-size: 0.9rem;
+    }
+}

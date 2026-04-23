@@ -55,11 +55,84 @@ function updateAllTranslations() {
     updateNavTranslations();
 }
 
+// ============================================
+// HOME - REDISEÑADO CON TYPING Y ESTADÍSTICAS
+// ============================================
 function updateHomeTranslations() {
-    var el = document.getElementById('tagline-el');
-    if (!el) return;
-    var data = tObject('home');
-    el.innerHTML = '<div class="tagline-main">' + data.welcome + '</div><div class="tagline-text">' + data.description + '</div><div class="tagline-highlight">' + data.highlight + '</div>';
+    var taglineEl = document.getElementById('tagline-el');
+    if (taglineEl) {
+        var data = tObject('home');
+        taglineEl.innerHTML = '<div class="tagline-main">' + data.welcome + '</div><div class="tagline-text">' + data.description + '</div><div class="tagline-highlight">' + data.highlight + '</div>';
+    }
+
+    // Greeting dinámico según hora
+    var greetingEl = document.getElementById('greeting-el');
+    if (greetingEl) {
+        var hour = new Date().getHours();
+        var greeting = '';
+        if (currentLanguage === 'es') {
+            if (hour < 12) greeting = '🌅 Buenos días';
+            else if (hour < 19) greeting = '🌞 Buenas tardes';
+            else greeting = '🌙 Buenas noches';
+        } else {
+            if (hour < 12) greeting = '🌅 Good morning';
+            else if (hour < 19) greeting = '🌞 Good afternoon';
+            else greeting = '🌙 Good evening';
+        }
+        greetingEl.textContent = greeting;
+    }
+
+    // Typing effect
+    var typingText = document.getElementById('typing-text');
+    if (typingText && !typingText.dataset.typed) {
+        var phrases = currentLanguage === 'es' ?
+            ['Desarrollador Full Stack', 'Creador de experiencias', 'Apasionado por la tecnología'] :
+            ['Full Stack Developer', 'Experience creator', 'Tech passionate'];
+        var phraseIndex = 0;
+        var charIndex = 0;
+        var isDeleting = false;
+
+        function typeEffect() {
+            var currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                typingText.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000);
+                return;
+            }
+
+            if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(typeEffect, 500);
+                return;
+            }
+
+            var speed = isDeleting ? 50 : 100;
+            setTimeout(typeEffect, speed);
+        }
+
+        typingText.dataset.typed = 'true';
+        setTimeout(typeEffect, 500);
+    }
+
+    // Estadísticas
+    var stats = tObject('home').stats;
+    if (stats) {
+        var projectsEl = document.getElementById('stat-projects');
+        var experienceEl = document.getElementById('stat-experience');
+        var clientsEl = document.getElementById('stat-clients');
+        if (projectsEl) projectsEl.textContent = stats.projects;
+        if (experienceEl) experienceEl.textContent = stats.experience;
+        if (clientsEl) clientsEl.textContent = stats.clients;
+    }
 }
 
 // ============================================

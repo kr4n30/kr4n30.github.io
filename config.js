@@ -38,8 +38,13 @@ const CONFIG = {
         es: {
             home: {
                 welcome: "✨ BIENVENIDO A MI PORTAFOLIO ✨",
-                description: "Explora mi trabajo, habilidades y trayectoria en el mundo del desarrollo.",
-                highlight: "💫 Código • Creatividad • Innovación 💫"
+                description: "Soy kR4N30, desarrollador Full Stack especializado en crear experiencias digitales únicas y memorables.",
+                highlight: "💫 Transformando ideas en código • Calidad • Innovación 💫",
+                stats: {
+                    projects: "35+",
+                    experience: "4+",
+                    clients: "25+"
+                }
             },
             about: {
                 title: "📖 Sobre Mí",
@@ -140,8 +145,13 @@ const CONFIG = {
         en: {
             home: {
                 welcome: "✨ WELCOME TO MY PORTFOLIO ✨",
-                description: "Explore my work, skills, and journey in the development world.",
-                highlight: "💫 Code • Creativity • Innovation 💫"
+                description: "I'm kR4N30, a Full Stack developer specialized in creating unique and memorable digital experiences.",
+                highlight: "💫 Turning ideas into code • Quality • Innovation 💫",
+                stats: {
+                    projects: "35+",
+                    experience: "4+",
+                    clients: "25+"
+                }
             },
             about: {
                 title: "📖 About Me",
