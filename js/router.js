@@ -1,71 +1,81 @@
 // ============================================================
-// ROUTER SPA — ULTRA PRO VERSION
+// ROUTER SPA — ULTRA PRO (FINAL CLEAN)
 // ============================================================
 
-var ROUTES = {
+// ==========================
+// ROUTES
+// ==========================
+const ROUTES = {
     home: { file: 'sections/home.html', title: 'Inicio' },
     about: { file: 'sections/about.html', title: 'Acerca de' },
     skills: { file: 'sections/skills.html', title: 'Habilidades' },
     projects: { file: 'sections/projects.html', title: 'Proyectos' }
 };
 
-var sectionCache = {};
-var currentController = null; // 🔥 abort fetch real
-var currentSection = null;
+// ==========================
+// STATE
+// ==========================
+let sectionCache = {};
+let currentController = null;
+let currentSection = null;
 
-// ============================================================
+// ==========================
+// UTIL
+// ==========================
+const idle = window.requestIdleCallback || function(cb) {
+    return setTimeout(cb, 1);
+};
+
+// ==========================
 // LOAD SECTION
-// ============================================================
+// ==========================
 function loadSection(sectionName) {
 
-    if (!ROUTES[sectionName]) {
-        sectionName = 'home';
-    }
-
+    if (!ROUTES[sectionName]) sectionName = 'home';
     if (sectionName === currentSection) return;
 
-    var route = ROUTES[sectionName];
-    var container = document.getElementById('app-content');
+    const route = ROUTES[sectionName];
+    const container = document.getElementById('app-content');
     if (!container) return;
 
     currentSection = sectionName;
 
-    // 🔥 abort request anterior
+    // 🔥 cancelar request anterior
     if (currentController) {
         currentController.abort();
     }
 
     currentController = new AbortController();
 
-    // 🔥 cleanup sección anterior
+    // 🔥 cleanup anterior
     if (typeof window.cleanupSection === 'function') {
-        try { window.cleanupSection(); } catch (e) {}
+        try { window.cleanupSection(); } catch (_) {}
     }
 
-    // ========================================================
-    // ANIMACIÓN OUT (GPU SAFE)
-    // ========================================================
+    // ==========================
+    // ANIMACIÓN OUT
+    // ==========================
     container.style.willChange = 'transform, opacity';
     container.style.transition = 'opacity .25s ease, transform .25s ease';
     container.style.opacity = '0';
-    container.style.transform = 'translateY(12px) scale(.98)';
+    container.style.transform = 'translateY(10px) scale(.98)';
 
+    // ==========================
+    // RENDER
+    // ==========================
     function render(html) {
 
         container.innerHTML = html;
 
-        document.title = CONFIG.name + ' | ' + route.title;
+        document.title = `${CONFIG.name} | ${route.title}`;
 
         initNavigationLinks();
         updateActiveNav(sectionName);
 
-        if (typeof initLanguageSwitcher === 'function') {
-            initLanguageSwitcher();
-        }
+        if (window.initProfile) initProfile();
+        if (window.initLanguageSwitcher) initLanguageSwitcher();
 
-        // ====================================================
-        // ANIMACIÓN IN (Apple-like)
-        // ====================================================
+        // ANIMACIÓN IN (suave)
         requestAnimationFrame(() => {
             container.style.opacity = '1';
             container.style.transform = 'translateY(0) scale(1)';
@@ -74,23 +84,23 @@ function loadSection(sectionName) {
         // guardar estado
         try {
             localStorage.setItem('lastSection', sectionName);
-        } catch (e) {}
+        } catch (_) {}
 
-        // prefetch en idle
-        requestIdleCallback(() => prefetchRoutes(sectionName));
+        // prefetch inteligente
+        idle(() => prefetchRoutes(sectionName));
     }
 
-    // ========================================================
+    // ==========================
     // CACHE
-    // ========================================================
+    // ==========================
     if (sectionCache[sectionName]) {
         render(sectionCache[sectionName]);
         return;
     }
 
-    // ========================================================
-    // FETCH con cancelación real
-    // ========================================================
+    // ==========================
+    // FETCH
+    // ==========================
     fetch(route.file, { signal: currentController.signal })
         .then(res => {
             if (!res.ok) throw new Error(res.status);
@@ -113,9 +123,9 @@ function loadSection(sectionName) {
         });
 }
 
-// ============================================================
+// ==========================
 // NAVIGATION
-// ============================================================
+// ==========================
 function navigateTo(sectionName, pushState = true) {
 
     if (!ROUTES[sectionName]) sectionName = 'home';
@@ -130,12 +140,13 @@ function navigateTo(sectionName, pushState = true) {
     loadSection(sectionName);
 }
 
-// ============================================================
+// ==========================
 // NAV LINKS
-// ============================================================
+// ==========================
 function initNavigationLinks() {
-    document.querySelectorAll('[data-nav]').forEach(link => {
-        link.onclick = handleNavClick;
+
+    document.querySelectorAll('[data-nav]').forEach(el => {
+        el.onclick = handleNavClick;
     });
 }
 
@@ -150,10 +161,11 @@ function handleNavClick(e) {
     if ('vibrate' in navigator) navigator.vibrate(20);
 }
 
-// ============================================================
+// ==========================
 // ACTIVE NAV
-// ============================================================
+// ==========================
 function updateActiveNav(sectionName) {
+
     document.querySelectorAll('[data-nav]').forEach(btn => {
         btn.toggleAttribute(
             'data-active',
@@ -162,9 +174,9 @@ function updateActiveNav(sectionName) {
     });
 }
 
-// ============================================================
-// PREFETCH (IDLE + SMART)
-// ============================================================
+// ==========================
+// PREFETCH
+// ==========================
 function prefetchRoutes(current) {
 
     Object.keys(ROUTES).forEach(key => {
@@ -181,25 +193,26 @@ function prefetchRoutes(current) {
     });
 }
 
-// ============================================================
+// ==========================
 // BACK / FORWARD
-// ============================================================
+// ==========================
 function handlePopState() {
     const section = location.hash.replace('#', '') || 'home';
     navigateTo(section, false);
 }
 
-// ============================================================
+// ==========================
 // INIT ROUTER
-// ============================================================
+// ==========================
 function initRouter() {
 
     window.addEventListener('popstate', handlePopState);
 
     let saved = null;
+
     try {
         saved = localStorage.getItem('lastSection');
-    } catch (e) {}
+    } catch (_) {}
 
     const initial =
         location.hash.replace('#', '') ||
@@ -209,8 +222,8 @@ function initRouter() {
     navigateTo(initial, false);
 }
 
-// ============================================================
+// ==========================
 // EXPORTS
-// ============================================================
+// ==========================
 window.navigateTo = navigateTo;
 window.initRouter = initRouter;

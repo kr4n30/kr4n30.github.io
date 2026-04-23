@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile SPA</title>
 
-    <!-- Fonts -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -29,16 +28,12 @@
     </div>
 
     <!-- SOUND -->
-    <button id="sound-btn" title="Toggle sound">
-        <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    <button id="sound-btn">
+        <svg id="icon-sound-on" viewBox="0 0 24 24">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
         </svg>
-        <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
+        <svg id="icon-sound-off" viewBox="0 0 24 24" style="display:none">
+            <line x1="23" y1="9" x2="17" y2="15"/>
         </svg>
     </button>
 
@@ -48,45 +43,35 @@
 
             <!-- LANG -->
             <div class="lang-switcher-top">
-                <button type="button" class="lang-btn-top" data-lang="es">🇪🇸 ES</button>
-                <button type="button" class="lang-btn-top" data-lang="en">🇬🇧 EN</button>
+                <button data-lang="es">🇪🇸</button>
+                <button data-lang="en">🇬🇧</button>
             </div>
 
             <!-- AVATAR -->
             <div class="avatar-wrap">
                 <div class="avatar" id="avatar-el"></div>
-                <div class="avatar-status"></div>
             </div>
 
             <!-- NAME -->
             <div class="name" id="name-el"></div>
 
-            <!-- 🔥 CONTENIDO DINÁMICO -->
+            <!-- 🔥 SOLO CONTENEDOR -->
             <div id="app-content"></div>
 
             <!-- NAV -->
             <div class="nav-buttons">
-                <button type="button" class="nav-btn" data-nav="home">
-                    <span data-i18n="nav.home">Inicio</span>
-                </button>
-                <button type="button" class="nav-btn" data-nav="about">
-                    <span data-i18n="nav.about">Sobre Mí</span>
-                </button>
-                <button type="button" class="nav-btn" data-nav="skills">
-                    <span data-i18n="nav.skills">Skills</span>
-                </button>
-                <button type="button" class="nav-btn" data-nav="projects">
-                    <span data-i18n="nav.projects">Proyectos</span>
-                </button>
+                <button data-nav="home">Inicio</button>
+                <button data-nav="about">Sobre mí</button>
+                <button data-nav="skills">Skills</button>
+                <button data-nav="projects">Proyectos</button>
             </div>
 
         </div>
     </div>
 
-    <!-- Scripts (ORDEN IMPORTANTE) -->
+    <!-- Scripts -->
     <script src="config.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="js/modal.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/router.js"></script>
     <script src="js/main.js"></script>

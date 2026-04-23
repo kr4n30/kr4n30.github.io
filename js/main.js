@@ -27,10 +27,11 @@ function vibrate(pattern = 20) {
 function initProfile() {
     const root = document.documentElement;
 
-    // evitar recalcular si ya están
-    if (!root.style.getPropertyValue('--accent')) {
+    // 🔥 solo aplicar 1 vez (evita recalculo innecesario)
+    if (!root.dataset.themeLoaded) {
         root.style.setProperty('--accent', CONFIG.accentColor);
         root.style.setProperty('--glow', CONFIG.glowColor);
+        root.dataset.themeLoaded = 'true';
     }
 
     initAvatar();
@@ -148,8 +149,7 @@ function initLinks() {
 // ==========================
 function onYouTubeIframeAPIReady() {
 
-    // seguridad extra
-    if (typeof YT === 'undefined' || !YT.Player) return;
+    if (!window.YT || !YT.Player) return;
 
     player = new YT.Player('yt-player', {
         videoId: CONFIG.youtubeVideoId,
@@ -224,33 +224,28 @@ function initEnterOverlay() {
 function startVideoSafe() {
     if (videoStarted) return;
 
-    const tryPlay = setInterval(() => {
-        if (!playerReady || !player) return;
+    const tryPlay = () => {
+        if (!playerReady || !player) {
+            requestAnimationFrame(tryPlay);
+            return;
+        }
 
-        clearInterval(tryPlay);
         videoStarted = true;
 
         player.setVolume(CONFIG.videoVolume);
-
-        if (isMuted) {
-            player.mute();
-        } else {
-            player.unMute();
-        }
-
+        isMuted ? player.mute() : player.unMute();
         player.playVideo();
+
         updateSoundIcon();
-    }, 100);
+    };
+
+    tryPlay();
 }
 
 // ==========================
 // INIT APP (FINAL)
 // ==========================
 function initApp() {
-    const root = document.documentElement;
-
-    root.style.setProperty('--accent', CONFIG.accentColor);
-    root.style.setProperty('--glow', CONFIG.glowColor);
 
     initEnterOverlay();
 
@@ -259,10 +254,7 @@ function initApp() {
         soundBtn.addEventListener('click', toggleSound);
     }
 
-    // 🔥 PERFIL (IMPORTANTE)
-    initProfile();
-
-    // 🔥 ROUTER (control total SPA)
+    // 🔥 SOLO router controla render
     if (typeof initRouter === 'function') {
         initRouter();
     }
