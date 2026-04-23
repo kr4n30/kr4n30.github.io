@@ -1,5 +1,5 @@
 // ============================================================
-// MAIN APP (FINAL IMPROVED VERSION)
+// MAIN APP — FINAL PRO (STABLE & CLEAN)
 // ============================================================
 
 // ==========================
@@ -15,8 +15,10 @@ let videoStarted = false;
 // ==========================
 const $ = id => document.getElementById(id);
 
+const canVibrate = 'vibrate' in navigator;
+
 function vibrate(pattern = 20) {
-    if ('vibrate' in navigator) navigator.vibrate(pattern);
+    if (canVibrate) navigator.vibrate(pattern);
 }
 
 // ==========================
@@ -25,8 +27,11 @@ function vibrate(pattern = 20) {
 function initProfile() {
     const root = document.documentElement;
 
-    root.style.setProperty('--accent', CONFIG.accentColor);
-    root.style.setProperty('--glow', CONFIG.glowColor);
+    // evitar recalcular si ya están
+    if (!root.style.getPropertyValue('--accent')) {
+        root.style.setProperty('--accent', CONFIG.accentColor);
+        root.style.setProperty('--glow', CONFIG.glowColor);
+    }
 
     initAvatar();
     initName();
@@ -142,6 +147,10 @@ function initLinks() {
 // YOUTUBE PLAYER
 // ==========================
 function onYouTubeIframeAPIReady() {
+
+    // seguridad extra
+    if (typeof YT === 'undefined' || !YT.Player) return;
+
     player = new YT.Player('yt-player', {
         videoId: CONFIG.youtubeVideoId,
         playerVars: {
@@ -198,7 +207,7 @@ function updateSoundIcon() {
 }
 
 // ==========================
-// OVERLAY (FIX AUTOPLAY)
+// OVERLAY
 // ==========================
 function initEnterOverlay() {
     const overlay = $('enter-overlay');
@@ -209,7 +218,7 @@ function initEnterOverlay() {
         vibrate([10, 40, 10]);
 
         startVideoSafe();
-    }, { once: true }); // 🔥 evita múltiples clicks
+    }, { once: true });
 }
 
 function startVideoSafe() {
@@ -235,7 +244,7 @@ function startVideoSafe() {
 }
 
 // ==========================
-// INIT APP
+// INIT APP (FINAL)
 // ==========================
 function initApp() {
     const root = document.documentElement;
@@ -250,10 +259,13 @@ function initApp() {
         soundBtn.addEventListener('click', toggleSound);
     }
 
-    window.addEventListener('popstate', handlePopState);
+    // 🔥 PERFIL (IMPORTANTE)
+    initProfile();
 
-    const section = window.location.hash.slice(1) || 'home';
-    navigateTo(section, false);
+    // 🔥 ROUTER (control total SPA)
+    if (typeof initRouter === 'function') {
+        initRouter();
+    }
 }
 
 // ==========================

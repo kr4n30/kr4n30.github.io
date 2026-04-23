@@ -1,5 +1,5 @@
 // ============================================================
-// ROUTER SPA — FINAL VERSION (PRO)
+// ROUTER SPA — ULTRA PRO VERSION
 // ============================================================
 
 var ROUTES = {
@@ -10,7 +10,8 @@ var ROUTES = {
 };
 
 var sectionCache = {};
-var currentRequestId = 0;
+var currentController = null; // 🔥 abort fetch real
+var currentSection = null;
 
 // ============================================================
 // LOAD SECTION
@@ -18,34 +19,38 @@ var currentRequestId = 0;
 function loadSection(sectionName) {
 
     if (!ROUTES[sectionName]) {
-        console.warn('Ruta no válida:', sectionName);
         sectionName = 'home';
     }
 
+    if (sectionName === currentSection) return;
+
     var route = ROUTES[sectionName];
     var container = document.getElementById('app-content');
-
     if (!container) return;
 
-    currentRequestId++;
-    var requestId = currentRequestId;
+    currentSection = sectionName;
 
-    // 🔥 limpiar sección anterior (si existe)
-    if (typeof window.cleanupSection === 'function') {
-        try {
-            window.cleanupSection();
-        } catch (e) {
-            console.warn('Error en cleanup:', e);
-        }
+    // 🔥 abort request anterior
+    if (currentController) {
+        currentController.abort();
     }
 
-    // animación salida
+    currentController = new AbortController();
+
+    // 🔥 cleanup sección anterior
+    if (typeof window.cleanupSection === 'function') {
+        try { window.cleanupSection(); } catch (e) {}
+    }
+
+    // ========================================================
+    // ANIMACIÓN OUT (GPU SAFE)
+    // ========================================================
+    container.style.willChange = 'transform, opacity';
+    container.style.transition = 'opacity .25s ease, transform .25s ease';
     container.style.opacity = '0';
-    container.style.transform = 'translateY(10px)';
+    container.style.transform = 'translateY(12px) scale(.98)';
 
     function render(html) {
-
-        if (requestId !== currentRequestId) return;
 
         container.innerHTML = html;
 
@@ -58,19 +63,21 @@ function loadSection(sectionName) {
             initLanguageSwitcher();
         }
 
-        // animación entrada
-        requestAnimationFrame(function() {
+        // ====================================================
+        // ANIMACIÓN IN (Apple-like)
+        // ====================================================
+        requestAnimationFrame(() => {
             container.style.opacity = '1';
-            container.style.transform = 'translateY(0)';
+            container.style.transform = 'translateY(0) scale(1)';
         });
 
-        // 🔥 guardar última sección
+        // guardar estado
         try {
             localStorage.setItem('lastSection', sectionName);
         } catch (e) {}
 
-        // 🔥 prefetch silencioso
-        prefetchRoutes(sectionName);
+        // prefetch en idle
+        requestIdleCallback(() => prefetchRoutes(sectionName));
     }
 
     // ========================================================
@@ -82,46 +89,42 @@ function loadSection(sectionName) {
     }
 
     // ========================================================
-    // FETCH
+    // FETCH con cancelación real
     // ========================================================
-    fetch(route.file)
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('HTTP ' + response.status);
-            }
-            return response.text();
+    fetch(route.file, { signal: currentController.signal })
+        .then(res => {
+            if (!res.ok) throw new Error(res.status);
+            return res.text();
         })
-        .then(function(html) {
+        .then(html => {
             sectionCache[sectionName] = html;
             render(html);
         })
-        .catch(function(error) {
-            console.error('Error cargando sección:', error);
+        .catch(err => {
+            if (err.name === 'AbortError') return;
 
-            render(
-                '<div class="error">' +
-                '<div class="name">Error</div>' +
-                '<div class="tagline">No se pudo cargar esta sección</div>' +
-                '<button class="link-btn" data-nav="home">🏠 Volver</button>' +
-                '</div>'
-            );
+            render(`
+                <div class="error">
+                    <div class="name">Error</div>
+                    <div class="tagline">No se pudo cargar</div>
+                    <button class="link-btn" data-nav="home">🏠 Volver</button>
+                </div>
+            `);
         });
 }
 
 // ============================================================
 // NAVIGATION
 // ============================================================
-function navigateTo(sectionName, pushState) {
+function navigateTo(sectionName, pushState = true) {
 
-    if (pushState === undefined) pushState = true;
-
-    if (!ROUTES[sectionName]) {
-        sectionName = 'home';
-    }
+    if (!ROUTES[sectionName]) sectionName = 'home';
 
     if (pushState) {
-        var newUrl = window.location.pathname + '#' + sectionName;
-        window.history.pushState({ section: sectionName }, '', newUrl);
+        history.pushState({ section: sectionName },
+            '',
+            '#' + sectionName
+        );
     }
 
     loadSection(sectionName);
@@ -131,58 +134,50 @@ function navigateTo(sectionName, pushState) {
 // NAV LINKS
 // ============================================================
 function initNavigationLinks() {
-    var links = document.querySelectorAll('[data-nav]');
-
-    links.forEach(function(link) {
-        link.removeEventListener('click', handleNavClick);
-        link.addEventListener('click', handleNavClick);
+    document.querySelectorAll('[data-nav]').forEach(link => {
+        link.onclick = handleNavClick;
     });
 }
 
 function handleNavClick(e) {
     e.preventDefault();
 
-    var section = this.getAttribute('data-nav');
+    const section = this.dataset.nav;
+    if (!section) return;
 
-    if (section && ROUTES[section]) {
-        navigateTo(section);
-    }
+    navigateTo(section);
 
-    if (navigator.vibrate) navigator.vibrate(20);
+    if ('vibrate' in navigator) navigator.vibrate(20);
 }
 
 // ============================================================
-// ACTIVE NAV UI
+// ACTIVE NAV
 // ============================================================
 function updateActiveNav(sectionName) {
-    document.querySelectorAll('[data-nav]').forEach(function(btn) {
-        btn.removeAttribute('data-active');
-
-        if (btn.getAttribute('data-nav') === sectionName) {
-            btn.setAttribute('data-active', 'true');
-        }
+    document.querySelectorAll('[data-nav]').forEach(btn => {
+        btn.toggleAttribute(
+            'data-active',
+            btn.dataset.nav === sectionName
+        );
     });
 }
 
 // ============================================================
-// PREFETCH (UX PRO)
+// PREFETCH (IDLE + SMART)
 // ============================================================
 function prefetchRoutes(current) {
 
-    Object.keys(ROUTES).forEach(function(key) {
+    Object.keys(ROUTES).forEach(key => {
 
         if (key === current) return;
         if (sectionCache[key]) return;
 
         fetch(ROUTES[key].file)
-            .then(function(res) {
-                if (!res.ok) return;
-                return res.text();
-            })
-            .then(function(html) {
+            .then(r => r.ok ? r.text() : null)
+            .then(html => {
                 if (html) sectionCache[key] = html;
             })
-            .catch(function() {});
+            .catch(() => {});
     });
 }
 
@@ -190,8 +185,7 @@ function prefetchRoutes(current) {
 // BACK / FORWARD
 // ============================================================
 function handlePopState() {
-    var hash = window.location.hash.replace('#', '');
-    var section = hash && ROUTES[hash] ? hash : 'home';
+    const section = location.hash.replace('#', '') || 'home';
     navigateTo(section, false);
 }
 
@@ -202,15 +196,14 @@ function initRouter() {
 
     window.addEventListener('popstate', handlePopState);
 
-    var saved = null;
-
+    let saved = null;
     try {
         saved = localStorage.getItem('lastSection');
     } catch (e) {}
 
-    var initial =
+    const initial =
+        location.hash.replace('#', '') ||
         saved ||
-        window.location.hash.replace('#', '') ||
         'home';
 
     navigateTo(initial, false);
@@ -220,6 +213,4 @@ function initRouter() {
 // EXPORTS
 // ============================================================
 window.navigateTo = navigateTo;
-window.initNavigationLinks = initNavigationLinks;
-window.handlePopState = handlePopState;
 window.initRouter = initRouter;
