@@ -1155,3 +1155,8 @@ body::after {
         font-size: 0.9rem;
     }
 }
+
+.lang-switcher-top button {
+    font-family: system-ui, -apple-system, "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    font-size: 1.2rem;
+}
