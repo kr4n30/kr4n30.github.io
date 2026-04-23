@@ -4,20 +4,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="description" content="Portfolio de kR4N30 - Desarrollador Full Stack" />
     <title>kR4N30 | Portfolio</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-    <!-- OVERLAY -->
     <div id="enter-overlay">
         <div id="enter-box">
             <div id="enter-pulse"></div>
@@ -28,12 +26,10 @@
         </div>
     </div>
 
-    <!-- VIDEO BACKGROUND -->
     <div id="yt-bg">
         <div id="yt-player"></div>
     </div>
 
-    <!-- SOUND TOGGLE -->
     <button id="sound-btn" title="Toggle sound">
         <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -47,35 +43,41 @@
         </svg>
     </button>
 
-    <!-- APP -->
     <div id="stage">
         <div class="card">
 
-            <!-- LANGUAGE SWITCHER TOP -->
             <div class="lang-switcher-top">
                 <button class="lang-btn-top" data-lang="es">
-                    <span class="lang-flag">🇪🇸</span>
+                    <svg class="lang-flag-svg" viewBox="0 0 640 480">
+                        <g fill-rule="evenodd" stroke-width="1pt">
+                            <path fill="#f21818" d="M0 0h640v480H0z"/>
+                            <path fill="#fcd100" d="M0 0h213.3v480H0z"/>
+                            <path fill="#fcd100" d="M426.7 0H640v480H426.7z"/>
+                        </g>
+                    </svg>
                     <span class="lang-text">ES</span>
                 </button>
                 <button class="lang-btn-top" data-lang="en">
-                    <span class="lang-flag">🇬🇧</span>
+                    <svg class="lang-flag-svg" viewBox="0 0 640 480">
+                        <path fill="#012169" d="M0 0h640v480H0z"/>
+                        <path fill="#FFF" d="m75 0 244 181L562 0h78v62l-220 167 220 167v62h-78L320 301 81 462H0v-62l214-166L0 64V0h75z"/>
+                        <path fill="#C8102E" d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l240 179h-60L0 49V0z"/>
+                        <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z"/>
+                        <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"/>
+                    </svg>
                     <span class="lang-text">EN</span>
                 </button>
             </div>
 
-            <!-- AVATAR -->
             <div class="avatar-wrap">
                 <div class="avatar" id="avatar-el"></div>
                 <div class="avatar-status"></div>
             </div>
 
-            <!-- NAME -->
             <div class="name" id="name-el"></div>
 
-            <!-- DYNAMIC CONTENT -->
             <div id="app-content"></div>
 
-            <!-- NAVIGATION BUTTONS -->
             <div class="nav-buttons">
                 <button class="nav-btn" data-nav="home">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -111,7 +113,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="config.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="js/modal.js"></script>

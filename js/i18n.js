@@ -1,5 +1,5 @@
 // ============================================================
-// INTERNATIONALIZATION (i18n) MODULE - STABLE VERSION
+// INTERNATIONALIZATION (i18n) MODULE - PRO VERSION
 // ============================================================
 
 var SUPPORTED_LANGS = ['es', 'en'];
@@ -63,7 +63,7 @@ function updateHomeTranslations() {
 }
 
 // ============================================
-// ABOUT - RENDER ELEGANTE CON ÍCONOS Y TÍTULOS
+// ABOUT - CON ESTADÍSTICAS Y MÁS CONTENIDO
 // ============================================
 function updateAboutTranslations() {
     var container = document.getElementById('about-content');
@@ -73,33 +73,38 @@ function updateAboutTranslations() {
     if (title) title.textContent = data.title;
 
     container.innerHTML = `
+        <div class="about-stats">
+            <div class="stat-card"><div class="stat-number">${data.stats.years}+</div><div class="stat-label">${data.stats.yearsLabel}</div></div>
+            <div class="stat-card"><div class="stat-number">${data.stats.projects}+</div><div class="stat-label">${data.stats.projectsLabel}</div></div>
+            <div class="stat-card"><div class="stat-number">${data.stats.clients}+</div><div class="stat-label">${data.stats.clientsLabel}</div></div>
+        </div>
         <div class="about-grid">
             <div class="about-card">
                 <div class="about-icon">👋</div>
                 <div class="about-content">
-                    <div class="about-title">PRESENTACIÓN</div>
-                    <p>${data.greeting} <strong style="color: var(--accent);">${data.name}</strong>, ${data.description1}</p>
+                    <div class="about-title">${data.cards.who.title}</div>
+                    <p>${data.cards.who.text}</p>
                 </div>
             </div>
             <div class="about-card">
                 <div class="about-icon">🚀</div>
                 <div class="about-content">
-                    <div class="about-title">TECNOLOGÍA</div>
-                    <p>${data.description2}</p>
+                    <div class="about-title">${data.cards.mission.title}</div>
+                    <p>${data.cards.mission.text}</p>
                 </div>
             </div>
             <div class="about-card">
                 <div class="about-icon">💡</div>
                 <div class="about-content">
-                    <div class="about-title">ESPECIALIDAD</div>
-                    <p>${data.description3}</p>
+                    <div class="about-title">${data.cards.specialty.title}</div>
+                    <p>${data.cards.specialty.text}</p>
                 </div>
             </div>
             <div class="about-card highlight">
                 <div class="about-icon">⚡</div>
                 <div class="about-content">
-                    <div class="about-title">DISPONIBILIDAD</div>
-                    <p>${data.availability}</p>
+                    <div class="about-title">${data.cards.availability.title}</div>
+                    <p>${data.cards.availability.text}</p>
                 </div>
             </div>
         </div>
@@ -107,7 +112,7 @@ function updateAboutTranslations() {
 }
 
 // ============================================
-// SKILLS - RENDER ELEGANTE
+// SKILLS - CON BARRAS DE PROGRESO
 // ============================================
 function updateSkillsTranslations() {
     var container = document.getElementById('skills-content');
@@ -118,6 +123,7 @@ function updateSkillsTranslations() {
 
     var fragment = document.createDocumentFragment();
     var icons = { web: '🌐', java: '☕', python: '🐍' };
+    var progress = { web: 90, java: 85, python: 88 };
 
     ['web', 'java', 'python'].forEach(function(key) {
         var skill = data[key];
@@ -125,17 +131,21 @@ function updateSkillsTranslations() {
         var card = document.createElement('div');
         card.className = 'skill-card';
         card.dataset.skill = key;
+        card.style.setProperty('--progress', progress[key] + '%');
         card.innerHTML = `
             <div class="skill-card-header">
                 <div class="skill-icon-wrapper">${icons[key]}</div>
                 <div class="skill-title">${skill.title}</div>
             </div>
             <div class="skill-description">${skill.description}</div>
-            <div class="skill-tech">
-                ${skill.technologies.slice(0,5).map(function(t) { return '<span class="tech-badge">' + t + '</span>'; }).join('')}
-                ${skill.technologies.length > 5 ? '<span class="tech-badge">+' + (skill.technologies.length-5) + ' más</span>' : ''}
+            <div class="skill-progress">
+                <div class="progress-bar"><div class="progress-fill" style="width: ${progress[key]}%"></div></div>
             </div>
-            <div class="skill-hint">🔍 ${currentLanguage === 'es' ? 'Haz clic para explorar' : 'Click to explore'}</div>
+            <div class="skill-tech">
+                ${skill.technologies.slice(0,6).map(function(t) { return '<span class="tech-badge">' + t + '</span>'; }).join('')}
+                ${skill.technologies.length > 6 ? '<span class="tech-badge">+' + (skill.technologies.length-6) + ' más</span>' : ''}
+            </div>
+            <div class="skill-hint">🔍 ${currentLanguage === 'es' ? 'Explorar especialidad' : 'Explore specialty'}</div>
         `;
         card.addEventListener('click', function() { if (typeof openSkillModal === 'function') openSkillModal(skill); });
         fragment.appendChild(card);
@@ -145,7 +155,7 @@ function updateSkillsTranslations() {
 }
 
 // ============================================
-// PROJECTS - RENDER ELEGANTE
+// PROJECTS - CON MÁS DETALLE
 // ============================================
 function updateProjectsTranslations() {
     var container = document.getElementById('projects-content');
@@ -158,7 +168,7 @@ function updateProjectsTranslations() {
     if (backBtn) { var span = backBtn.querySelector('.lbl'); if (span) span.textContent = data.backButton; }
 
     var fragment = document.createDocumentFragment();
-    var icons = ['🎨', '🤖', '📱'];
+    var icons = ['🎨', '🤖', '📱', '☕', '🐍'];
 
     (data.projects || []).forEach(function(project, i) {
         var card = document.createElement('div');
@@ -171,9 +181,10 @@ function updateProjectsTranslations() {
             </div>
             <div class="project-description">${project.description}</div>
             <div class="project-tech">
-                ${project.technologies.slice(0,3).map(function(t) { return '<span class="project-tech-tag">' + t + '</span>'; }).join('')}
+                ${project.technologies.slice(0,4).map(function(t) { return '<span class="project-tech-tag">' + t + '</span>'; }).join('')}
+                ${project.technologies.length > 4 ? '<span class="project-tech-tag">+' + (project.technologies.length-4) + '</span>' : ''}
             </div>
-            <div class="project-hint">${currentLanguage === 'es' ? 'Ver detalles' : 'View details'}</div>
+            <div class="project-hint">${currentLanguage === 'es' ? 'Ver detalles del proyecto' : 'View project details'}</div>
         `;
         card.addEventListener('click', function() { if (typeof openModal === 'function') openModal(project); });
         fragment.appendChild(card);
@@ -194,10 +205,8 @@ function updateNavTranslations() {
 function initLanguageSwitcher() {
     syncLangButtons();
     document.querySelectorAll('.lang-btn-top, .lang-btn').forEach(function(btn) {
-        btn.onclick = function(e) {
-            e.preventDefault();
-            setLanguage(btn.dataset.lang);
-        };
+        btn.onclick = function(e) { e.preventDefault();
+            setLanguage(btn.dataset.lang); };
     });
     updateAllTranslations();
 }
