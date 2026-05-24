@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#7b2d8e">
+    <title>KR4N30 // MORADO - PROYECTOS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+    <div class="container header-container">
+        <div class="logo">
+            <h2>✦ KR4N30 ✦</h2>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="MENU">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#">INICIO</a></li>
+            <li><a href="#nosotros">NOSOTROS</a></li>
+            <li><a href="#servicios">SERVICIOS</a></li>
+            <li><a href="#proyectos">PROYECTOS</a></li>
+            <li><a href="#contacto">CONTACTO</a></li>
+        </ul>
+    </div>
+</header>
+
+<main class="main-content">
+    <!-- SLIDER PRINCIPAL -->
+    <div class="main-slider">
+        <div class="swiper-container" id="heroSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <div class="slide-title">BIENVENIDO A KR4N30</div>
+                        <div class="slide-text">Soluciones digitales con estilo y personalidad única.</div>
+                        <a href="#proyectos" class="btn-kr4n30">⟡ VER PROYECTOS ⟡</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <div class="slide-title">CREATIVIDAD SIN LÍMITES</div>
+                        <div class="slide-text">Transformamos ideas en experiencias digitales memorables.</div>
+                        <a href="#nosotros" class="btn-kr4n30">⟡ CONOCER MÁS ⟡</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="slide-content">
+                        <div class="slide-title">INNOVACIÓN Y TECNOLOGÍA</div>
+                        <div class="slide-text">Estamos a la vanguardia para ofrecerte lo mejor.</div>
+                        <a href="#contacto" class="btn-kr4n30">⟡ CONTACTAR ⟡</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <!-- NOSOTROS -->
+    <section id="nosotros" class="section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="glitch-title">// NOSOTROS</h2>
+                <p class="section-sub">Quiénes somos y qué nos motiva</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>Somos un equipo apasionado por la tecnología y el diseño. Nos dedicamos a crear soluciones digitales que marcan la diferencia.</p>
+                    <p>Nuestra filosofía se basa en la transparencia, la calidad y la innovación constante. Trabajamos codo a codo con nuestros clientes para entender sus necesidades y superar sus expectativas.</p>
+                    <p>Cada proyecto es único y merece un enfoque personalizado. Por eso, nos tomamos el tiempo necesario para escuchar, analizar y proponer la mejor estrategia.</p>
+                </div>
+                <div class="about-image">
+                    <div class="placeholder-image">✦ EQUIPO ✦</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" class="section-neon">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="glitch-title">// SERVICIOS</h2>
+                <p class="section-sub">Lo que podemos hacer por ti</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">01</div>
+                    <h3>DESARROLLO WEB</h3>
+                    <p>Sitios web modernos, rápidos y responsive con las últimas tecnologías.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">02</div>
+                    <h3>DISEÑO UI/UX</h3>
+                    <p>Interfaces intuitivas y atractivas que mejoran la experiencia de usuario.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">03</div>
+                    <h3>APPS MÓVILES</h3>
+                    <p>Aplicaciones nativas y multiplataforma de alto rendimiento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="proyectos" class="section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="glitch-title">// PROYECTOS</h2>
+                <p class="section-sub">Nuestros trabajos más recientes</p>
+            </div>
+            
+            <!-- Barra de herramientas -->
+            <div class="projects-toolbar">
+                <div class="search-box">
+                    <input type="text" id="projectSearch" placeholder="🔍 Buscar proyectos..." class="search-input">
+                </div>
+                <div class="view-controls">
+                    <button id="gridView" class="view-btn active" title="Vista cuadrícula">⊞</button>
+                    <button id="listView" class="view-btn" title="Vista lista">☰</button>
+                </div>
+                <div class="filter-controls">
+                    <select id="filterCategory" class="filter-select">
+                        <option value="all">Todas las categorías ▼</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Estadísticas -->
+            <div class="projects-stats" id="projectsStats"></div>
+            
+            <!-- Contenedor de proyectos -->
+            <div id="projectsContainer" class="projects-container grid-view"></div>
+            
+            <!-- Paginación -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="section-neon">
+        <div class="container">
+            <div class="contact-block">
+                <div class="section-header">
+                    <h2 class="glitch-title">// CONTACTO</h2>
+                    <p class="section-sub">Hablemos sobre tu proyecto</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3>¿Tienes una idea?</h3>
+                        <p>Cuéntanos qué necesitas y te responderemos lo antes posible.</p>
+                        <div class="contact-details">
+                            <p>📧 info@kr4n30.com</p>
+                            <p>📞 +34 900 000 000</p>
+                            <p>📍 Madrid, España</p>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contactForm" action="#" method="POST">
+                            <div class="form-group"><input type="text" placeholder="Nombre completo *" required></div>
+                            <div class="form-group"><input type="email" placeholder="Email *" required></div>
+                            <div class="form-group"><input type="tel" placeholder="Teléfono"></div>
+                            <div class="form-group"><textarea rows="4" placeholder="Cuéntanos sobre tu proyecto... *" required></textarea></div>
+                            <div class="form-group checkbox-group"><label><input type="checkbox" required> Acepto la política de privacidad</label></div>
+                            <button type="submit" class="btn-kr4n30 full-btn">⟡ ENVIAR MENSAJE ⟡</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo"><h3>✦ KR4N30 ✦</h3><p>Soluciones digitales con estilo</p></div>
+            <div class="footer-links">
+                <a href="#">Inicio</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#proyectos">Proyectos</a>
+                <a href="#contacto">Contacto</a>
+            </div>
+            <div class="footer-copyright"><p>© 2025 KR4N30. Todos los derechos reservados.</p></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Modal de proyecto -->
+<div id="projectModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/project-viewer.js"></script>
+</body>
+</html>

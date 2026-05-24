@@ -1,0 +1,165 @@
+[
+  {
+    "id": 1,
+    "title": "E-commerce Platform",
+    "category": "Web Development",
+    "description": "Plataforma de comercio electrónico completa con panel de administración, carrito de compras, pasarela de pagos y sistema de gestión de inventario. Desarrollada con tecnologías modernas para una experiencia de usuario óptima.",
+    "image": "https://images.unsplash.com/photo-1557821552-17105176677c?w=500&h=300&fit=crop",
+    "date": "2024-02-15",
+    "tags": [ "React", "Node.js", "MongoDB", "Express", "Stripe" ],
+    "features": [
+      "Autenticación de usuarios",
+      "Carrito de compras en tiempo real",
+      "Pasarela de pagos integrada",
+      "Panel de administración",
+      "Sistema de reseñas",
+      "Optimización SEO"
+    ],
+    "featured": true,
+    "link": "#"
+  },
+  {
+    "id": 2,
+    "title": "App de Fitness",
+    "category": "Mobile App",
+    "description": "Aplicación móvil para seguimiento de entrenamientos, nutrición y hábitos saludables. Incluye rutinas personalizadas, seguimiento de progreso y comunidad integrada.",
+    "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&h=300&fit=crop",
+    "date": "2024-01-20",
+    "tags": [ "React Native", "Firebase", "Redux", "Node.js" ],
+    "features": [
+      "Rutinas personalizadas",
+      "Seguimiento de progreso",
+      "Planificador de comidas",
+      "Chat comunitario",
+      "Sincronización con wearables"
+    ],
+    "featured": true,
+    "link": "#"
+  },
+  {
+    "id": 3,
+    "title": "Dashboard Analytics",
+    "category": "Data Visualization",
+    "description": "Panel de análisis de datos en tiempo real para empresas. Visualizaciones interactivas, reportes personalizables y predicciones basadas en IA.",
+    "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
+    "date": "2023-12-10",
+    "tags": [ "Vue.js", "D3.js", "Python", "FastAPI", "PostgreSQL" ],
+    "features": [
+      "Visualizaciones interactivas",
+      "Reportes exportables",
+      "Alertas en tiempo real",
+      "Predicciones IA",
+      "Múltiples fuentes de datos"
+    ],
+    "featured": false,
+    "link": "#"
+  },
+  {
+    "id": 4,
+    "title": "Plataforma Educativa",
+    "category": "Web Development",
+    "description": "Sistema de gestión de aprendizaje (LMS) con cursos online, videoconferencias, quizzes y certificaciones. Ideal para instituciones educativas y creadores de contenido.",
+    "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&h=300&fit=crop",
+    "date": "2023-11-05",
+    "tags": [ "Next.js", "TypeScript", "Prisma", "Tailwind", "WebRTC" ],
+    "features": [
+      "Cursos multimedia",
+      "Videoconferencias integradas",
+      "Sistema de evaluaciones",
+      "Certificaciones automáticas",
+      "Foros de discusión"
+    ],
+    "featured": true,
+    "link": "#"
+  },
+  {
+    "id": 5,
+    "title": "CRM para Pymes",
+    "category": "Software",
+    "description": "Sistema de gestión de relaciones con clientes diseñado para pequeñas y medianas empresas. Automatización de ventas, seguimiento de leads y análisis de datos.",
+    "image": "https://images.unsplash.com/photo-1552581234-26160f608093?w=500&h=300&fit=crop",
+    "date": "2023-10-18",
+    "tags": [ "Laravel", "Livewire", "MySQL", "Alpine.js" ],
+    "features": [
+      "Gestión de contactos",
+      "Pipeline de ventas",
+      "Automatización de email",
+      "Reportes avanzados",
+      "API REST"
+    ],
+    "featured": false,
+    "link": "#"
+  },
+  {
+    "id": 6,
+    "title": "Portfolio Fotográfico",
+    "category": "Design",
+    "description": "Portfolio interactivo para fotógrafo profesional con galerías dinámicas, lightbox, animaciones y optimización de imágenes para una experiencia visual impactante.",
+    "image": "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=500&h=300&fit=crop",
+    "date": "2023-09-22",
+    "tags": [ "HTML5", "CSS3", "JavaScript", "GSAP", "PHP" ],
+    "features": [
+      "Galerías dinámicas",
+      "Lightbox integrado",
+      "Animaciones suaves",
+      "Responsive design",
+      "Formulario de contacto"
+    ],
+    "featured": false,
+    "link": "#"
+  },
+  {
+    "id": 7,
+    "title": "IoT Smart Home",
+    "category": "IoT",
+    "description": "Sistema de domótica para controlar dispositivos del hogar de forma remota. Incluye aplicación móvil, panel web y asistentes de voz.",
+    "image": "https://images.unsplash.com/photo-1558002038-1055e2d28e34?w=500&h=300&fit=crop",
+    "date": "2023-08-14",
+    "tags": [ "Arduino", "Raspberry Pi", "MQTT", "React", "Node-RED" ],
+    "features": [
+      "Control remoto",
+      "Automatización programable",
+      "Consumo energético",
+      "Alertas personalizadas",
+      "Compatibilidad Alexa/Google"
+    ],
+    "featured": false,
+    "link": "#"
+  },
+  {
+    "id": 8,
+    "title": "Marketplace de NFTs",
+    "category": "Blockchain",
+    "description": "Plataforma descentralizada para crear, comprar y vender NFTs. Integración con wallets, subastas y mercado secundario.",
+    "image": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=500&h=300&fit=crop",
+    "date": "2023-07-30",
+    "tags": [ "Solidity", "Web3.js", "Ethereum", "IPFS", "Next.js" ],
+    "features": [
+      "Minting de NFTs",
+      "Subastas en tiempo real",
+      "Marketplace secundario",
+      "Verificación de propiedad",
+      "Comisiones automáticas"
+    ],
+    "featured": true,
+    "link": "#"
+  },
+  {
+    "id": 9,
+    "title": "App de Delivery",
+    "category": "Mobile App",
+    "description": "Aplicación de delivery con seguimiento en tiempo real, sistema de pagos, calificaciones y panel para repartidores y negocios.",
+    "image": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=500&h=300&fit=crop",
+    "date": "2023-06-25",
+    "tags": [ "Flutter", "Firebase", "Google Maps API", "Node.js" ],
+    "features": [
+      "Seguimiento GPS",
+      "Múltiples métodos de pago",
+      "Sistema de calificaciones",
+      "Panel para negocios",
+      "Push notifications"
+    ],
+    "featured": false,
+    "link": "#"
+  }
+]
