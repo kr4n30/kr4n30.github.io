@@ -1045,7 +1045,78 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+/* Header */
 
+.header-scrolled {
+    background: rgba(10,10,15,.98);
+    backdrop-filter: blur(12px);
+}
+
+/* Notificaciones */
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    z-index: 10000;
+    font-family: monospace;
+    font-weight: bold;
+    animation: slideIn .3s ease;
+    color: white;
+}
+
+.notification-success {
+    background: #10b981;
+}
+
+.notification-info {
+    background: #a855f7;
+}
+
+.notification.hide {
+    animation: slideOut .3s ease forwards;
+}
+
+/* Scroll animation */
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .5s ease, transform .5s ease;
+}
+
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+@keyframes slideIn {
+
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
 /* ===== TOUCH OPTIMIZATIONS ===== */
 @media (hover: none) and (pointer: coarse) {
     .btn-kr4n30:active,
