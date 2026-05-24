@@ -1,4 +1,4 @@
-// ========== KR4N30 PROJECT VIEWER - CON RUTA A ASSETS ==========
+// ========== KR4N30 PROJECT VIEWER - VERSIÓN CORREGIDA ==========
 
 class ProjectViewer {
     constructor() {
@@ -21,7 +21,7 @@ class ProjectViewer {
 
     async loadProjects() {
         try {
-            // Ruta corregida: busca projects.json en la carpeta assets
+            // Cargar desde assets/projects.json
             const response = await fetch('assets/projects.json');
             if (!response.ok) throw new Error('Error loading projects');
             this.projects = await response.json();
@@ -34,6 +34,7 @@ class ProjectViewer {
     }
 
     setupEventListeners() {
+        // Búsqueda
         const searchInput = document.getElementById('projectSearch');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -42,6 +43,7 @@ class ProjectViewer {
             });
         }
 
+        // Filtro de categoría
         const categoryFilter = document.getElementById('filterCategory');
         if (categoryFilter) {
             categoryFilter.addEventListener('change', (e) => {
@@ -50,13 +52,18 @@ class ProjectViewer {
             });
         }
 
+        // Vista grid/list
         const gridViewBtn = document.getElementById('gridView');
         const listViewBtn = document.getElementById('listView');
-        if (gridViewBtn && listViewBtn) {
+
+        if (gridViewBtn) {
             gridViewBtn.addEventListener('click', () => this.setView('grid'));
+        }
+        if (listViewBtn) {
             listViewBtn.addEventListener('click', () => this.setView('list'));
         }
 
+        // Modal
         const modal = document.getElementById('projectModal');
         const closeBtn = document.querySelector('.modal-close');
         if (modal && closeBtn) {
@@ -73,6 +80,8 @@ class ProjectViewer {
     }
 
     renderCategories() {
+        if (this.projects.length === 0) return;
+
         const categories = ['all', ...new Set(this.projects.map(p => p.category))];
         const categoryFilter = document.getElementById('filterCategory');
         if (!categoryFilter) return;
@@ -85,10 +94,12 @@ class ProjectViewer {
     }
 
     applyFilters() {
+        // Filtrar por categoría
         let filtered = this.currentCategory === 'all'
             ? [...this.projects]
             : this.projects.filter(p => p.category === this.currentCategory);
 
+        // Filtrar por búsqueda
         if (this.searchTerm) {
             filtered = filtered.filter(p =>
                 p.title.toLowerCase().includes(this.searchTerm) ||
@@ -98,6 +109,7 @@ class ProjectViewer {
             );
         }
 
+        // Ordenar por fecha (más reciente primero)
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         this.filteredProjects = filtered;
@@ -126,7 +138,7 @@ class ProjectViewer {
             return;
         }
 
-        const isGridView = !container.classList.contains('list-view');
+        const isGridView = container.classList.contains('grid-view');
 
         container.innerHTML = pageProjects.map(project => `
             <div class="project-card" data-project-id="${project.id}">
@@ -135,7 +147,7 @@ class ProjectViewer {
                     <img src="${project.image}" alt="${project.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250/1a0a2e/c084fc?text=KR4N30'">
                 </div>
                 <div class="project-info">
-                    <div class="project-category">${project.category}</div>
+                    <div class="project-category">${this.escapeHtml(project.category)}</div>
                     <h3 class="project-title">${this.escapeHtml(project.title)}</h3>
                     <p class="project-description">${this.escapeHtml(project.description.substring(0, 100))}${project.description.length > 100 ? '...' : ''}</p>
                     <div class="project-tech">
@@ -152,6 +164,7 @@ class ProjectViewer {
             </div>
         `).join('');
 
+        // Event listeners para botones "VER PROYECTO"
         document.querySelectorAll('.btn-view-project').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const projectId = parseInt(btn.dataset.projectId);
@@ -199,6 +212,7 @@ class ProjectViewer {
         paginationHTML += '</div>';
         paginationContainer.innerHTML = paginationHTML;
 
+        // Event listeners para paginación
         document.querySelectorAll('.pagination-btn, .pagination-number').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.disabled) return;
@@ -225,6 +239,8 @@ class ProjectViewer {
         const container = document.getElementById('projectsContainer');
         const gridBtn = document.getElementById('gridView');
         const listBtn = document.getElementById('listView');
+
+        if (!container) return;
 
         if (view === 'grid') {
             container.classList.remove('list-view');
@@ -259,7 +275,7 @@ class ProjectViewer {
                         <img src="${project.image}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/500x400/1a0a2e/c084fc?text=KR4N30'">
                     </div>
                     <div class="modal-info">
-                        <div class="modal-category">${project.category}</div>
+                        <div class="modal-category">${this.escapeHtml(project.category)}</div>
                         <h2>${this.escapeHtml(project.title)}</h2>
                         <div class="modal-year">📅 ${new Date(project.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}</div>
                         <p class="modal-description">${this.escapeHtml(project.description)}</p>
@@ -277,7 +293,7 @@ class ProjectViewer {
                                 </ul>
                             </div>
                         ` : ''}
-                        ${project.link ? `
+                        ${project.link && project.link !== '#' ? `
                             <a href="${project.link}" target="_blank" class="btn-kr4n30 modal-link">⟡ VISITAR PROYECTO ⟡</a>
                         ` : ''}
                     </div>
@@ -341,7 +357,64 @@ class ProjectViewer {
     }
 }
 
-// Inicializar
+// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.projectViewer = new ProjectViewer();
 });
+
+// Añadir estilos CSS para las animaciones si no existen
+if (!document.querySelector('#project-viewer-styles')) {
+    const style = document.createElement('style');
+    style.id = 'project-viewer-styles';
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .modal-link {
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .no-projects {
+            text-align: center;
+            padding: 3rem;
+            color: #b89eff;
+        }
+        
+        .no-projects-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            color: #b89eff;
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    `;
+    document.head.appendChild(style);
+}
