@@ -1,0 +1,119 @@
+﻿{
+    "meta": {
+        "title": "KR4N30 · Web | Software | Minecraft | Habbo",
+        "description": "KR4N30: Desarrollo web, software a medida, servidores Minecraft y Habbo Hotel.",
+        "og_title": "KR4N30 · Soluciones Digitales",
+        "og_description": "Desarrollo web, software a medida, servidores Minecraft y Habbo Hotel."
+    },
+    "nav": {
+        "home": "Inicio",
+        "services": "Servicios",
+        "portfolio": "Portfolio",
+        "contact": "Contacto"
+    },
+    "hero": {
+        "badge": "¿QUÉ HACEMOS?",
+        "title": "KR4N30 STUDIO",
+        "description": "Creamos soluciones digitales que funcionan.<br>Web, Software, Minecraft y Habbo para hacer crecer tu negocio.",
+        "btn_services": "Explorar servicios",
+        "btn_contact": "Contactar ahora"
+    },
+    "stats": {
+        "projects": "Proyectos",
+        "clients": "Clientes",
+        "tech": "Tecnologías"
+    },
+    "services": {
+        "tag": "★ NUESTROS SERVICIOS",
+        "title": "Soluciones",
+        "title_gradient": "digitales",
+        "subtitle": "Tecnología de punta adaptada a tus necesidades específicas",
+        "items": [{
+                "icon": "🌐",
+                "title": "Desarrollo Web",
+                "desc": "Páginas web, tiendas online, SEO, hosting y mantenimiento profesional."
+            },
+            {
+                "icon": "⚙️",
+                "title": "Software a Medida",
+                "desc": "Aplicaciones empresariales, automatización y herramientas personalizadas."
+            },
+            {
+                "icon": "📱",
+                "title": "Apps Móviles",
+                "desc": "Aplicaciones Android e iOS modernas, escalables y nativas."
+            },
+            {
+                "icon": "⛏️",
+                "title": "Minecraft",
+                "desc": "Plugins, servidores premium, sistemas personalizados y desarrollo gaming."
+            },
+            {
+                "icon": "🏨",
+                "title": "Habbo",
+                "desc": "CMS, emuladores optimizados, catálogos y desarrollo para comunidades retro."
+            }
+        ]
+    },
+    "portfolio": {
+        "tag": "✦ PROYECTOS DESTACADOS",
+        "title": "Nuestro",
+        "title_gradient": "trabajo",
+        "subtitle": "Casos reales que demuestran nuestra calidad",
+        "filter_all": "Todos",
+        "search_placeholder": "🔍 Buscar proyecto..."
+    },
+    "contact": {
+        "tag": "✦ CONTACTO",
+        "title": "¿Hablamos de tu",
+        "title_gradient": "proyecto",
+        "subtitle": "Cuéntanos tu idea y te ayudaremos a hacerla realidad. Te respondemos en menos de 24h.",
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "instagram": "Instagram",
+        "name_label": "Nombre completo",
+        "email_label": "Correo electrónico",
+        "subject_label": "Asunto",
+        "message_label": "Mensaje",
+        "send_btn": "Enviar mensaje",
+        "sending": "Enviando...",
+        "success": "✓ Mensaje enviado correctamente"
+    },
+    "footer": {
+        "copyright": "© 2026 KR4N30 · Soluciones digitales de vanguardia"
+    },
+    "modal": {
+        "client": "CLIENTE",
+        "duration": "DURACIÓN",
+        "role": "ROL",
+        "status": "ESTADO",
+        "year": "AÑO",
+        "description": "Descripción",
+        "technologies": "Tecnologías utilizadas",
+        "features": "Características principales",
+        "demo_btn": "Ver demo",
+        "github_btn": "Código fuente"
+    },
+    "projects": {
+        "web_builder": {
+            "title": "KR4N30 Web Builder",
+            "description": "Constructor visual de páginas web con editor drag & drop, plantillas profesionales y hosting incluido.",
+            "fullDescription": "Plataforma completa que permite crear páginas web profesionales sin conocimientos técnicos. Incluye más de 50 plantillas, editor visual, SEO optimizado, analytics y certificado SSL gratuito."
+        },
+        "minecore": {
+            "title": "MineCore",
+            "description": "Núcleo de servidor Minecraft con sistema de rangos, economía, clanes y minijuegos personalizados.",
+            "fullDescription": "Solución completa para servidores Minecraft que incluye sistema de rangos, economía avanzada, clanes personalizables, minijuegos exclusivos, eventos automáticos y panel de administración web."
+        },
+        "habbocms": {
+            "title": "HabboCMS X",
+            "description": "CMS moderno para Habbo Hotel con panel de administración y sistema de noticias.",
+            "fullDescription": "Content Management System completo para comunidades de Habbo Hotel. Incluye sistema de noticias, tienda de rangos, estadísticas de usuarios, moderación integrada y diseño responsive."
+        },
+        "ticket_system": {
+            "title": "Panel de Tickets Pro",
+            "description": "Sistema avanzado de tickets de soporte con automatizaciones y SLA.",
+            "fullDescription": "Plataforma de gestión de tickets para empresas con priorización automática, SLA, integración con Discord/Telegram, reportes analíticos y API REST."
+        }
+    }
+}

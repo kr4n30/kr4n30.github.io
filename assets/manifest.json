@@ -1,0 +1,20 @@
+{
+    "name": "KR4N30 Studio",
+    "short_name": "KR4N30",
+    "description": "Desarrollo web, software a medida, servidores Minecraft y Habbo Hotel",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#007BFF",
+    "background_color": "#0a0a0f",
+    "icons": [{
+            "src": "assets/images/android-icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/android-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

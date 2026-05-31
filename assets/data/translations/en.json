@@ -1,0 +1,110 @@
+﻿{
+  "meta": {
+    "title": "KR4N30 · Web | Software | Minecraft | Habbo",
+    "description": "KR4N30: Web development, custom software, Minecraft servers and Habbo Hotel. Professional digital solutions.",
+    "og_title": "KR4N30 · Digital Solutions",
+    "og_description": "Web development, custom software, Minecraft servers and Habbo Hotel."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "WHAT WE DO?",
+    "title": "KR4N30 STUDIO",
+    "description": "We create digital solutions that work.<br>Web, Software, Minecraft and Habbo to grow your business.",
+    "btn_services": "Explore services",
+    "btn_contact": "Contact now"
+  },
+  "stats": {
+    "projects": "Projects",
+    "clients": "Clients",
+    "tech": "Technologies"
+  },
+  "services": {
+    "tag": "★ OUR SERVICES",
+    "title": "Complete",
+    "title_gradient": "digital",
+    "subtitle": "Cutting-edge technology tailored to your specific needs",
+    "items": [
+      { "icon": "🌐", "title": "Web Development", "desc": "Websites, online stores, SEO, hosting and professional maintenance." },
+      { "icon": "⚙️", "title": "Custom Software", "desc": "Business applications, automation and personalized tools." },
+      { "icon": "📱", "title": "Mobile Apps", "desc": "Modern, scalable and native Android and iOS applications." },
+      { "icon": "⛏️", "title": "Minecraft", "desc": "Plugins, premium servers, custom systems and gaming development." },
+      { "icon": "🏨", "title": "Habbo", "desc": "CMS, optimized emulators, catalogs and retro community development." }
+    ]
+  },
+  "portfolio": {
+    "tag": "✦ FEATURED PROJECTS",
+    "title": "Our",
+    "title_gradient": "work",
+    "subtitle": "Real cases that demonstrate our quality",
+    "filter_all": "All",
+    "search_placeholder": "🔍 Search project..."
+  },
+  "contact": {
+    "tag": "✦ CONTACT",
+    "title": "Talk about your",
+    "title_gradient": "project",
+    "subtitle": "Tell us your idea and we will help you make it happen. We'll respond within 24 hours.",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "name_label": "Full name",
+    "email_label": "Email address",
+    "subject_label": "Subject",
+    "message_label": "Message",
+    "send_btn": "Send message",
+    "sending": "Sending...",
+    "success": "✓ Message sent successfully"
+  },
+  "footer": {
+    "copyright": "© 2026 KR4N30 · Cutting-edge digital solutions"
+  },
+  "modal": {
+    "client": "CLIENT",
+    "duration": "DURATION",
+    "role": "ROLE",
+    "status": "STATUS",
+    "year": "YEAR",
+    "description": "Description",
+    "technologies": "Technologies used",
+    "features": "Main features",
+    "demo_btn": "Live demo",
+    "github_btn": "Source code"
+  },
+  "projects": {
+    "web_builder": {
+      "title": "KR4N30 Web Builder",
+      "description": "Visual website builder with drag & drop editor, professional templates and hosting included.",
+      "fullDescription": "Complete platform that allows creating professional websites without technical knowledge. Includes over 50 templates, visual editor, optimized SEO, analytics and free SSL certificate."
+    },
+    "minecore": {
+      "title": "MineCore",
+      "description": "Minecraft server core with rank system, economy, clans and custom minigames.",
+      "fullDescription": "Complete solution for Minecraft servers including rank system, advanced economy, customizable clans, exclusive minigames, automatic events and web administration panel."
+    },
+    "habbocms": {
+      "title": "HabboCMS X",
+      "description": "Modern CMS for Habbo Hotel with admin panel and news system.",
+      "fullDescription": "Complete Content Management System for Habbo Hotel communities. Includes news system, rank store, user statistics, integrated moderation and responsive design."
+    },
+    "ticket_system": {
+      "title": "Pro Ticket System",
+      "description": "Advanced support ticket system with automations and SLA.",
+      "fullDescription": "Ticket management platform for businesses with automatic prioritization, SLA, Discord/Telegram integration, analytics reports and REST API."
+    },
+    "discord_bot": {
+      "title": "Premium Discord Bot",
+      "description": "Discord bot with economy, moderation, music and level system.",
+      "fullDescription": "Multi-purpose Discord bot with over 100 commands, virtual economy system, high-quality music, advanced moderation, activity levels and web dashboard."
+    },
+    "survival_server": {
+      "title": "Survival Pro Server",
+      "description": "Minecraft Survival server with quest system, clans and advanced economy.",
+      "fullDescription": "Renewed Survival experience with daily quests, competitive clans, advanced economy, auctions, automatic events and land protection."
+    }
+  }
+}
