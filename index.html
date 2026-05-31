@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="scroll-behavior: smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -10,27 +10,73 @@
     <meta name="author" content="KR4N30 Studio">
     <meta name="robots" content="index, follow">
 
+    <!-- Preload para mejorar LCP -->
+    <link rel="preload" as="image" href="assets/images/logo.png">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" as="style">
+
     <!-- Canonical URL / Alternates para SEO multilingüe -->
-    <link rel="canonical" href="https://kr4n30.com/es">
-    <link rel="alternate" hreflang="es" href="https://kr4n30.com/es">
-    <link rel="alternate" hreflang="en" href="https://kr4n30.com/en">
-    <link rel="alternate" hreflang="x-default" href="https://kr4n30.com/es">
+    <link rel="canonical" href="https://kr4n30.github.io/es">
+    <link rel="alternate" hreflang="es" href="https://kr4n30.github.io/es">
+    <link rel="alternate" hreflang="en" href="https://kr4n30.github.io/en">
+    <link rel="alternate" hreflang="x-default" href="https://kr4n30.github.io/es">
 
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <!-- Open Graph -->
+    <!-- Open Graph (completo) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="KR4N30 · Soluciones Digitales">
     <meta property="og:description" content="Desarrollo web, software a medida, servidores Minecraft y Habbo Hotel.">
-    <meta property="og:image" content="assets/images/logo.png">
-    <meta property="og:url" content="https://kr4n30.com">
+    <meta property="og:image" content="https://kr4n30.github.io/assets/images/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://kr4n30.github.io">
+    <meta property="og:site_name" content="KR4N30 Studio">
 
-    <!-- Twitter Cards -->
+    <!-- Twitter Cards (completo) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="KR4N30 · Soluciones Digitales">
     <meta name="twitter:description" content="Web | Software | Minecraft | Habbo">
+    <meta name="twitter:image" content="https://kr4n30.github.io/assets/images/logo.png">
+    <meta name="twitter:site" content="@kr4n30">
+
+    <!-- Structured Data (Schema.org) - MUY IMPORTANTE para SEO -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "KR4N30",
+            "url": "https://kr4n30.github.io",
+            "logo": "https://kr4n30.github.io/assets/images/logo.png",
+            "description": "Desarrollo web, software a medida, servidores Minecraft y Habbo Hotel. Soluciones digitales profesionales.",
+            "sameAs": [
+                "https://github.com/kr4n30",
+                "https://www.linkedin.com/company/kr4n30",
+                "https://www.instagram.com/kr4n30",
+                "https://twitter.com/kr4n30"
+            ],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "info@kr4n30.com",
+                "contactType": "customer service"
+            }
+        }
+    </script>
+
+    <!-- Theme persist (evita flash blanco) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
@@ -59,12 +105,15 @@
 </head>
 
 <body>
+    <!-- Skip Link para accesibilidad -->
+    <a href="#inicio" class="skip-link">Saltar al contenido</a>
+
     <div class="noise-overlay"></div>
 
     <!-- Header con selector de idioma personalizado con banderas SVG -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Menú principal">
         <div class="nav-container">
-            <a href="#inicio" class="logo">
+            <a href="#inicio" class="logo" aria-label="KR4N30 - Inicio">
                 <img src="assets/images/logo.png" alt="KR4N30 Logo" class="logo-img">
             </a>
             <div class="nav-links" id="navLinks">
@@ -79,29 +128,29 @@
                     <button type="button" class="lang-btn" id="langBtn" aria-label="Seleccionar idioma">
                         <img src="assets/images/flags/es.svg" alt="Español" class="lang-flag" id="currentFlag">
                         <span class="lang-text" id="currentLangText">ES</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
                     </button>
                     <div class="lang-dropdown" id="langDropdown">
-                        <button type="button" class="lang-option" data-lang="es">
+                        <button type="button" class="lang-option" data-lang="es" aria-label="Español">
                             <img src="assets/images/flags/es.svg" alt="Español" class="lang-flag">
                             <span>Español</span>
                         </button>
-                        <button type="button" class="lang-option" data-lang="en">
+                        <button type="button" class="lang-option" data-lang="en" aria-label="English">
                             <img src="assets/images/flags/gb.svg" alt="English" class="lang-flag">
                             <span>English</span>
                         </button>
                     </div>
                 </div>
                 <!-- Selector oculto para mantener compatibilidad con i18n.js -->
-                <select id="languageSwitcher" style="display: none;">
+                <select id="languageSwitcher" style="display: none;" aria-label="Idioma">
                     <option value="es">ES</option>
                     <option value="en">EN</option>
                 </select>
-                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
-                    <i class="fas fa-moon"></i>
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Cambiar tema oscuro/claro">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="menu-toggle" id="menuToggle" aria-label="Menú">
-                    <i class="fas fa-bars"></i>
+                <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -130,25 +179,25 @@
                 <div class="hero-buttons">
                     <button type="button" class="btn-primary" id="exploreBtn">
                         <span class="btn-text" data-i18n="hero.btn_services">Explorar servicios</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                     <button type="button" class="btn-outline" id="contactBtn">
                         <span class="btn-text" data-i18n="hero.btn_contact">Contactar ahora</span>
-                        <i class="fas fa-comment"></i>
+                        <i class="fas fa-comment" aria-hidden="true"></i>
                     </button>
                 </div>
 
                 <div class="hero-stats" id="heroStats">
                     <div class="stat-item">
-                        <span class="stat-number" id="stat-projects">0</span>
+                        <span class="stat-number" id="stat-projects" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.projects">Proyectos</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number" id="stat-clients">0</span>
+                        <span class="stat-number" id="stat-clients" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.clients">Clientes</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number" id="stat-tech">0</span>
+                        <span class="stat-number" id="stat-tech" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.tech">Tecnologías</span>
                     </div>
                 </div>
@@ -187,7 +236,7 @@
             <div class="portfolio-controls">
                 <div class="portfolio-filters" id="portfolioFilters"></div>
                 <div class="portfolio-search">
-                    <input type="text" id="projectSearch" placeholder="🔍 Buscar proyecto...">
+                    <input type="text" id="projectSearch" placeholder="🔍 Buscar proyecto..." data-i18n="portfolio.search_placeholder">
                 </div>
             </div>
 
@@ -201,13 +250,13 @@
     </section>
 
     <!-- Modal -->
-    <div class="project-modal" id="projectModal" role="dialog" aria-modal="true">
+    <div class="project-modal" id="projectModal" role="dialog" aria-modal="true" aria-label="Detalles del proyecto">
         <div class="modal-overlay"></div>
         <div class="modal-container">
-            <button type="button" class="modal-close" id="modalClose">&times;</button>
+            <button type="button" class="modal-close" id="modalClose" aria-label="Cerrar modal">&times;</button>
             <div class="modal-nav">
-                <button type="button" class="modal-prev" id="modalPrev">‹</button>
-                <button type="button" class="modal-next" id="modalNext">›</button>
+                <button type="button" class="modal-prev" id="modalPrev" aria-label="Proyecto anterior">‹</button>
+                <button type="button" class="modal-next" id="modalNext" aria-label="Proyecto siguiente">›</button>
             </div>
             <div class="modal-content" id="modalContent"></div>
         </div>
@@ -223,29 +272,41 @@
                     <p data-i18n="contact.subtitle">Cuéntanos tu idea y te ayudaremos a hacerla realidad. Te respondemos en menos de 24h.</p>
                     <div class="contact-methods">
                         <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
                             <div><strong data-i18n="contact.email">Email</strong><a id="emailLink">cargando...</a></div>
                         </div>
                         <div class="contact-method">
-                            <i class="fab fa-whatsapp"></i>
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
                             <div><strong data-i18n="contact.whatsapp">WhatsApp</strong><span>+34 600 000 000</span></div>
                         </div>
                         <div class="contact-method">
-                            <i class="fab fa-instagram"></i>
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
                             <div><strong data-i18n="contact.instagram">Instagram</strong><span>@kr4n30</span></div>
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group"><label for="name" data-i18n="contact.name_label">Nombre completo</label><input type="text" id="name" required></div>
-                    <div class="form-group"><label for="email" data-i18n="contact.email_label">Correo electrónico</label><input type="email" id="email" required></div>
-                    <div class="form-group"><label for="subject" data-i18n="contact.subject_label">Asunto</label><input type="text" id="subject"></div>
-                    <div class="form-group"><label for="message" data-i18n="contact.message_label">Mensaje</label><textarea id="message" rows="5" required></textarea></div>
+                <form class="contact-form" id="contactForm" aria-label="Formulario de contacto">
+                    <div class="form-group">
+                        <label for="name" data-i18n="contact.name_label">Nombre completo</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-i18n="contact.email_label">Correo electrónico</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" data-i18n="contact.subject_label">Asunto</label>
+                        <input type="text" id="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-i18n="contact.message_label">Mensaje</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
                     <button type="submit" class="btn-primary btn-block">
                         <span class="btn-text" data-i18n="contact.send_btn">Enviar mensaje</span>
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
                     </button>
-                    <div id="formStatus" class="form-status"></div>
+                    <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
                 </form>
             </div>
         </div>
@@ -255,15 +316,27 @@
         <div class="footer-content">
             <p data-i18n="footer.copyright">© 2026 KR4N30 · Soluciones digitales de vanguardia</p>
             <div class="social-icons">
-                <i class="fab fa-github"></i><i class="fab fa-linkedin"></i>
-                <i class="fab fa-instagram"></i><i class="fab fa-twitter"></i>
+                <a href="https://github.com/kr4n30" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/kr4n30" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.instagram.com/kr4n30" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+                <a href="https://twitter.com/kr4n30" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </footer>
 
-    <button type="button" class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+    <button type="button" class="scroll-top" id="scrollTop" aria-label="Volver arriba">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
 
-    <!-- Scripts externos - SOLO UN VEZ -->
+    <!-- Scripts externos -->
     <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/script.js" defer></script>
     <script src="assets/js/projects.js" defer></script>
