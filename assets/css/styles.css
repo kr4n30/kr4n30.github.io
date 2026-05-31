@@ -1278,47 +1278,43 @@ footer {
         max-width: 1500px;
     }
 }
-/* Galería de imágenes en modal */
-.modal-gallery {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 1rem 0;
-    margin: 1rem 0;
-    scroll-snap-type: x mandatory;
+/* Botón Ver más en tarjetas de proyectos */
+.project-view-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.modal-gallery-img {
-    width: 100%;
-    max-width: 300px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 12px;
-    scroll-snap-align: start;
-    border: 1px solid var(--border-glow);
-}
+    .project-view-more:hover {
+        background: var(--primary);
+        color: #fff;
+        transform: translateX(5px);
+    }
 
-.modal-gallery::-webkit-scrollbar {
-    height: 6px;
-}
+    .project-view-more i {
+        font-size: 0.7rem;
+        transition: transform 0.3s ease;
+    }
 
-.modal-gallery::-webkit-scrollbar-track {
-    background: var(--primary-10);
-    border-radius: 10px;
-}
+    .project-view-more:hover i {
+        transform: translateX(3px);
+    }
 
-.modal-gallery::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 10px;
-}
-
-.modal-info {
-    flex: 1;
-}
-
+/* Ajuste responsive */
 @media (max-width: 768px) {
-    .modal-gallery-img {
-        max-width: 250px;
-        height: 160px;
+    .project-view-more {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
     }
 }
