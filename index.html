@@ -41,7 +41,7 @@
     <meta name="twitter:image" content="https://kr4n30.github.io/assets/images/logo.png">
     <meta name="twitter:site" content="@kr4n30">
 
-    <!-- Structured Data (Schema.org) - MUY IMPORTANTE para SEO -->
+    <!-- Structured Data (Schema.org) -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -110,7 +110,7 @@
 
     <div class="noise-overlay"></div>
 
-    <!-- Header con selector de idioma personalizado con banderas SVG -->
+    <!-- Header con selector de idioma (sin theme toggle) -->
     <nav class="navbar" role="navigation" aria-label="Menú principal">
         <div class="nav-container">
             <a href="#inicio" class="logo" aria-label="KR4N30 - Inicio">
@@ -146,9 +146,7 @@
                     <option value="es">ES</option>
                     <option value="en">EN</option>
                 </select>
-                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Cambiar tema oscuro/claro">
-                    <i class="fas fa-moon" aria-hidden="true"></i>
-                </button>
+                <!-- Botón del menú hamburguesa -->
                 <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
                     <i class="fas fa-bars" aria-hidden="true"></i>
                 </button>
@@ -156,49 +154,71 @@
         </div>
     </nav>
 
+    <!-- Theme Toggle Flotante (esquina inferior derecha) -->
+    <button type="button" class="theme-toggle-floating" id="themeToggle" aria-label="Cambiar tema oscuro/claro">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+        <span class="theme-tooltip">Cambiar tema</span>
+    </button>
+
     <!-- Hero Section -->
     <section id="inicio" class="hero">
         <div class="hero-bg"></div>
         <div class="container hero-container">
             <div class="hero-content">
+                <!-- Badge animado más elegante -->
                 <div class="hero-badge">
                     <span class="badge-pulse"></span>
                     <span data-i18n="hero.badge">¿QUÉ HACEMOS?</span>
+                    <span class="badge-glow"></span>
                 </div>
 
+                <!-- Logo con efecto premium -->
                 <div class="hero-logo-wrapper">
                     <div class="glitch-logo">
                         <img src="assets/images/logo.png" alt="KR4N30" class="hero-logo-img">
+                        <div class="logo-aurora"></div>
                     </div>
                 </div>
 
+                <!-- Descripción con gradiente animado -->
                 <p class="hero-description" data-i18n="hero.description">
-                    Creamos soluciones digitales que funcionan.<br> Web, Software, Minecraft y Habbo para hacer crecer tu negocio.
+                    <span class="gradient-text-animated">Creamos soluciones digitales</span> que funcionan.<br>
+                    Web, Software, Minecraft y Habbo para hacer crecer tu negocio.
                 </p>
 
+                <!-- Botones con efecto magnético -->
                 <div class="hero-buttons">
-                    <button type="button" class="btn-primary" id="exploreBtn">
+                    <button type="button" class="btn-primary magnetic" id="exploreBtn">
                         <span class="btn-text" data-i18n="hero.btn_services">Explorar servicios</span>
                         <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        <span class="btn-glow"></span>
                     </button>
-                    <button type="button" class="btn-outline" id="contactBtn">
+                    <button type="button" class="btn-outline magnetic" id="contactBtn">
                         <span class="btn-text" data-i18n="hero.btn_contact">Contactar ahora</span>
                         <i class="fas fa-comment" aria-hidden="true"></i>
+                        <span class="btn-glow"></span>
                     </button>
                 </div>
 
+                <!-- Stats con diseño premium -->
                 <div class="hero-stats" id="heroStats">
                     <div class="stat-item">
+                        <div class="stat-icon">🚀</div>
                         <span class="stat-number" id="stat-projects" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.projects">Proyectos</span>
+                        <div class="stat-progress"></div>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-icon">🤝</div>
                         <span class="stat-number" id="stat-clients" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.clients">Clientes</span>
+                        <div class="stat-progress"></div>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-icon">⚡</div>
                         <span class="stat-number" id="stat-tech" aria-live="polite">0</span>
                         <span class="stat-label" data-i18n="stats.tech">Tecnologías</span>
+                        <div class="stat-progress"></div>
                     </div>
                 </div>
             </div>

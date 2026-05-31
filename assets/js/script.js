@@ -144,7 +144,112 @@ function setupEmail() {
     emailLink.href = 'mailto:info@kr4n30.com';
     emailLink.textContent = 'info@kr4n30.com';
 }
+// ============================================
+// EFECTO MAGNÉTICO EN BOTONES
+// ============================================
 
+function setupMagneticEffect() {
+    const magneticBtns = document.querySelectorAll('.magnetic');
+
+    magneticBtns.forEach(btn => {
+        btn.addEventListener('mousemove', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Efecto magnético (desplazamiento)
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const moveX = (x - centerX) * 0.15;
+            const moveY = (y - centerY) * 0.15;
+
+            this.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+            // Actualizar posición del glow
+            const glow = this.querySelector('.btn-glow');
+            if (glow) {
+                glow.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+                glow.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+            }
+        });
+
+        btn.addEventListener('mouseleave', function () {
+            this.style.transform = 'translate(0, 0)';
+        });
+    });
+}
+
+// Efecto de brillo en badge
+function setupBadgeGlow() {
+    const badge = document.querySelector('.hero-badge');
+    if (badge) {
+        badge.addEventListener('mousemove', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const glow = this.querySelector('.badge-glow');
+            if (glow) {
+                glow.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+                glow.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+            }
+        });
+    }
+}
+
+// Contador animado con easing
+function animateCounterEasing(element, target, duration = 2000) {
+    if (!element) return;
+    const start = performance.now();
+    const startValue = parseInt(element.textContent) || 0;
+
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+        const current = Math.floor(startValue + (target - startValue) * eased);
+        element.textContent = current;
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+function init() {
+    setupScrollOptimized();
+    setupTheme();
+    setupContactForm();
+    setupSmoothScroll();
+    setupMobileMenu();
+    setupEmail();
+    setupPremiumEffects(); // <-- NUEVA LÍNEA
+    console.log('🚀 KR4N30 v13.0 Inicializado correctamente');
+}
+
+// Integrar con la inicialización existente
+// Agrega esta línea dentro de tu función init() existente:
+// setupPremiumEffects();
+
+// Actualizar stats observer para usar el nuevo easing
+function setupStatsObserver() {
+    const statsSection = document.getElementById('heroStats');
+    if (!statsSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting && PROJECTS_DATA) {
+                const projectsCount = getProjectsArray().length;
+                animateCounterEasing(document.getElementById('stat-projects'), projectsCount);
+                observer.disconnect();
+            }
+        });
+    }, { threshold: 0.3 });
+    observer.observe(statsSection);
+}
 const KR4N30 = (() => {
     function init() {
         setupScrollOptimized();
