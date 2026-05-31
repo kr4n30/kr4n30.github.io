@@ -1,10 +1,20 @@
 ﻿// ============================================
-// KR4N30 v12.0 - SCRIPT PRINCIPAL
-// SOLO funciones de UI general (tema, scroll, formulario)
+// KR4N30 v13.0 - SCRIPT PRINCIPAL PROFESIONAL
+// UI GENERAL + STATE SYSTEM + OPTIMIZACIÓN
 // ============================================
 
-var APP_CONFIG = {
+const APP_CONFIG = {
     SCROLL_TOP_OFFSET: 80
+};
+
+// ============================================
+// STATE SYSTEM (BASE PARA ESCALAR)
+// ============================================
+
+const state = {
+    theme: 'light',
+    menuOpen: false,
+    sendingForm: false
 };
 
 // ============================================
@@ -12,146 +22,204 @@ var APP_CONFIG = {
 // ============================================
 
 function setupScrollOptimized() {
-    var scrollTop = document.getElementById('scrollTop');
+    const scrollTop = document.getElementById('scrollTop');
     if (!scrollTop) return;
-    var ticking = false;
-    window.addEventListener('scroll', function() {
-        if (ticking) return;
-        requestAnimationFrame(function() {
-            if (window.scrollY > 500) {
-                scrollTop.classList.add('show');
-            } else {
-                scrollTop.classList.remove('show');
-            }
-            ticking = false;
-        });
-        ticking = true;
-    });
-    scrollTop.addEventListener('click', function() {
+
+    const onScroll = () => {
+        scrollTop.classList.toggle('show', window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', () => requestAnimationFrame(onScroll));
+
+    scrollTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
 // ============================================
-// TEMA OSCURO/CLARO
+// TEMA OSCURO/CLARO (ROBUSTO CON PERSISTENCIA)
 // ============================================
 
 function setupTheme() {
-    var getPreferredTheme = function() {
-        var saved = localStorage.getItem('theme');
-        if (saved) return saved;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const saved = localStorage.getItem('theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    const initialTheme = saved || (systemDark ? 'dark' : 'light');
+
+    const applyTheme = (theme) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        state.theme = theme;
     };
-    document.documentElement.setAttribute('data-theme', getPreferredTheme());
-    var themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            var current = document.documentElement.getAttribute('data-theme');
-            var newTheme = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+
+    applyTheme(initialTheme);
+
+    const btn = document.getElementById('themeToggle');
+
+    if (btn) {
+        btn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            applyTheme(current === 'dark' ? 'light' : 'dark');
         });
     }
 }
 
 // ============================================
-// FORMULARIO DE CONTACTO
+// FORMULARIO (UX MEJORADO + ANTI SPAM BÁSICO)
 // ============================================
 
 function setupContactForm() {
-    var form = document.getElementById('contactForm');
+    const form = document.getElementById('contactForm');
     if (!form) return;
-    form.addEventListener('submit', async function(e) {
+
+    const btn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        var btn = form.querySelector('button[type="submit"]');
-        var orig = btn.innerHTML;
-        var sendingText = (window.t && window.t('contact.sending')) || 'Enviando...';
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + sendingText;
-        setTimeout(function() {
-            var successText = (window.t && window.t('contact.success')) || '✓ Mensaje enviado correctamente';
-            var formStatus = document.getElementById('formStatus');
-            if (formStatus) {
-                formStatus.innerHTML = '<span style="color:#007BFF">' + successText + '</span>';
+
+        if (state.sendingForm) return;
+        state.sendingForm = true;
+
+        const originalHTML = btn.innerHTML;
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+        try {
+            // Simulación (aquí luego conectas API real)
+            await new Promise(r => setTimeout(r, 1000));
+
+            const status = document.getElementById('formStatus');
+
+            if (status) {
+                status.innerHTML = '✓ Mensaje enviado correctamente';
+                status.style.color = '#007BFF';
             }
+
             form.reset();
-            btn.innerHTML = orig;
-            setTimeout(function() {
-                if (formStatus) formStatus.innerHTML = '';
+
+            setTimeout(() => {
+                if (status) status.innerHTML = '';
             }, 3000);
-        }, 1000);
+
+        } catch (err) {
+            console.error('Error formulario:', err);
+            const status = document.getElementById('formStatus');
+            if (status) {
+                status.innerHTML = '✗ Error al enviar. Intenta de nuevo.';
+                status.style.color = '#ff4444';
+                setTimeout(() => {
+                    if (status) status.innerHTML = '';
+                }, 3000);
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+            state.sendingForm = false;
+        }
     });
 }
 
 // ============================================
-// SCROLL SUAVE
+// SMOOTH SCROLL CORREGIDO (CON getBoundingClientRect)
 // ============================================
 
 function setupSmoothScroll() {
-    function smoothScroll(target) {
-        var element = document.querySelector(target);
-        if (element) {
-            window.scrollTo({ top: element.offsetTop - APP_CONFIG.SCROLL_TOP_OFFSET, behavior: 'smooth' });
-        }
+    const smoothScroll = (target) => {
+        const element = document.querySelector(target);
+        if (!element) return;
+
+        const y = element.getBoundingClientRect().top +
+            window.pageYOffset -
+            APP_CONFIG.SCROLL_TOP_OFFSET;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
+    const exploreBtn = document.getElementById('exploreBtn');
+    const contactBtn = document.getElementById('contactBtn');
+
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', () => smoothScroll('#servicios'));
     }
-    var exploreBtn = document.getElementById('exploreBtn');
-    if (exploreBtn) exploreBtn.addEventListener('click', function() { smoothScroll('#servicios'); });
-    var contactBtn = document.getElementById('contactBtn');
-    if (contactBtn) contactBtn.addEventListener('click', function() { smoothScroll('#contacto'); });
-    var navLinks = document.querySelectorAll('.nav-link');
-    for (var i = 0; i < navLinks.length; i++) {
-        var link = navLinks[i];
-        link.addEventListener('click', function(e) {
+
+    if (contactBtn) {
+        contactBtn.addEventListener('click', () => smoothScroll('#contacto'));
+    }
+
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            smoothScroll(this.getAttribute('href'));
+            smoothScroll(link.getAttribute('href'));
         });
-    }
+    });
 }
 
 // ============================================
-// MENÚ HAMBURGUESA
+// MENÚ HAMBURGUESA (ACCESIBLE)
 // ============================================
 
 function setupMobileMenu() {
-    var menuToggle = document.getElementById('menuToggle');
-    var navLinks = document.getElementById('navLinks');
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (!menuToggle || !navLinks) return;
+
+    menuToggle.setAttribute('aria-controls', 'navLinks');
+
+    menuToggle.addEventListener('click', () => {
+        state.menuOpen = !state.menuOpen;
+
+        navLinks.classList.toggle('active', state.menuOpen);
+        menuToggle.setAttribute('aria-expanded', state.menuOpen);
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            state.menuOpen = false;
+            navLinks.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
         });
-        var links = document.querySelectorAll('.nav-link');
-        for (var i = 0; i < links.length; i++) {
-            links[i].addEventListener('click', function() {
-                navLinks.classList.remove('active');
-            });
-        }
-    }
+    });
 }
 
 // ============================================
-// EMAIL PROTEGIDO
+// EMAIL PROTEGIDO (ANTI-SCRAPING)
 // ============================================
 
 function setupEmail() {
-    var emailLink = document.getElementById('emailLink');
-    if (emailLink) {
-        emailLink.href = 'mailto:info@kr4n30.com';
-        emailLink.textContent = 'info@kr4n30.com';
+    const emailLink = document.getElementById('emailLink');
+    if (!emailLink) return;
+
+    const user = 'info';
+    const domain = 'kr4n30.com';
+
+    const email = `${user}@${domain}`;
+
+    emailLink.href = `mailto:${email}`;
+    emailLink.textContent = email;
+}
+
+// ============================================
+// INICIALIZACIÓN (MÓDULO PRINCIPAL)
+// ============================================
+
+const KR4N30 = (() => {
+    function init() {
+        setupScrollOptimized();
+        setupTheme();
+        setupContactForm();
+        setupSmoothScroll();
+        setupMobileMenu();
+        setupEmail();
+
+        console.log('🚀 KR4N30 v13.0 Inicializado correctamente');
     }
-}
 
-// ============================================
-// INICIALIZACIÓN
-// ============================================
+    return { init };
+})();
 
-function init() {
-    setupScrollOptimized();
-    setupTheme();
-    setupContactForm();
-    setupSmoothScroll();
-    setupMobileMenu();
-    setupEmail();
-    console.log('🚀 KR4N30 - Script Principal Inicializado');
-}
-
-init();
+// Iniciar aplicación
+KR4N30.init();

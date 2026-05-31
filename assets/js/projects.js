@@ -1,50 +1,51 @@
 // ============================================
-// KR4N30 v12.0 - GESTIÓN DE PROYECTOS
+// KR4N30 v13.0 - GESTIÓN DE PROYECTOS MEJORADA
 // ============================================
 
-var PROJECTS_CONFIG = {
+const PROJECTS_CONFIG = {
     PROJECTS_JSON: 'assets/data/projects.json',
     COUNTER_DURATION: 2000,
     SEARCH_DEBOUNCE: 250
 };
 
-var PROJECTS_DATA = null;
-var currentFilter = 'all';
-var currentSearch = '';
-var currentIndex = 0;
-var searchDebounceTimer = null;
+let PROJECTS_DATA = null;
+let searchDebounceTimer = null;
 
 // ============================================
-// ESCAPE HTML
+// STATE SYSTEM
+// ============================================
+
+const projectsState = {
+    filter: 'all',
+    search: '',
+    currentIndex: 0
+};
+
+// ============================================
+// ESCAPE HTML (MEJORADO)
 // ============================================
 
 function escapeHtml(str) {
-    if (str === null || str === undefined) return '';
-    if (typeof str !== 'string') {
-        str = String(str);
-    }
     if (!str) return '';
-    return str.replace(/[&<>]/g, function (m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-    });
+    const htmlEscapes = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    };
+    return String(str).replace(/[&<>"']/g, match => htmlEscapes[match]);
 }
 
 // ============================================
-// URL SEGURA
+// URL SEGURA (SIMPLIFICADA)
 // ============================================
 
 function safeUrl(url) {
-    if (!url || url === '#') return '#';
     try {
-        var parsed = new URL(url, window.location.origin);
-        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-            return parsed.href;
-        }
-        return '#';
-    } catch (e) {
+        const u = new URL(url, location.origin);
+        return ['http:', 'https:'].includes(u.protocol) ? u.href : '#';
+    } catch {
         return '#';
     }
 }
@@ -55,9 +56,9 @@ function safeUrl(url) {
 
 function getProjectText(project, field) {
     if (!project) return '';
-    var value = project[field];
+    const value = project[field];
     if (value && typeof value === 'object') {
-        var currentLang = localStorage.getItem('language') || 'es';
+        const currentLang = localStorage.getItem('language') || 'es';
         return value[currentLang] || value['es'] || '';
     }
     if (typeof value === 'string') return value;
@@ -72,10 +73,10 @@ function getProjectText(project, field) {
 function animateCounter(element, target, duration) {
     if (!element) return;
     if (duration === undefined) duration = PROJECTS_CONFIG.COUNTER_DURATION;
-    var start = performance.now();
+    const start = performance.now();
 
     function update(now) {
-        var progress = Math.min((now - start) / duration, 1);
+        const progress = Math.min((now - start) / duration, 1);
         element.textContent = Math.floor(progress * target);
         if (progress < 1) requestAnimationFrame(update);
     }
@@ -83,14 +84,12 @@ function animateCounter(element, target, duration) {
 }
 
 function setupStatsObserver() {
-    var statsSection = document.getElementById('heroStats');
+    const statsSection = document.getElementById('heroStats');
     if (!statsSection) return;
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting && PROJECTS_DATA) {
-                animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.stats.totalProjects);
-                animateCounter(document.getElementById('stat-clients'), PROJECTS_DATA.stats.clients);
-                animateCounter(document.getElementById('stat-tech'), PROJECTS_DATA.stats.totalTechnologies);
+                animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.length || PROJECTS_DATA.projects?.length || 0);
                 observer.disconnect();
             }
         });
@@ -105,7 +104,7 @@ function setupStatsObserver() {
 async function loadProjects() {
     if (PROJECTS_DATA) return PROJECTS_DATA;
     try {
-        var response = await fetch(PROJECTS_CONFIG.PROJECTS_JSON, { cache: 'force-cache' });
+        const response = await fetch(PROJECTS_CONFIG.PROJECTS_JSON, { cache: 'force-cache' });
         if (!response.ok) throw new Error('HTTP ' + response.status);
         PROJECTS_DATA = await response.json();
         window.PROJECTS_DATA = PROJECTS_DATA;
@@ -122,29 +121,32 @@ async function loadProjects() {
 
 function getFilteredProjects() {
     if (!PROJECTS_DATA) return [];
-    var filtered = PROJECTS_DATA.projects.slice();
-    if (currentFilter !== 'all') {
-        filtered = filtered.filter(function (p) { return p.category === currentFilter; });
+    const projects = Array.isArray(PROJECTS_DATA) ? PROJECTS_DATA : (PROJECTS_DATA.projects || []);
+    let filtered = [...projects];
+
+    if (projectsState.filter !== 'all') {
+        filtered = filtered.filter(p => p.category === projectsState.filter);
     }
-    if (currentSearch) {
-        filtered = filtered.filter(function (p) {
-            var title = getProjectText(p, 'title');
-            var description = getProjectText(p, 'description');
-            return title.toLowerCase().indexOf(currentSearch) !== -1 ||
-                description.toLowerCase().indexOf(currentSearch) !== -1 ||
-                (p.category && p.category.toLowerCase().indexOf(currentSearch) !== -1);
+
+    if (projectsState.search) {
+        filtered = filtered.filter(p => {
+            const title = getProjectText(p, 'title') || p.title || '';
+            const description = getProjectText(p, 'description') || p.description || '';
+            return title.toLowerCase().indexOf(projectsState.search) !== -1 ||
+                description.toLowerCase().indexOf(projectsState.search) !== -1 ||
+                (p.category && p.category.toLowerCase().indexOf(projectsState.search) !== -1);
         });
     }
     return filtered;
 }
 
 // ============================================
-// RENDERIZADO DE TARJETAS (con botón Ver más)
+// RENDERIZADO DE TARJETAS
 // ============================================
 
 async function renderProjects() {
-    var filtered = getFilteredProjects();
-    var container = document.getElementById('portfolioGrid');
+    const filtered = getFilteredProjects();
+    const container = document.getElementById('portfolioGrid');
     if (!container) return;
 
     if (filtered.length === 0) {
@@ -152,57 +154,79 @@ async function renderProjects() {
         return;
     }
 
-    var html = '';
-    for (var i = 0; i < filtered.length; i++) {
-        var project = filtered[i];
-        var title = getProjectText(project, 'title');
-        var description = getProjectText(project, 'description');
+    let html = '';
+    for (const project of filtered) {
+        const title = getProjectText(project, 'title') || project.title || 'Sin título';
+        const description = getProjectText(project, 'description') || project.description || '';
+        const projectImage = project.image || '';
 
-        var techHtml = '';
-        if (project.technologies && Array.isArray(project.technologies)) {
-            for (var t = 0; t < Math.min(project.technologies.length, 3); t++) {
-                techHtml += '<span class="tech-badge">' + escapeHtml(project.technologies[t]) + '</span>';
-            }
+        // Usar tags o technologies
+        const technologies = project.tags || project.technologies || [];
+        let techHtml = '';
+        for (let t = 0; t < Math.min(technologies.length, 3); t++) {
+            techHtml += `<span class="tech-badge">${escapeHtml(technologies[t])}</span>`;
         }
 
-        var shortDescription = description;
+        let shortDescription = description;
         if (description && description.length > 100) {
             shortDescription = description.substring(0, 100) + '...';
         } else if (!description) {
             shortDescription = 'Sin descripción';
         }
 
-        html += '<div class="project-card" data-id="' + project.id + '">' +
-            '<div class="project-image">' +
-            '<img src="' + (project.image || '') + '" alt="' + escapeHtml(title) + '" loading="lazy" decoding="async" ' +
-            'onerror="this.parentElement.innerHTML=\'<div style=\\\'display:flex;align-items:center;justify-content:center;height:100%\\\'><i class=\\\'fas fa-cube\\\' style=\\\'font-size:3rem;color:#007BFF\\\'></i></div>\'">' +
-            '</div>' +
-            '<div class="project-info">' +
-            '<h3 class="project-title">' + escapeHtml(title) + '</h3>' +
-            '<span class="project-category">' + escapeHtml(project.category || '') + '</span>' +
-            '<div class="project-meta">' +
-            '<span><i class="fas fa-user"></i> ' + escapeHtml(project.client || '') + '</span>' +
-            '<span><i class="fas fa-calendar"></i> ' + escapeHtml(project.year || '') + '</span>' +
-            '</div>' +
-            '<p style="color:var(--text-secondary);font-size:0.85rem">' + escapeHtml(shortDescription) + '</p>' +
-            '<div class="project-tech">' + techHtml + '</div>' +
-            '<button class="project-view-more" data-id="' + project.id + '">' +
-            '<span>Ver más</span> <i class="fas fa-arrow-right"></i>' +
-            '</button>' +
-            '</div>' +
-            '</div>';
+        const year = project.date ? project.date.substring(0, 4) : (project.year || '2024');
+        const client = project.client || (project.link ? 'Ver proyecto' : '');
+
+        html += `
+            <div class="project-card" data-id="${project.id}">
+                <div class="project-image">
+                    <img src="${escapeHtml(projectImage)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async" 
+                         onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%\'><i class=\'fas fa-cube\' style=\'font-size:3rem;color:#007BFF\'></i></div>'">
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">${escapeHtml(title)}</h3>
+                    <span class="project-category">${escapeHtml(project.category || '')}</span>
+                    <div class="project-meta">
+                        <span><i class="fas fa-calendar"></i> ${escapeHtml(year)}</span>
+                        ${client ? `<span><i class="fas fa-external-link-alt"></i> ${escapeHtml(client)}</span>` : ''}
+                    </div>
+                    <p style="color:var(--text-secondary);font-size:0.85rem">${escapeHtml(shortDescription)}</p>
+                    <div class="project-tech">${techHtml}</div>
+                    <button class="project-view-more" data-id="${project.id}">
+                        <span>Ver más</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
     }
     container.innerHTML = html;
 
-    // Agregar event listeners a los botones "Ver más"
-    var viewMoreBtns = document.querySelectorAll('.project-view-more');
-    for (var i = 0; i < viewMoreBtns.length; i++) {
-        viewMoreBtns[i].addEventListener('click', function (e) {
+    // Event listeners para botones "Ver más"
+    const viewMoreBtns = document.querySelectorAll('.project-view-more');
+    viewMoreBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            var id = Number(this.dataset.id);
-            showProjectModal(id);
+            showProjectModal(Number(btn.dataset.id));
         });
-    }
+    });
+}
+
+// ============================================
+// SCROLL REVEAL
+// ============================================
+
+function setupScrollReveal() {
+    const cards = document.querySelectorAll('.project-card');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => observer.observe(card));
 }
 
 // ============================================
@@ -210,85 +234,74 @@ async function renderProjects() {
 // ============================================
 
 function showProjectModal(id) {
-    var filtered = getFilteredProjects();
-    var index = -1;
-    for (var i = 0; i < filtered.length; i++) {
-        if (filtered[i].id === id) {
-            index = i;
-            break;
-        }
-    }
+    const filtered = getFilteredProjects();
+    const index = filtered.findIndex(p => p.id === id);
     if (index === -1) return;
-    currentIndex = index;
-    updateModalContent(filtered[currentIndex]);
-    var modal = document.getElementById('projectModal');
+    projectsState.currentIndex = index;
+    updateModalContent(filtered[projectsState.currentIndex]);
+    const modal = document.getElementById('projectModal');
     if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        var closeBtn = document.getElementById('modalClose');
+        const closeBtn = document.getElementById('modalClose');
         if (closeBtn) closeBtn.focus();
     }
 }
 
 function updateModalContent(project) {
-    var modalContent = document.getElementById('modalContent');
+    const modalContent = document.getElementById('modalContent');
     if (!modalContent) return;
 
-    var title = getProjectText(project, 'title');
-    var description = getProjectText(project, 'description');
-    var fullDescription = getProjectText(project, 'fullDescription');
-    var tFunc = window.t || function (x) { return x; };
+    const title = getProjectText(project, 'title') || project.title || 'Sin título';
+    const description = getProjectText(project, 'description') || project.description || '';
+    const fullDescription = getProjectText(project, 'fullDescription') || description;
+    const tFunc = window.t || (x => x);
 
-    var techHtml = '';
-    if (project.technologies && Array.isArray(project.technologies)) {
-        for (var i = 0; i < project.technologies.length; i++) {
-            techHtml += '<span class="tech-badge">' + escapeHtml(project.technologies[i]) + '</span>';
-        }
+    const technologies = project.tags || project.technologies || [];
+    let techHtml = '';
+    for (const tech of technologies) {
+        techHtml += `<span class="tech-badge">${escapeHtml(tech)}</span>`;
     }
 
-    var featuresHtml = '';
-    if (project.features && Array.isArray(project.features)) {
-        for (var f = 0; f < project.features.length; f++) {
-            featuresHtml += '<li style="background:rgba(0,123,255,0.08);padding:0.3rem 1rem;border-radius:50px">✓ ' + escapeHtml(project.features[f]) + '</li>';
-        }
+    const features = project.features || [];
+    let featuresHtml = '';
+    for (const feature of features) {
+        featuresHtml += `<li style="background:rgba(0,123,255,0.08);padding:0.3rem 1rem;border-radius:50px">✓ ${escapeHtml(feature)}</li>`;
     }
 
-    modalContent.innerHTML =
-        '<div class="modal-header">' +
-        '<div class="modal-image"><img src="' + (project.image || '') + '" alt="' + escapeHtml(title) + '" loading="lazy" ' +
-        'onerror="this.parentElement.innerHTML=\'<i class=\\\'fas fa-cube\\\' style=\\\'font-size:3rem;color:#007BFF\\\'></i>\'"></div>' +
-        '<div><h2 class="modal-title">' + escapeHtml(title) + '</h2><span class="project-category">' + escapeHtml(project.category || '') + '</span></div>' +
-        '</div>' +
-        '<div class="modal-meta">' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.client') || 'CLIENTE') + '</strong>' + escapeHtml(project.client || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.duration') || 'DURACIÓN') + '</strong>' + escapeHtml(project.duration || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.role') || 'ROL') + '</strong>' + escapeHtml(project.role || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.status') || 'ESTADO') + '</strong>' + escapeHtml(project.status || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.year') || 'AÑO') + '</strong>' + escapeHtml(project.year || '') + '</div>' +
-        '</div>' +
-        '<p><strong>' + (tFunc('modal.description') || 'Descripción') + ':</strong> ' + escapeHtml(description) + '</p>' +
-        '<div style="background:rgba(0,123,255,0.05);padding:1.5rem;border-radius:20px;margin:1rem 0;border-left:3px solid #007BFF">' +
-        '<p>' + escapeHtml(fullDescription) + '</p>' +
-        '</div>' +
-        '<div><strong>' + (tFunc('modal.technologies') || 'Tecnologías utilizadas') + ':</strong></div>' +
-        '<div class="project-tech" style="margin-top:0.5rem">' + techHtml + '</div>' +
-        '<div style="margin-top:1rem"><strong>' + (tFunc('modal.features') || 'Características principales') + ':</strong></div>' +
-        '<ul style="display:flex;flex-wrap:wrap;gap:0.5rem;list-style:none;margin-top:0.5rem">' + featuresHtml + '</ul>' +
-        '<div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">' +
-        '<a href="' + safeUrl(project.demoUrl) + '" target="_blank" rel="noopener noreferrer" class="modal-link" ' +
-        'style="background:linear-gradient(135deg,#007BFF,#0056b3);color:#fff;padding:0.8rem 1.5rem;border-radius:50px;text-decoration:none">' +
-        (tFunc('modal.demo_btn') || 'Ver demo') + ' →</a>' +
-        '<a href="' + safeUrl(project.githubUrl) + '" target="_blank" rel="noopener noreferrer" class="modal-link" ' +
-        'style="background:transparent;border:1px solid #007BFF;color:#007BFF;padding:0.8rem 1.5rem;border-radius:50px;text-decoration:none">' +
-        (tFunc('modal.github_btn') || 'Código fuente') + '</a>' +
-        '</div>';
+    const year = project.date ? project.date.substring(0, 4) : (project.year || '2024');
+    const linkUrl = project.demoUrl || project.link || '#';
+
+    modalContent.innerHTML = `
+        <div class="modal-header">
+            <div class="modal-image"><img src="${escapeHtml(project.image || '')}" alt="${escapeHtml(title)}" loading="lazy" 
+                 onerror="this.parentElement.innerHTML='<i class=\'fas fa-cube\' style=\'font-size:3rem;color:#007BFF\'></i>'"></div>
+            <div><h2 class="modal-title">${escapeHtml(title)}</h2><span class="project-category">${escapeHtml(project.category || '')}</span></div>
+        </div>
+        <div class="modal-meta">
+            <div class="modal-meta-item"><strong>${tFunc('modal.year') || 'AÑO'}</strong>${escapeHtml(year)}</div>
+            ${project.link ? `<div class="modal-meta-item"><strong>PROYECTO</strong><a href="${safeUrl(project.link)}" target="_blank">Ver online</a></div>` : ''}
+        </div>
+        <p><strong>${tFunc('modal.description') || 'Descripción'}:</strong> ${escapeHtml(description)}</p>
+        ${fullDescription !== description ? `<div style="background:rgba(0,123,255,0.05);padding:1.5rem;border-radius:20px;margin:1rem 0;border-left:3px solid #007BFF"><p>${escapeHtml(fullDescription)}</p></div>` : ''}
+        <div><strong>${tFunc('modal.technologies') || 'Tecnologías utilizadas'}:</strong></div>
+        <div class="project-tech" style="margin-top:0.5rem">${techHtml}</div>
+        ${featuresHtml ? `<div style="margin-top:1rem"><strong>${tFunc('modal.features') || 'Características principales'}:</strong></div>
+        <ul style="display:flex;flex-wrap:wrap;gap:0.5rem;list-style:none;margin-top:0.5rem">${featuresHtml}</ul>` : ''}
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
+            <a href="${safeUrl(linkUrl)}" target="_blank" rel="noopener noreferrer" class="modal-link" 
+               style="background:linear-gradient(135deg,#007BFF,#0056b3);color:#fff;padding:0.8rem 1.5rem;border-radius:50px;text-decoration:none">
+               ${tFunc('modal.demo_btn') || 'Ver proyecto'} →
+            </a>
+        </div>
+    `;
 }
 
 function navigateModal(direction) {
-    var filtered = getFilteredProjects();
+    const filtered = getFilteredProjects();
     if (filtered.length === 0) return;
-    currentIndex = (currentIndex + direction + filtered.length) % filtered.length;
-    updateModalContent(filtered[currentIndex]);
+    projectsState.currentIndex = (projectsState.currentIndex + direction + filtered.length) % filtered.length;
+    updateModalContent(filtered[projectsState.currentIndex]);
 }
 
 // ============================================
@@ -297,58 +310,53 @@ function navigateModal(direction) {
 
 function setupFilters() {
     if (!PROJECTS_DATA) return;
-    var categories = ['all'];
-    var categorySet = {};
-    for (var i = 0; i < PROJECTS_DATA.projects.length; i++) {
-        var cat = PROJECTS_DATA.projects[i].category;
+    const projects = Array.isArray(PROJECTS_DATA) ? PROJECTS_DATA : (PROJECTS_DATA.projects || []);
+    const categories = ['all'];
+    const categorySet = {};
+
+    for (const project of projects) {
+        const cat = project.category;
         if (cat && !categorySet[cat]) {
             categorySet[cat] = true;
             categories.push(cat);
         }
     }
-    var filterContainer = document.getElementById('portfolioFilters');
-    if (!filterContainer) return;
-    var allText = (window.t && window.t('portfolio.filter_all')) || 'Todos';
 
-    var html = '';
-    for (var c = 0; c < categories.length; c++) {
-        var cat = categories[c];
-        var activeClass = (cat === 'all') ? 'active' : '';
-        var displayName = (cat === 'all') ? allText : cat;
-        html += '<button class="filter-btn ' + activeClass + '" data-filter="' + cat + '">' + displayName + '</button>';
+    const filterContainer = document.getElementById('portfolioFilters');
+    if (!filterContainer) return;
+    const allText = (window.t && window.t('portfolio.filter_all')) || 'Todos';
+
+    let html = '';
+    for (const cat of categories) {
+        const activeClass = (cat === 'all') ? 'active' : '';
+        const displayName = (cat === 'all') ? allText : cat;
+        html += `<button class="filter-btn ${activeClass}" data-filter="${cat}">${displayName}</button>`;
     }
     filterContainer.innerHTML = html;
+
+    // Event delegation para filtros
+    filterContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        projectsState.filter = btn.dataset.filter;
+        renderProjects();
+        setTimeout(setupScrollReveal, 100);
+    });
 }
 
 // ============================================
-// EVENTOS GLOBALES
+// DEBOUNCE UTILITY
 // ============================================
 
-function setupEventDelegation() {
-    var container = document.getElementById('portfolioGrid');
-    if (container) {
-        container.addEventListener('click', function (e) {
-            var card = e.target.closest('.project-card');
-            if (card && !e.target.classList.contains('project-view-more')) {
-                showProjectModal(Number(card.dataset.id));
-            }
-        });
-    }
-
-    var filterContainer = document.getElementById('portfolioFilters');
-    if (filterContainer) {
-        filterContainer.addEventListener('click', function (e) {
-            var btn = e.target.closest('.filter-btn');
-            if (!btn) return;
-            var btns = document.querySelectorAll('.filter-btn');
-            for (var i = 0; i < btns.length; i++) {
-                btns[i].classList.remove('active');
-            }
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            renderProjects();
-        });
-    }
+function debounce(fn, delay) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    };
 }
 
 // ============================================
@@ -356,15 +364,16 @@ function setupEventDelegation() {
 // ============================================
 
 function setupSearch() {
-    var searchInput = document.getElementById('projectSearch');
+    const searchInput = document.getElementById('projectSearch');
     if (!searchInput) return;
-    searchInput.addEventListener('input', function (e) {
-        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
-        searchDebounceTimer = setTimeout(function () {
-            currentSearch = e.target.value.toLowerCase();
-            renderProjects();
-        }, PROJECTS_CONFIG.SEARCH_DEBOUNCE);
-    });
+
+    const debouncedSearch = debounce(() => {
+        projectsState.search = searchInput.value.toLowerCase();
+        renderProjects();
+        setTimeout(setupScrollReveal, 100);
+    }, PROJECTS_CONFIG.SEARCH_DEBOUNCE);
+
+    searchInput.addEventListener('input', debouncedSearch);
 }
 
 // ============================================
@@ -372,20 +381,25 @@ function setupSearch() {
 // ============================================
 
 function setupModalEvents() {
-    var modal = document.getElementById('projectModal');
-    var closeModal = function () {
+    const modal = document.getElementById('projectModal');
+    const closeModal = () => {
         if (modal) modal.classList.remove('active');
         document.body.style.overflow = '';
     };
-    var modalClose = document.getElementById('modalClose');
+
+    const modalClose = document.getElementById('modalClose');
     if (modalClose) modalClose.addEventListener('click', closeModal);
-    var modalOverlay = document.querySelector('.modal-overlay');
+
+    const modalOverlay = document.querySelector('.modal-overlay');
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
-    var modalPrev = document.getElementById('modalPrev');
-    if (modalPrev) modalPrev.addEventListener('click', function () { navigateModal(-1); });
-    var modalNext = document.getElementById('modalNext');
-    if (modalNext) modalNext.addEventListener('click', function () { navigateModal(1); });
-    document.addEventListener('keydown', function (e) {
+
+    const modalPrev = document.getElementById('modalPrev');
+    if (modalPrev) modalPrev.addEventListener('click', () => navigateModal(-1));
+
+    const modalNext = document.getElementById('modalNext');
+    if (modalNext) modalNext.addEventListener('click', () => navigateModal(1));
+
+    document.addEventListener('keydown', (e) => {
         if (!modal || !modal.classList.contains('active')) return;
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowLeft') navigateModal(-1);
@@ -394,14 +408,31 @@ function setupModalEvents() {
 }
 
 // ============================================
+// EVENT DELEGATION PARA CARDS
+// ============================================
+
+function setupEventDelegation() {
+    const container = document.getElementById('portfolioGrid');
+    if (container) {
+        container.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-card');
+            if (card && !e.target.classList.contains('project-view-more')) {
+                showProjectModal(Number(card.dataset.id));
+            }
+        });
+    }
+}
+
+// ============================================
 // IDIOMA
 // ============================================
 
 function setupLanguageListener() {
-    document.addEventListener('languageChanged', function () {
+    document.addEventListener('languageChanged', () => {
         setupFilters();
         renderProjects();
-        var searchInput = document.getElementById('projectSearch');
+        setTimeout(setupScrollReveal, 100);
+        const searchInput = document.getElementById('projectSearch');
         if (searchInput && searchInput.placeholder) {
             searchInput.placeholder = (window.t && window.t('portfolio.search_placeholder')) || '🔍 Buscar proyecto...';
         }
@@ -418,6 +449,7 @@ async function initProjects() {
         setupFilters();
         renderProjects();
         setupStatsObserver();
+        setTimeout(setupScrollReveal, 100);
     }
     setupEventDelegation();
     setupSearch();
