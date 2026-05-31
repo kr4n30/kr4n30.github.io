@@ -1278,3 +1278,47 @@ footer {
         max-width: 1500px;
     }
 }
+/* Galería de imágenes en modal */
+.modal-gallery {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    margin: 1rem 0;
+    scroll-snap-type: x mandatory;
+}
+
+.modal-gallery-img {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    scroll-snap-align: start;
+    border: 1px solid var(--border-glow);
+}
+
+.modal-gallery::-webkit-scrollbar {
+    height: 6px;
+}
+
+.modal-gallery::-webkit-scrollbar-track {
+    background: var(--primary-10);
+    border-radius: 10px;
+}
+
+.modal-gallery::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.modal-info {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .modal-gallery-img {
+        max-width: 250px;
+        height: 160px;
+    }
+}

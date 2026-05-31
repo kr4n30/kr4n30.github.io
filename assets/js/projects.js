@@ -88,9 +88,9 @@ function setupStatsObserver() {
     var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (entry.isIntersecting && PROJECTS_DATA) {
-                animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.stats.totalProjects);
-                animateCounter(document.getElementById('stat-clients'), PROJECTS_DATA.stats.clients);
-                animateCounter(document.getElementById('stat-tech'), PROJECTS_DATA.stats.totalTechnologies);
+                animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.stats.totalProjects || PROJECTS_DATA.projects.length);
+                animateCounter(document.getElementById('stat-clients'), PROJECTS_DATA.stats.clients || 0);
+                animateCounter(document.getElementById('stat-tech'), PROJECTS_DATA.stats.totalTechnologies || 0);
                 observer.disconnect();
             }
         });
@@ -122,7 +122,8 @@ async function loadProjects() {
 
 function getFilteredProjects() {
     if (!PROJECTS_DATA) return [];
-    var filtered = PROJECTS_DATA.projects.slice();
+    var projects = PROJECTS_DATA.projects || PROJECTS_DATA;
+    var filtered = projects.slice();
     if (currentFilter !== 'all') {
         filtered = filtered.filter(function (p) { return p.category === currentFilter; });
     }
@@ -139,7 +140,7 @@ function getFilteredProjects() {
 }
 
 // ============================================
-// RENDERIZADO DE TARJETAS (con botón Ver más)
+// RENDERIZADO DE TARJETAS
 // ============================================
 
 async function renderProjects() {
@@ -157,11 +158,13 @@ async function renderProjects() {
         var project = filtered[i];
         var title = getProjectText(project, 'title');
         var description = getProjectText(project, 'description');
+        var projectImage = project.image || '';
 
         var techHtml = '';
-        if (project.technologies && Array.isArray(project.technologies)) {
-            for (var t = 0; t < Math.min(project.technologies.length, 3); t++) {
-                techHtml += '<span class="tech-badge">' + escapeHtml(project.technologies[t]) + '</span>';
+        var technologies = project.tags || project.technologies || [];
+        if (technologies && Array.isArray(technologies)) {
+            for (var t = 0; t < Math.min(technologies.length, 3); t++) {
+                techHtml += '<span class="tech-badge">' + escapeHtml(technologies[t]) + '</span>';
             }
         }
 
@@ -172,17 +175,19 @@ async function renderProjects() {
             shortDescription = 'Sin descripción';
         }
 
+        // Formatear fecha si existe
+        var year = project.date ? project.date.substring(0, 4) : (project.year || '2024');
+
         html += '<div class="project-card" data-id="' + project.id + '">' +
             '<div class="project-image">' +
-            '<img src="' + (project.image || '') + '" alt="' + escapeHtml(title) + '" loading="lazy" decoding="async" ' +
+            '<img src="' + (projectImage) + '" alt="' + escapeHtml(title) + '" loading="lazy" decoding="async" ' +
             'onerror="this.parentElement.innerHTML=\'<div style=\\\'display:flex;align-items:center;justify-content:center;height:100%\\\'><i class=\\\'fas fa-cube\\\' style=\\\'font-size:3rem;color:#007BFF\\\'></i></div>\'">' +
             '</div>' +
             '<div class="project-info">' +
             '<h3 class="project-title">' + escapeHtml(title) + '</h3>' +
             '<span class="project-category">' + escapeHtml(project.category || '') + '</span>' +
             '<div class="project-meta">' +
-            '<span><i class="fas fa-user"></i> ' + escapeHtml(project.client || '') + '</span>' +
-            '<span><i class="fas fa-calendar"></i> ' + escapeHtml(project.year || '') + '</span>' +
+            '<span><i class="fas fa-calendar"></i> ' + escapeHtml(year) + '</span>' +
             '</div>' +
             '<p style="color:var(--text-secondary);font-size:0.85rem">' + escapeHtml(shortDescription) + '</p>' +
             '<div class="project-tech">' + techHtml + '</div>' +
@@ -194,7 +199,6 @@ async function renderProjects() {
     }
     container.innerHTML = html;
 
-    // Agregar event listeners a los botones "Ver más"
     var viewMoreBtns = document.querySelectorAll('.project-view-more');
     for (var i = 0; i < viewMoreBtns.length; i++) {
         viewMoreBtns[i].addEventListener('click', function (e) {
@@ -206,7 +210,7 @@ async function renderProjects() {
 }
 
 // ============================================
-// MODAL
+// MODAL (con soporte para múltiples imágenes)
 // ============================================
 
 function showProjectModal(id) {
@@ -236,51 +240,64 @@ function updateModalContent(project) {
 
     var title = getProjectText(project, 'title');
     var description = getProjectText(project, 'description');
-    var fullDescription = getProjectText(project, 'fullDescription');
+    var fullDescription = getProjectText(project, 'fullDescription') || description;
     var tFunc = window.t || function (x) { return x; };
 
+    var technologies = project.tags || project.technologies || [];
+
     var techHtml = '';
-    if (project.technologies && Array.isArray(project.technologies)) {
-        for (var i = 0; i < project.technologies.length; i++) {
-            techHtml += '<span class="tech-badge">' + escapeHtml(project.technologies[i]) + '</span>';
+    if (technologies && Array.isArray(technologies)) {
+        for (var i = 0; i < technologies.length; i++) {
+            techHtml += '<span class="tech-badge">' + escapeHtml(technologies[i]) + '</span>';
         }
     }
 
     var featuresHtml = '';
-    if (project.features && Array.isArray(project.features)) {
-        for (var f = 0; f < project.features.length; f++) {
-            featuresHtml += '<li style="background:rgba(0,123,255,0.08);padding:0.3rem 1rem;border-radius:50px">✓ ' + escapeHtml(project.features[f]) + '</li>';
+    var features = project.features || [];
+    if (features && Array.isArray(features)) {
+        for (var f = 0; f < features.length; f++) {
+            featuresHtml += '<li style="background:rgba(0,123,255,0.08);padding:0.3rem 1rem;border-radius:50px">✓ ' + escapeHtml(features[f]) + '</li>';
         }
+    }
+
+    var year = project.date ? project.date.substring(0, 4) : (project.year || '2024');
+
+    // Múltiples imágenes (gallery) o una sola
+    var galleryImages = project.gallery || (project.image ? [project.image] : []);
+    var galleryHtml = '';
+    if (galleryImages.length > 0) {
+        galleryHtml = '<div class="modal-gallery">';
+        for (var g = 0; g < galleryImages.length; g++) {
+            galleryHtml += '<img src="' + escapeHtml(galleryImages[g]) + '" alt="' + escapeHtml(title) + '" loading="lazy" class="modal-gallery-img">';
+        }
+        galleryHtml += '</div>';
+    } else {
+        galleryHtml = '<div class="modal-image"><img src="' + (project.image || '') + '" alt="' + escapeHtml(title) + '" loading="lazy" ' +
+            'onerror="this.parentElement.innerHTML=\'<i class=\\\'fas fa-cube\\\' style=\\\'font-size:3rem;color:#007BFF\\\'></i>\'"></div>';
     }
 
     modalContent.innerHTML =
         '<div class="modal-header">' +
-        '<div class="modal-image"><img src="' + (project.image || '') + '" alt="' + escapeHtml(title) + '" loading="lazy" ' +
-        'onerror="this.parentElement.innerHTML=\'<i class=\\\'fas fa-cube\\\' style=\\\'font-size:3rem;color:#007BFF\\\'></i>\'"></div>' +
-        '<div><h2 class="modal-title">' + escapeHtml(title) + '</h2><span class="project-category">' + escapeHtml(project.category || '') + '</span></div>' +
+        '<div class="modal-info">' +
+        '<h2 class="modal-title">' + escapeHtml(title) + '</h2>' +
+        '<span class="project-category">' + escapeHtml(project.category || '') + '</span>' +
         '</div>' +
+        '</div>' +
+        galleryHtml +
         '<div class="modal-meta">' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.client') || 'CLIENTE') + '</strong>' + escapeHtml(project.client || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.duration') || 'DURACIÓN') + '</strong>' + escapeHtml(project.duration || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.role') || 'ROL') + '</strong>' + escapeHtml(project.role || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.status') || 'ESTADO') + '</strong>' + escapeHtml(project.status || '') + '</div>' +
-        '<div class="modal-meta-item"><strong>' + (tFunc('modal.year') || 'AÑO') + '</strong>' + escapeHtml(project.year || '') + '</div>' +
+        '<div class="modal-meta-item"><strong>' + (tFunc('modal.year') || 'AÑO') + '</strong>' + escapeHtml(year) + '</div>' +
+        (project.link ? '<div class="modal-meta-item"><strong>ENLACE</strong><a href="' + safeUrl(project.link) + '" target="_blank">Ver proyecto</a></div>' : '') +
         '</div>' +
         '<p><strong>' + (tFunc('modal.description') || 'Descripción') + ':</strong> ' + escapeHtml(description) + '</p>' +
-        '<div style="background:rgba(0,123,255,0.05);padding:1.5rem;border-radius:20px;margin:1rem 0;border-left:3px solid #007BFF">' +
-        '<p>' + escapeHtml(fullDescription) + '</p>' +
-        '</div>' +
+        (fullDescription !== description ? '<div style="background:rgba(0,123,255,0.05);padding:1.5rem;border-radius:20px;margin:1rem 0;border-left:3px solid #007BFF"><p>' + escapeHtml(fullDescription) + '</p></div>' : '') +
         '<div><strong>' + (tFunc('modal.technologies') || 'Tecnologías utilizadas') + ':</strong></div>' +
         '<div class="project-tech" style="margin-top:0.5rem">' + techHtml + '</div>' +
-        '<div style="margin-top:1rem"><strong>' + (tFunc('modal.features') || 'Características principales') + ':</strong></div>' +
-        '<ul style="display:flex;flex-wrap:wrap;gap:0.5rem;list-style:none;margin-top:0.5rem">' + featuresHtml + '</ul>' +
+        (featuresHtml ? '<div style="margin-top:1rem"><strong>' + (tFunc('modal.features') || 'Características principales') + ':</strong></div>' +
+            '<ul style="display:flex;flex-wrap:wrap;gap:0.5rem;list-style:none;margin-top:0.5rem">' + featuresHtml + '</ul>' : '') +
         '<div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">' +
-        '<a href="' + safeUrl(project.demoUrl) + '" target="_blank" rel="noopener noreferrer" class="modal-link" ' +
+        '<a href="' + safeUrl(project.link || '#') + '" target="_blank" rel="noopener noreferrer" class="modal-link" ' +
         'style="background:linear-gradient(135deg,#007BFF,#0056b3);color:#fff;padding:0.8rem 1.5rem;border-radius:50px;text-decoration:none">' +
-        (tFunc('modal.demo_btn') || 'Ver demo') + ' →</a>' +
-        '<a href="' + safeUrl(project.githubUrl) + '" target="_blank" rel="noopener noreferrer" class="modal-link" ' +
-        'style="background:transparent;border:1px solid #007BFF;color:#007BFF;padding:0.8rem 1.5rem;border-radius:50px;text-decoration:none">' +
-        (tFunc('modal.github_btn') || 'Código fuente') + '</a>' +
+        (tFunc('modal.demo_btn') || 'Ver proyecto') + ' →</a>' +
         '</div>';
 }
 
@@ -297,10 +314,11 @@ function navigateModal(direction) {
 
 function setupFilters() {
     if (!PROJECTS_DATA) return;
+    var projects = PROJECTS_DATA.projects || PROJECTS_DATA;
     var categories = ['all'];
     var categorySet = {};
-    for (var i = 0; i < PROJECTS_DATA.projects.length; i++) {
-        var cat = PROJECTS_DATA.projects[i].category;
+    for (var i = 0; i < projects.length; i++) {
+        var cat = projects[i].category;
         if (cat && !categorySet[cat]) {
             categorySet[cat] = true;
             categories.push(cat);
