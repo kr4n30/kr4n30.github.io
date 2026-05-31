@@ -1,5 +1,5 @@
 ﻿// ============================================
-// KR4N30 v13.0 - SISTEMA MULTILINGÜE MEJORADO
+// KR4N30 v13.0 - SISTEMA MULTILINGÜE (VERSIÓN FINAL)
 // ============================================
 
 const I18N_CONFIG = {
@@ -12,7 +12,7 @@ let translations = {};
 const languageCache = {};
 
 // ============================================
-// HELPER DE TRADUCCIÓN (MEJORADO)
+// HELPER DE TRADUCCIÓN
 // ============================================
 
 function t(key) {
@@ -26,11 +26,12 @@ function t(key) {
         value = value[part];
     }
 
-    return value ?? key;
+    // Usar ?? solo si existe, si no devolver key
+    return (value !== undefined && value !== null) ? value : key;
 }
 
 // ============================================
-// ESCAPE HTML (MEJORADO)
+// ESCAPE HTML
 // ============================================
 
 function escapeHtml(str) {
@@ -73,7 +74,7 @@ function updateMetaAndTitle() {
 }
 
 // ============================================
-// SERVICIOS (USANDO DOM API - MÁS SEGURO)
+// SERVICIOS
 // ============================================
 
 function renderServicesDynamic() {
@@ -85,7 +86,7 @@ function renderServicesDynamic() {
 
     servicesGrid.innerHTML = '';
 
-    services.forEach(service => {
+    for (const service of services) {
         const card = document.createElement('div');
         card.className = 'service-card';
         card.innerHTML = `
@@ -94,11 +95,11 @@ function renderServicesDynamic() {
             <p>${escapeHtml(service.desc)}</p>
         `;
         servicesGrid.appendChild(card);
-    });
+    }
 }
 
 // ============================================
-// ACTUALIZAR CONTENIDO (CON textContent SEGURO)
+// ACTUALIZAR CONTENIDO
 // ============================================
 
 function updatePageContent() {
@@ -124,7 +125,6 @@ function updatePageContent() {
             continue;
         }
 
-        // Usar textContent en lugar de innerHTML por seguridad
         element.textContent = value;
     }
 
@@ -178,16 +178,17 @@ function detectBrowserLanguage() {
 // ============================================
 
 function getProjectTranslation(project, field) {
-    if (!project || !project.translationKey) {
-        return project && project[field] ? project[field] : '';
+    if (!project) return '';
+    if (project.translationKey) {
+        const key = `projects.${project.translationKey}.${field}`;
+        const value = t(key);
+        if (value !== key) return value;
     }
-    const key = `projects.${project.translationKey}.${field}`;
-    const value = t(key);
-    return value !== key ? value : (project[field] || '');
+    return project[field] || '';
 }
 
 // ============================================
-// CARGAR IDIOMA (CON CACHE MEJORADO)
+// CARGAR IDIOMA
 // ============================================
 
 async function loadTranslations(lang) {
@@ -239,20 +240,20 @@ function initLanguageSelector() {
     });
 
     document.addEventListener('click', function (e) {
-        if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+        if (langBtn && langDropdown && !langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
             langDropdown.classList.remove('show');
             langBtn.classList.remove('active');
         }
     });
 
-    langOptions.forEach(option => {
+    langOptions.forEach(function (option) {
         option.addEventListener('click', function () {
             const lang = this.dataset.lang;
             const flagSrc = this.querySelector('.lang-flag').src;
             const shortLang = lang === 'es' ? 'ES' : 'EN';
 
-            currentFlag.src = flagSrc;
-            currentLangText.textContent = shortLang;
+            if (currentFlag) currentFlag.src = flagSrc;
+            if (currentLangText) currentLangText.textContent = shortLang;
 
             if (switcher) {
                 switcher.value = lang;
@@ -260,8 +261,8 @@ function initLanguageSelector() {
                 switcher.dispatchEvent(event);
             }
 
-            langDropdown.classList.remove('show');
-            langBtn.classList.remove('active');
+            if (langDropdown) langDropdown.classList.remove('show');
+            if (langBtn) langBtn.classList.remove('active');
         });
     });
 }
@@ -272,13 +273,12 @@ function initLanguageSelector() {
 
 window.KR4N30 = window.KR4N30 || {};
 window.KR4N30.i18n = {
-    t,
-    loadTranslations,
-    currentLanguage: () => currentLanguage,
-    getProjectTranslation
+    t: t,
+    loadTranslations: loadTranslations,
+    currentLanguage: function () { return currentLanguage; },
+    getProjectTranslation: getProjectTranslation
 };
 
-// EXPORT GLOBAL (legado)
 window.t = t;
 window.loadTranslations = loadTranslations;
 window.currentLanguage = function () { return currentLanguage; };
@@ -291,9 +291,13 @@ window.getProjectTranslation = getProjectTranslation;
 document.addEventListener('DOMContentLoaded', async function () {
     const savedLanguage = localStorage.getItem('language');
     const browserLanguage = detectBrowserLanguage();
-    const initialLanguage = (savedLanguage && I18N_CONFIG.SUPPORTED_LANGUAGES.indexOf(savedLanguage) !== -1) ?
-        savedLanguage :
-        browserLanguage;
+    let initialLanguage = 'es';
+
+    if (savedLanguage && I18N_CONFIG.SUPPORTED_LANGUAGES.indexOf(savedLanguage) !== -1) {
+        initialLanguage = savedLanguage;
+    } else {
+        initialLanguage = browserLanguage;
+    }
 
     await loadTranslations(initialLanguage);
     initLanguageSelector();

@@ -1,5 +1,5 @@
 // ============================================
-// KR4N30 v13.0 - GESTIÓN DE PROYECTOS MEJORADA
+// KR4N30 v14.0 - GESTIÓN DE PROYECTOS (CORREGIDO)
 // ============================================
 
 const PROJECTS_CONFIG = {
@@ -22,7 +22,7 @@ const projectsState = {
 };
 
 // ============================================
-// ESCAPE HTML (MEJORADO)
+// ESCAPE HTML
 // ============================================
 
 function escapeHtml(str) {
@@ -38,10 +38,11 @@ function escapeHtml(str) {
 }
 
 // ============================================
-// URL SEGURA (SIMPLIFICADA)
+// URL SEGURA
 // ============================================
 
 function safeUrl(url) {
+    if (!url || url === '#') return '#';
     try {
         const u = new URL(url, location.origin);
         return ['http:', 'https:'].includes(u.protocol) ? u.href : '#';
@@ -51,19 +52,39 @@ function safeUrl(url) {
 }
 
 // ============================================
-// OBTENER TEXTO TRADUCIDO
+// OBTENER TEXTO DEL PROYECTO (SIMPLIFICADO)
+// Soporta: string directo O objeto { es: "", en: "" }
 // ============================================
 
 function getProjectText(project, field) {
     if (!project) return '';
     const value = project[field];
-    if (value && typeof value === 'object') {
+
+    // Si es null o undefined
+    if (value === null || value === undefined) return '';
+
+    // Si es objeto con traducciones (es/en)
+    if (typeof value === 'object' && !Array.isArray(value)) {
         const currentLang = localStorage.getItem('language') || 'es';
-        return value[currentLang] || value['es'] || '';
+        return value[currentLang] || value.es || '';
     }
+
+    // Si es string
     if (typeof value === 'string') return value;
-    if (value !== undefined && value !== null) return String(value);
-    return '';
+
+    // Cualquier otro caso
+    return String(value);
+}
+
+// ============================================
+// OBTENER ARRAY DE PROYECTOS (SOPORTA AMBOS FORMATOS)
+// ============================================
+
+function getProjectsArray() {
+    if (!PROJECTS_DATA) return [];
+    if (Array.isArray(PROJECTS_DATA)) return PROJECTS_DATA;
+    if (PROJECTS_DATA.projects && Array.isArray(PROJECTS_DATA.projects)) return PROJECTS_DATA.projects;
+    return [];
 }
 
 // ============================================
@@ -89,7 +110,8 @@ function setupStatsObserver() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting && PROJECTS_DATA) {
-                animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.length || PROJECTS_DATA.projects?.length || 0);
+                const projects = getProjectsArray();
+                animateCounter(document.getElementById('stat-projects'), projects.length);
                 observer.disconnect();
             }
         });
@@ -116,28 +138,52 @@ async function loadProjects() {
 }
 
 // ============================================
+// NORMALIZAR CATEGORÍA
+// ============================================
+
+function normalizeCategory(category) {
+    if (!category) return '';
+    return category.toLowerCase().trim();
+}
+
+// ============================================
 // FILTRADO
 // ============================================
 
 function getFilteredProjects() {
-    if (!PROJECTS_DATA) return [];
-    const projects = Array.isArray(PROJECTS_DATA) ? PROJECTS_DATA : (PROJECTS_DATA.projects || []);
+    const projects = getProjectsArray();
+    if (projects.length === 0) return [];
+
     let filtered = [...projects];
 
     if (projectsState.filter !== 'all') {
-        filtered = filtered.filter(p => p.category === projectsState.filter);
+        const normalizedFilter = normalizeCategory(projectsState.filter);
+        filtered = filtered.filter(p => normalizeCategory(p.category) === normalizedFilter);
     }
 
     if (projectsState.search) {
+        const searchLower = projectsState.search.toLowerCase();
         filtered = filtered.filter(p => {
-            const title = getProjectText(p, 'title') || p.title || '';
-            const description = getProjectText(p, 'description') || p.description || '';
-            return title.toLowerCase().indexOf(projectsState.search) !== -1 ||
-                description.toLowerCase().indexOf(projectsState.search) !== -1 ||
-                (p.category && p.category.toLowerCase().indexOf(projectsState.search) !== -1);
+            const title = (getProjectText(p, 'title') || '').toLowerCase();
+            const description = (getProjectText(p, 'description') || '').toLowerCase();
+            const category = (p.category || '').toLowerCase();
+            return title.indexOf(searchLower) !== -1 ||
+                description.indexOf(searchLower) !== -1 ||
+                category.indexOf(searchLower) !== -1;
         });
     }
     return filtered;
+}
+
+// ============================================
+// IMAGEN PLACEHOLDER (para manejar errores)
+// ============================================
+
+function createPlaceholderImage(alt) {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100%';
+    div.innerHTML = '<i class="fas fa-cube" style="font-size:3rem;color:#007BFF"></i>';
+    return div;
 }
 
 // ============================================
@@ -160,7 +206,6 @@ async function renderProjects() {
         const description = getProjectText(project, 'description') || project.description || '';
         const projectImage = project.image || '';
 
-        // Usar tags o technologies
         const technologies = project.tags || project.technologies || [];
         let techHtml = '';
         for (let t = 0; t < Math.min(technologies.length, 3); t++) {
@@ -175,20 +220,17 @@ async function renderProjects() {
         }
 
         const year = project.date ? project.date.substring(0, 4) : (project.year || '2024');
-        const client = project.client || (project.link ? 'Ver proyecto' : '');
 
         html += `
             <div class="project-card" data-id="${project.id}">
-                <div class="project-image">
-                    <img src="${escapeHtml(projectImage)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async" 
-                         onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%\'><i class=\'fas fa-cube\' style=\'font-size:3rem;color:#007BFF\'></i></div>'">
+                <div class="project-image" id="img-${project.id}">
+                    <img src="${escapeHtml(projectImage)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async">
                 </div>
                 <div class="project-info">
                     <h3 class="project-title">${escapeHtml(title)}</h3>
                     <span class="project-category">${escapeHtml(project.category || '')}</span>
                     <div class="project-meta">
                         <span><i class="fas fa-calendar"></i> ${escapeHtml(year)}</span>
-                        ${client ? `<span><i class="fas fa-external-link-alt"></i> ${escapeHtml(client)}</span>` : ''}
                     </div>
                     <p style="color:var(--text-secondary);font-size:0.85rem">${escapeHtml(shortDescription)}</p>
                     <div class="project-tech">${techHtml}</div>
@@ -200,6 +242,19 @@ async function renderProjects() {
         `;
     }
     container.innerHTML = html;
+
+    // Manejar errores de imágenes desde JS (más seguro que onerror)
+    for (const project of filtered) {
+        const img = document.querySelector(`#img-${project.id} img`);
+        if (img) {
+            img.addEventListener('error', function () {
+                const parent = this.parentElement;
+                if (parent && !parent.querySelector('.placeholder-icon')) {
+                    parent.innerHTML = '<div class="placeholder-icon" style="display:flex;align-items:center;justify-content:center;height:100%"><i class="fas fa-cube" style="font-size:3rem;color:#007BFF"></i></div>';
+                }
+            });
+        }
+    }
 
     // Event listeners para botones "Ver más"
     const viewMoreBtns = document.querySelectorAll('.project-view-more');
@@ -225,7 +280,6 @@ function setupScrollReveal() {
             }
         });
     }, { threshold: 0.1 });
-
     cards.forEach(card => observer.observe(card));
 }
 
@@ -274,13 +328,12 @@ function updateModalContent(project) {
 
     modalContent.innerHTML = `
         <div class="modal-header">
-            <div class="modal-image"><img src="${escapeHtml(project.image || '')}" alt="${escapeHtml(title)}" loading="lazy" 
-                 onerror="this.parentElement.innerHTML='<i class=\'fas fa-cube\' style=\'font-size:3rem;color:#007BFF\'></i>'"></div>
+            <div class="modal-image"><img src="${escapeHtml(project.image || '')}" alt="${escapeHtml(title)}" loading="lazy"></div>
             <div><h2 class="modal-title">${escapeHtml(title)}</h2><span class="project-category">${escapeHtml(project.category || '')}</span></div>
         </div>
         <div class="modal-meta">
             <div class="modal-meta-item"><strong>${tFunc('modal.year') || 'AÑO'}</strong>${escapeHtml(year)}</div>
-            ${project.link ? `<div class="modal-meta-item"><strong>PROYECTO</strong><a href="${safeUrl(project.link)}" target="_blank">Ver online</a></div>` : ''}
+            ${project.link ? `<div class="modal-meta-item"><strong>PROYECTO</strong><a href="${safeUrl(project.link)}" target="_blank" rel="noopener noreferrer">Ver online</a></div>` : ''}
         </div>
         <p><strong>${tFunc('modal.description') || 'Descripción'}:</strong> ${escapeHtml(description)}</p>
         ${fullDescription !== description ? `<div style="background:rgba(0,123,255,0.05);padding:1.5rem;border-radius:20px;margin:1rem 0;border-left:3px solid #007BFF"><p>${escapeHtml(fullDescription)}</p></div>` : ''}
@@ -305,12 +358,13 @@ function navigateModal(direction) {
 }
 
 // ============================================
-// FILTROS UI
+// FILTROS UI (con normalización de categorías)
 // ============================================
 
 function setupFilters() {
-    if (!PROJECTS_DATA) return;
-    const projects = Array.isArray(PROJECTS_DATA) ? PROJECTS_DATA : (PROJECTS_DATA.projects || []);
+    const projects = getProjectsArray();
+    if (projects.length === 0) return;
+
     const categories = ['all'];
     const categorySet = {};
 
@@ -360,7 +414,7 @@ function debounce(fn, delay) {
 }
 
 // ============================================
-// BÚSQUEDA
+// BÚSQUEDA (con manejo seguro)
 // ============================================
 
 function setupSearch() {
@@ -368,7 +422,7 @@ function setupSearch() {
     if (!searchInput) return;
 
     const debouncedSearch = debounce(() => {
-        projectsState.search = searchInput.value.toLowerCase();
+        projectsState.search = searchInput.value.toLowerCase() || '';
         renderProjects();
         setTimeout(setupScrollReveal, 100);
     }, PROJECTS_CONFIG.SEARCH_DEBOUNCE);
@@ -455,6 +509,8 @@ async function initProjects() {
     setupSearch();
     setupModalEvents();
     setupLanguageListener();
+
+    console.log('🚀 KR4N30 v14.0 - Proyectos inicializados');
 }
 
 window.renderProjects = renderProjects;
