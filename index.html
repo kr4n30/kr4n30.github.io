@@ -112,25 +112,21 @@
         <div class="hero-bg"></div>
         <div class="container hero-container">
             <div class="hero-content">
-                <!-- BADGE -->
                 <div class="hero-badge">
                     <span class="badge-pulse"></span>
                     <span data-i18n="hero.badge">¿QUÉ HACEMOS?</span>
                 </div>
 
-                <!-- LOGO HERO PREMIUM -->
                 <div class="hero-logo-wrapper">
                     <div class="glitch-logo">
                         <img src="assets/images/logo.png" alt="KR4N30" class="hero-logo-img">
                     </div>
                 </div>
 
-                <!-- DESCRIPCIÓN -->
                 <p class="hero-description" data-i18n="hero.description">
                     Creamos soluciones digitales que funcionan.<br> Web, Software, Minecraft y Habbo para hacer crecer tu negocio.
                 </p>
 
-                <!-- BOTONES -->
                 <div class="hero-buttons">
                     <button type="button" class="btn-primary" id="exploreBtn">
                         <span class="btn-text" data-i18n="hero.btn_services">Explorar servicios</span>
@@ -142,7 +138,6 @@
                     </button>
                 </div>
 
-                <!-- STATS -->
                 <div class="hero-stats" id="heroStats">
                     <div class="stat-item">
                         <span class="stat-number" id="stat-projects">0</span>
@@ -160,7 +155,6 @@
             </div>
         </div>
 
-        <!-- SHAPES FLOTANTES -->
         <div class="floating-shapes" aria-hidden="true">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
@@ -228,13 +222,16 @@
                     <h3><span data-i18n="contact.title">¿Hablamos de tu</span> <span class="gradient-text" data-i18n="contact.title_gradient">proyecto</span>?</h3>
                     <p data-i18n="contact.subtitle">Cuéntanos tu idea y te ayudaremos a hacerla realidad. Te respondemos en menos de 24h.</p>
                     <div class="contact-methods">
-                        <div class="contact-method"><i class="fas fa-envelope"></i>
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
                             <div><strong data-i18n="contact.email">Email</strong><a id="emailLink">cargando...</a></div>
                         </div>
-                        <div class="contact-method"><i class="fab fa-whatsapp"></i>
+                        <div class="contact-method">
+                            <i class="fab fa-whatsapp"></i>
                             <div><strong data-i18n="contact.whatsapp">WhatsApp</strong><span>+34 600 000 000</span></div>
                         </div>
-                        <div class="contact-method"><i class="fab fa-instagram"></i>
+                        <div class="contact-method">
+                            <i class="fab fa-instagram"></i>
                             <div><strong data-i18n="contact.instagram">Instagram</strong><span>@kr4n30</span></div>
                         </div>
                     </div>
@@ -266,78 +263,10 @@
 
     <button type="button" class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- Scripts externos -->
+    <!-- Scripts externos - SOLO UN VEZ -->
     <script src="assets/js/i18n.js" defer></script>
     <script src="assets/js/script.js" defer></script>
     <script src="assets/js/projects.js" defer></script>
-
-    <!-- Script para el selector de idioma personalizado -->
-    <script>
-        (function() {
-            function initLanguageSelector() {
-                var langBtn = document.getElementById('langBtn');
-                var langDropdown = document.getElementById('langDropdown');
-                var currentFlag = document.getElementById('currentFlag');
-                var currentLangText = document.getElementById('currentLangText');
-                var langOptions = document.querySelectorAll('.lang-option');
-                var switcher = document.getElementById('languageSwitcher');
-
-                if (!langBtn || !langDropdown) return;
-
-                langBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    langDropdown.classList.toggle('show');
-                    langBtn.classList.toggle('active');
-                });
-
-                document.addEventListener('click', function(e) {
-                    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
-                        langDropdown.classList.remove('show');
-                        langBtn.classList.remove('active');
-                    }
-                });
-
-                for (var i = 0; i < langOptions.length; i++) {
-                    (function(option) {
-                        option.addEventListener('click', function() {
-                            var lang = this.dataset.lang;
-                            var flagSrc = this.querySelector('.lang-flag').src;
-                            var shortLang = lang === 'es' ? 'ES' : 'EN';
-
-                            currentFlag.src = flagSrc;
-                            currentLangText.textContent = shortLang;
-
-                            if (switcher) {
-                                switcher.value = lang;
-                                var event = new Event('change');
-                                switcher.dispatchEvent(event);
-                            }
-
-                            langDropdown.classList.remove('show');
-                            langBtn.classList.remove('active');
-                        });
-                    })(langOptions[i]);
-                }
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initLanguageSelector);
-            } else {
-                initLanguageSelector();
-            }
-        })();
-    </script>
-
-    <!-- Script para email protegido -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var emailLink = document.getElementById('emailLink');
-            if (emailLink) {
-                emailLink.href = 'mailto:' + 'info' + '@' + 'kr4n30.com';
-                emailLink.textContent = 'info' + '@' + 'kr4n30.com';
-            }
-        });
-    </script>
 </body>
 
 </html>

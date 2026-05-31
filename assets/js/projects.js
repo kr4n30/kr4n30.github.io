@@ -24,7 +24,7 @@ function escapeHtml(str) {
         str = String(str);
     }
     if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
+    return str.replace(/[&<>]/g, function (m) {
         if (m === '&') return '&amp;';
         if (m === '<') return '&lt;';
         if (m === '>') return '&gt;';
@@ -85,8 +85,8 @@ function animateCounter(element, target, duration) {
 function setupStatsObserver() {
     var statsSection = document.getElementById('heroStats');
     if (!statsSection) return;
-    var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
             if (entry.isIntersecting && PROJECTS_DATA) {
                 animateCounter(document.getElementById('stat-projects'), PROJECTS_DATA.stats.totalProjects);
                 animateCounter(document.getElementById('stat-clients'), PROJECTS_DATA.stats.clients);
@@ -124,10 +124,10 @@ function getFilteredProjects() {
     if (!PROJECTS_DATA) return [];
     var filtered = PROJECTS_DATA.projects.slice();
     if (currentFilter !== 'all') {
-        filtered = filtered.filter(function(p) { return p.category === currentFilter; });
+        filtered = filtered.filter(function (p) { return p.category === currentFilter; });
     }
     if (currentSearch) {
-        filtered = filtered.filter(function(p) {
+        filtered = filtered.filter(function (p) {
             var title = getProjectText(p, 'title');
             var description = getProjectText(p, 'description');
             return title.toLowerCase().indexOf(currentSearch) !== -1 ||
@@ -139,7 +139,7 @@ function getFilteredProjects() {
 }
 
 // ============================================
-// RENDERIZADO DE TARJETAS
+// RENDERIZADO DE TARJETAS (con botón Ver más)
 // ============================================
 
 async function renderProjects() {
@@ -186,10 +186,23 @@ async function renderProjects() {
             '</div>' +
             '<p style="color:var(--text-secondary);font-size:0.85rem">' + escapeHtml(shortDescription) + '</p>' +
             '<div class="project-tech">' + techHtml + '</div>' +
+            '<button class="project-view-more" data-id="' + project.id + '">' +
+            '<span>Ver más</span> <i class="fas fa-arrow-right"></i>' +
+            '</button>' +
             '</div>' +
             '</div>';
     }
     container.innerHTML = html;
+
+    // Agregar event listeners a los botones "Ver más"
+    var viewMoreBtns = document.querySelectorAll('.project-view-more');
+    for (var i = 0; i < viewMoreBtns.length; i++) {
+        viewMoreBtns[i].addEventListener('click', function (e) {
+            e.stopPropagation();
+            var id = Number(this.dataset.id);
+            showProjectModal(id);
+        });
+    }
 }
 
 // ============================================
@@ -224,7 +237,7 @@ function updateModalContent(project) {
     var title = getProjectText(project, 'title');
     var description = getProjectText(project, 'description');
     var fullDescription = getProjectText(project, 'fullDescription');
-    var tFunc = window.t || function(x) { return x; };
+    var tFunc = window.t || function (x) { return x; };
 
     var techHtml = '';
     if (project.technologies && Array.isArray(project.technologies)) {
@@ -314,15 +327,17 @@ function setupFilters() {
 function setupEventDelegation() {
     var container = document.getElementById('portfolioGrid');
     if (container) {
-        container.addEventListener('click', function(e) {
+        container.addEventListener('click', function (e) {
             var card = e.target.closest('.project-card');
-            if (card) showProjectModal(Number(card.dataset.id));
+            if (card && !e.target.classList.contains('project-view-more')) {
+                showProjectModal(Number(card.dataset.id));
+            }
         });
     }
 
     var filterContainer = document.getElementById('portfolioFilters');
     if (filterContainer) {
-        filterContainer.addEventListener('click', function(e) {
+        filterContainer.addEventListener('click', function (e) {
             var btn = e.target.closest('.filter-btn');
             if (!btn) return;
             var btns = document.querySelectorAll('.filter-btn');
@@ -343,9 +358,9 @@ function setupEventDelegation() {
 function setupSearch() {
     var searchInput = document.getElementById('projectSearch');
     if (!searchInput) return;
-    searchInput.addEventListener('input', function(e) {
+    searchInput.addEventListener('input', function (e) {
         if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
-        searchDebounceTimer = setTimeout(function() {
+        searchDebounceTimer = setTimeout(function () {
             currentSearch = e.target.value.toLowerCase();
             renderProjects();
         }, PROJECTS_CONFIG.SEARCH_DEBOUNCE);
@@ -358,7 +373,7 @@ function setupSearch() {
 
 function setupModalEvents() {
     var modal = document.getElementById('projectModal');
-    var closeModal = function() {
+    var closeModal = function () {
         if (modal) modal.classList.remove('active');
         document.body.style.overflow = '';
     };
@@ -367,10 +382,10 @@ function setupModalEvents() {
     var modalOverlay = document.querySelector('.modal-overlay');
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
     var modalPrev = document.getElementById('modalPrev');
-    if (modalPrev) modalPrev.addEventListener('click', function() { navigateModal(-1); });
+    if (modalPrev) modalPrev.addEventListener('click', function () { navigateModal(-1); });
     var modalNext = document.getElementById('modalNext');
-    if (modalNext) modalNext.addEventListener('click', function() { navigateModal(1); });
-    document.addEventListener('keydown', function(e) {
+    if (modalNext) modalNext.addEventListener('click', function () { navigateModal(1); });
+    document.addEventListener('keydown', function (e) {
         if (!modal || !modal.classList.contains('active')) return;
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowLeft') navigateModal(-1);
@@ -383,7 +398,7 @@ function setupModalEvents() {
 // ============================================
 
 function setupLanguageListener() {
-    document.addEventListener('languageChanged', function() {
+    document.addEventListener('languageChanged', function () {
         setupFilters();
         renderProjects();
         var searchInput = document.getElementById('projectSearch');
