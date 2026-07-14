@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "Toolbox · Herramientas Online Gratis y Privadas",
+    "description": "Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos a ningún servidor, sin instalar nada. 100% gratis y privado.",
+    "ogTitle": "Toolbox · Herramientas Online"
+  },
+  "nav": {
+    "home": "Inicio",
+    "tools": "Herramientas",
+    "features": "Ventajas"
+  },
+  "header": {
+    "online": "En línea",
+    "explore": "Explorar"
+  },
+  "hero": {
+    "tag": "100% en tu navegador",
+    "titleLine1": "Herramientas online",
+    "titleLine2": "rápidas y privadas",
+    "description": "Convierte tus archivos directamente en el navegador. Nada se sube a un servidor, nada que instalar.",
+    "ctaPrimary": "Ver herramientas",
+    "ctaSecondary": "Cómo funciona"
+  },
+  "search": {
+    "placeholder": "Buscar una herramienta..."
+  },
+  "tools": {
+    "heading": "Todas las",
+    "headingHighlight": "herramientas",
+    "subheading": "Cada herramienta corre 100% en tu navegador",
+    "videoToImage": {
+      "name": "Video a Imagen",
+      "desc": "Extrae fotogramas de un video y descárgalos como imágenes."
+    },
+    "comingSoon": "Próximamente",
+    "comingSoonAction": "En construcción",
+    "open": "Abrir herramienta",
+    "noResults": "No se encontraron herramientas"
+  },
+  "features": {
+    "heading": "¿Por qué",
+    "headingHighlight": "Toolbox",
+    "subheading": "Así cuidamos tu tiempo y tus archivos",
+    "fast": { "title": "Procesamiento rápido", "desc": "Todo ocurre en tu navegador, sin esperas de subida ni descarga." },
+    "private": { "title": "Privado por diseño", "desc": "Tus archivos nunca salen de tu dispositivo." },
+    "noUpload": { "title": "Sin subir archivos", "desc": "Ningún archivo se envía a un servidor externo." },
+    "crossPlatform": { "title": "Multiplataforma", "desc": "Funciona en cualquier sistema operativo con un navegador moderno." },
+    "quality": { "title": "Alta calidad", "desc": "Resultados profesionales sin pérdida de calidad." },
+    "free": { "title": "Gratis", "desc": "Sin límites ocultos ni registros obligatorios." }
+  },
+  "highlights": {
+    "item1": { "value": "1", "label": "Herramienta disponible" },
+    "item2": { "value": "0%", "label": "Archivos subidos a servidores" },
+    "item3": { "value": "100%", "label": "Gratis" },
+    "item4": { "value": "ES / EN", "label": "Idiomas disponibles" }
+  },
+  "cta": {
+    "heading": "¿List@ para",
+    "headingHighlight": "probar Toolbox",
+    "description": "Sin registro, sin instalación. Empieza ahora mismo.",
+    "button": "Ver herramientas"
+  },
+  "footer": {
+    "description": "Herramientas online rápidas, privadas y gratuitas.",
+    "rights": "Todos los derechos reservados."
+  }
+}

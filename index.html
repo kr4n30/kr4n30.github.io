@@ -3,66 +3,213 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kr4n30 | Perfil</title>
+    <title>Toolbox · Herramientas Online Gratis y Privadas</title>
+    <meta name="description" content="Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos a ningún servidor, sin instalar nada. 100% gratis y privado." data-i18n-attr="content:meta.description" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080c1a" />
+    <link rel="canonical" href="https://kr4n30.github.io/" />
 
-    <!-- Fonts -->
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Toolbox · Herramientas Online" data-i18n-attr="content:meta.ogTitle" />
+    <meta property="og:description" content="Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos, sin instalar nada." data-i18n-attr="content:meta.description" />
+    <meta property="og:url" content="https://kr4n30.github.io/" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Toolbox" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Toolbox · Herramientas Online" />
+    <meta name="twitter:description" content="Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos, sin instalar nada." />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+
+    <!-- Seguridad -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Fuentes / iconos -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
-    <!-- CSS Principal -->
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Toolbox",
+        "url": "https://kr4n30.github.io/",
+        "inLanguage": ["es", "en"],
+        "description": "Herramientas online rápidas, privadas y gratuitas que corren 100% en el navegador."
+    }
+    </script>
 </head>
 <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
 
-    <!-- ENTER OVERLAY -->
-    <div id="enter-overlay">
-        <div id="enter-box">
-            <div id="enter-pulse"></div>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="42" height="42">
-                <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
-            <span>tap para entrar</span>
-        </div>
-    </div>
+    <div id="header-placeholder"></div>
 
-    <!-- BACKGROUND VIDEO -->
-    <div id="yt-bg">
-        <div id="yt-player"></div>
-    </div>
-
-    <!-- Sound toggle -->
-    <button id="sound-btn" title="Toggle sound">
-        <svg id="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-        </svg>
-        <svg id="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-        </svg>
-    </button>
-
-    <!-- MAIN CARD -->
-    <div id="stage">
-        <div class="card">
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatar-el"></div>
+    <main id="main">
+        <!-- ===== HERO ===== -->
+        <section class="hero" id="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-tag">
+                        <span aria-hidden="true">✦</span>
+                        <span data-i18n="hero.tag">100% en tu navegador</span>
+                    </div>
+                    <h1 class="hero-title">
+                        <span data-i18n="hero.titleLine1">Herramientas online</span><br />
+                        <span class="hero-title-gradient" data-i18n="hero.titleLine2">rápidas y privadas</span>
+                    </h1>
+                    <p class="hero-description" data-i18n="hero.description">
+                        Convierte tus archivos directamente en el navegador. Nada se sube a un servidor, nada que instalar.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#tools" class="btn btn-primary">
+                            <span data-i18n="hero.ctaPrimary">Ver herramientas</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                        <a href="#features" class="btn btn-secondary" data-i18n="hero.ctaSecondary">Cómo funciona</a>
+                    </div>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="floating-card card-1">
+                        <div class="fc-header"><span class="fc-dot"></span><span class="fc-dot"></span><span class="fc-dot"></span></div>
+                        <div class="fc-body"><div class="fc-line"></div><div class="fc-line short"></div><div class="fc-line"></div></div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <div class="fc-header"><span class="fc-dot"></span><span class="fc-dot"></span><span class="fc-dot"></span></div>
+                        <div class="fc-body"><div class="fc-line"></div><div class="fc-line short"></div></div>
+                    </div>
+                    <div class="floating-card card-3">
+                        <div class="fc-header"><span class="fc-dot"></span><span class="fc-dot"></span><span class="fc-dot"></span></div>
+                        <div class="fc-body"><div class="fc-line"></div><div class="fc-line short"></div><div class="fc-line"></div></div>
+                    </div>
+                    <div class="glow-spot"></div>
+                    <div class="glow-spot-2"></div>
+                </div>
             </div>
-            <div class="name" id="name-el"></div>
-            <div class="tagline" id="tagline-el"></div>
-            <div class="divider"></div>
-            <div class="socials" id="socials-el"></div>
-            <div class="links" id="links-el"></div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="assets/js/script.js"></script>
+        <!-- ===== BUSCADOR ===== -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                        <label for="searchInput" class="visually-hidden">Buscar herramienta</label>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="search-input"
+                            placeholder="Buscar una herramienta..."
+                            data-i18n-attr="placeholder:search.placeholder"
+                            autocomplete="off"
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- ===== HERRAMIENTAS ===== -->
+        <section class="tools-section" id="tools">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span data-i18n="tools.heading">Todas las</span> <span class="highlight" data-i18n="tools.headingHighlight">herramientas</span></h2>
+                    <p data-i18n="tools.subheading">Cada herramienta corre 100% en tu navegador</p>
+                </div>
+                <div class="tools-grid" id="toolsGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURES ===== -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span data-i18n="features.heading">¿Por qué</span> <span class="highlight" data-i18n="features.headingHighlight">Toolbox</span>?</h2>
+                    <p data-i18n="features.subheading">Así cuidamos tu tiempo y tus archivos</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-bolt"></i></div>
+                        <h3 data-i18n="features.fast.title">Procesamiento rápido</h3>
+                        <p data-i18n="features.fast.desc">Todo ocurre en tu navegador, sin esperas de subida ni descarga.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-lock"></i></div>
+                        <h3 data-i18n="features.private.title">Privado por diseño</h3>
+                        <p data-i18n="features.private.desc">Tus archivos nunca salen de tu dispositivo.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-upload"></i></div>
+                        <h3 data-i18n="features.noUpload.title">Sin subir archivos</h3>
+                        <p data-i18n="features.noUpload.desc">Ningún archivo se envía a un servidor externo.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-desktop"></i></div>
+                        <h3 data-i18n="features.crossPlatform.title">Multiplataforma</h3>
+                        <p data-i18n="features.crossPlatform.desc">Funciona en cualquier sistema operativo con un navegador moderno.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-star"></i></div>
+                        <h3 data-i18n="features.quality.title">Alta calidad</h3>
+                        <p data-i18n="features.quality.desc">Resultados profesionales sin pérdida de calidad.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon" aria-hidden="true"><i class="fas fa-gem"></i></div>
+                        <h3 data-i18n="features.free.title">Gratis</h3>
+                        <p data-i18n="features.free.desc">Sin límites ocultos ni registros obligatorios.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== HIGHLIGHTS ===== -->
+        <section class="stats-section" id="highlights">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="highlights.item1.value">1</div>
+                        <div class="stat-label" data-i18n="highlights.item1.label">Herramienta disponible</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="highlights.item2.value">0%</div>
+                        <div class="stat-label" data-i18n="highlights.item2.label">Archivos subidos a servidores</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="highlights.item3.value">100%</div>
+                        <div class="stat-label" data-i18n="highlights.item3.label">Gratis</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="highlights.item4.value">ES / EN</div>
+                        <div class="stat-label" data-i18n="highlights.item4.label">Idiomas disponibles</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA ===== -->
+        <section class="cta-section" id="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2><span data-i18n="cta.heading">¿List@ para</span> <span class="highlight" data-i18n="cta.headingHighlight">probar Toolbox</span>?</h2>
+                    <p data-i18n="cta.description">Sin registro, sin instalación. Empieza ahora mismo.</p>
+                    <a href="#tools" class="btn btn-primary btn-large">
+                        <span data-i18n="cta.button">Ver herramientas</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/assets/js/include.js" defer></script>
+    <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/app.js" defer></script>
 </body>
 </html>

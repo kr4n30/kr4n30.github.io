@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "Toolbox · Free & Private Online Tools",
+    "description": "Convert and transform your files directly in your browser. Nothing gets uploaded to a server, nothing to install. 100% free and private.",
+    "ogTitle": "Toolbox · Online Tools"
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "features": "Why us"
+  },
+  "header": {
+    "online": "Online",
+    "explore": "Explore"
+  },
+  "hero": {
+    "tag": "100% in your browser",
+    "titleLine1": "Fast, private",
+    "titleLine2": "online tools",
+    "description": "Convert your files directly in your browser. Nothing gets uploaded, nothing to install.",
+    "ctaPrimary": "Browse tools",
+    "ctaSecondary": "How it works"
+  },
+  "search": {
+    "placeholder": "Search for a tool..."
+  },
+  "tools": {
+    "heading": "All the",
+    "headingHighlight": "tools",
+    "subheading": "Every tool runs 100% in your browser",
+    "videoToImage": {
+      "name": "Video to Image",
+      "desc": "Extract frames from a video and download them as images."
+    },
+    "comingSoon": "Coming soon",
+    "comingSoonAction": "In progress",
+    "open": "Open tool",
+    "noResults": "No tools found"
+  },
+  "features": {
+    "heading": "Why",
+    "headingHighlight": "Toolbox",
+    "subheading": "This is how we protect your time and your files",
+    "fast": { "title": "Fast processing", "desc": "Everything happens in your browser, no upload or download waiting." },
+    "private": { "title": "Private by design", "desc": "Your files never leave your device." },
+    "noUpload": { "title": "No file uploads", "desc": "No file is ever sent to an external server." },
+    "crossPlatform": { "title": "Cross platform", "desc": "Works on any operating system with a modern browser." },
+    "quality": { "title": "High quality", "desc": "Professional results with no quality loss." },
+    "free": { "title": "Free", "desc": "No hidden limits and no mandatory sign-up." }
+  },
+  "highlights": {
+    "item1": { "value": "1", "label": "Tool available" },
+    "item2": { "value": "0%", "label": "Files uploaded to servers" },
+    "item3": { "value": "100%", "label": "Free" },
+    "item4": { "value": "ES / EN", "label": "Languages available" }
+  },
+  "cta": {
+    "heading": "Ready to",
+    "headingHighlight": "try Toolbox",
+    "description": "No sign-up, no install. Start right now.",
+    "button": "Browse tools"
+  },
+  "footer": {
+    "description": "Fast, private and free online tools.",
+    "rights": "All rights reserved."
+  }
+}
