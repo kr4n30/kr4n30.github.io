@@ -25,8 +25,8 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
 
-    <!-- Seguridad -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';" />
+    <!-- Seguridad (incluye dominios de Google AdSense para los anuncios) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- Fuentes / iconos -->
@@ -35,6 +35,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/style.css" />
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6818233483684146" crossorigin="anonymous"></script>
 
     <!-- Datos estructurados -->
     <script type="application/ld+json">
@@ -71,9 +74,17 @@
                     </p>
                     <div class="hero-buttons">
                         <a href="#tools" class="btn btn-primary">
-                            <span data-i18n="hero.ctaPrimary">Ver herramientas</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            <span data-i18n="hero.ctaPrimary">Úsalo gratis</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </a>
-                        <a href="#features" class="btn btn-secondary" data-i18n="hero.ctaSecondary">Cómo funciona</a>
+                        <a href="#steps" class="btn btn-secondary" data-i18n="hero.ctaSecondary">Cómo funciona</a>
+                    </div>
+                    <div class="hero-devices">
+                        <span class="hero-devices-text" data-i18n="hero.deviceLine">📲 Úsalo gratis en tu PC y en tu móvil</span>
+                        <div class="device-badges">
+                            <span class="device-badge"><i class="fas fa-desktop" aria-hidden="true"></i> <span data-i18n="hero.badgePc">PC</span></span>
+                            <span class="device-badge"><i class="fas fa-mobile-alt" aria-hidden="true"></i> <span data-i18n="hero.badgeMobile">Móvil</span></span>
+                            <span class="device-badge"><i class="fas fa-globe" aria-hidden="true"></i> <span data-i18n="hero.badgeBrowser">Cualquier navegador</span></span>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-visual" aria-hidden="true">
@@ -94,6 +105,47 @@
                 </div>
             </div>
         </section>
+
+        <!-- ===== CÓMO FUNCIONA (3 pasos) ===== -->
+        <section class="steps-section" id="steps">
+            <div class="container">
+                <div class="section-header">
+                    <h2><span data-i18n="steps.heading">Así de</span> <span class="highlight" data-i18n="steps.headingHighlight">fácil</span></h2>
+                    <p data-i18n="steps.subheading">Tres pasos y listo, sin curva de aprendizaje</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 data-i18n="steps.step1.title">Sube tu archivo</h3>
+                        <p data-i18n="steps.step1.desc">Arrástralo o selecciónalo desde tu PC o tu teléfono. Nunca sale de tu dispositivo.</p>
+                        <span class="step-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 data-i18n="steps.step2.title">Ajusta las opciones</h3>
+                        <p data-i18n="steps.step2.desc">Elige formato, calidad y demás detalles según lo que necesites.</p>
+                        <span class="step-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 data-i18n="steps.step3.title">Descarga el resultado</h3>
+                        <p data-i18n="steps.step3.desc">Obtén tu archivo listo al instante, directo a tu dispositivo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANUNCIO -->
+        <div class="container">
+            <div class="ad-slot" id="topAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000010"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </div>
 
         <!-- ===== BUSCADOR ===== -->
         <section class="search-section">
@@ -151,8 +203,8 @@
                     </div>
                     <div class="feature-box">
                         <div class="feature-icon" aria-hidden="true"><i class="fas fa-desktop"></i></div>
-                        <h3 data-i18n="features.crossPlatform.title">Multiplataforma</h3>
-                        <p data-i18n="features.crossPlatform.desc">Funciona en cualquier sistema operativo con un navegador moderno.</p>
+                        <h3 data-i18n="features.crossPlatform.title">PC y móvil</h3>
+                        <p data-i18n="features.crossPlatform.desc">Funciona igual de bien en tu computadora y en tu teléfono, sin instalar nada.</p>
                     </div>
                     <div class="feature-box">
                         <div class="feature-icon" aria-hidden="true"><i class="fas fa-star"></i></div>
@@ -192,14 +244,26 @@
             </div>
         </section>
 
+        <!-- ANUNCIO -->
+        <div class="container">
+            <div class="ad-slot" id="bottomAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000011"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </div>
+
         <!-- ===== CTA ===== -->
         <section class="cta-section" id="cta">
             <div class="container">
                 <div class="cta-content">
                     <h2><span data-i18n="cta.heading">¿List@ para</span> <span class="highlight" data-i18n="cta.headingHighlight">probar Toolbox</span>?</h2>
-                    <p data-i18n="cta.description">Sin registro, sin instalación. Empieza ahora mismo.</p>
+                    <p data-i18n="cta.description">Sin registro, sin instalación. Empieza ahora mismo, desde tu PC o tu móvil.</p>
                     <a href="#tools" class="btn btn-primary btn-large">
-                        <span data-i18n="cta.button">Ver herramientas</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        <span data-i18n="cta.button">Úsalo gratis</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -210,6 +274,7 @@
 
     <script src="/assets/js/include.js" defer></script>
     <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/adsense.js" defer></script>
     <script src="/assets/js/app.js" defer></script>
 </body>
 </html>

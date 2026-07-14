@@ -18,8 +18,12 @@
     "titleLine1": "Herramientas online",
     "titleLine2": "rápidas y privadas",
     "description": "Convierte tus archivos directamente en el navegador. Nada se sube a un servidor, nada que instalar.",
-    "ctaPrimary": "Ver herramientas",
-    "ctaSecondary": "Cómo funciona"
+    "ctaPrimary": "Úsalo gratis",
+    "ctaSecondary": "Cómo funciona",
+    "deviceLine": "📲 Úsalo gratis en tu PC y en tu móvil",
+    "badgePc": "PC",
+    "badgeMobile": "Móvil",
+    "badgeBrowser": "Cualquier navegador"
   },
   "search": {
     "placeholder": "Buscar una herramienta..."
@@ -44,9 +48,17 @@
     "fast": { "title": "Procesamiento rápido", "desc": "Todo ocurre en tu navegador, sin esperas de subida ni descarga." },
     "private": { "title": "Privado por diseño", "desc": "Tus archivos nunca salen de tu dispositivo." },
     "noUpload": { "title": "Sin subir archivos", "desc": "Ningún archivo se envía a un servidor externo." },
-    "crossPlatform": { "title": "Multiplataforma", "desc": "Funciona en cualquier sistema operativo con un navegador moderno." },
+    "crossPlatform": { "title": "PC y móvil", "desc": "Funciona igual de bien en tu computadora y en tu teléfono, sin instalar nada." },
     "quality": { "title": "Alta calidad", "desc": "Resultados profesionales sin pérdida de calidad." },
     "free": { "title": "Gratis", "desc": "Sin límites ocultos ni registros obligatorios." }
+  },
+  "steps": {
+    "heading": "Así de",
+    "headingHighlight": "fácil",
+    "subheading": "Tres pasos y listo, sin curva de aprendizaje",
+    "step1": { "title": "Sube tu archivo", "desc": "Arrástralo o selecciónalo desde tu PC o tu teléfono. Nunca sale de tu dispositivo." },
+    "step2": { "title": "Ajusta las opciones", "desc": "Elige formato, calidad y demás detalles según lo que necesites." },
+    "step3": { "title": "Descarga el resultado", "desc": "Obtén tu archivo listo al instante, directo a tu dispositivo." }
   },
   "highlights": {
     "item1": { "value": "1", "label": "Herramienta disponible" },
@@ -57,8 +69,8 @@
   "cta": {
     "heading": "¿List@ para",
     "headingHighlight": "probar Toolbox",
-    "description": "Sin registro, sin instalación. Empieza ahora mismo.",
-    "button": "Ver herramientas"
+    "description": "Sin registro, sin instalación. Empieza ahora mismo, desde tu PC o tu móvil.",
+    "button": "Úsalo gratis"
   },
   "footer": {
     "description": "Herramientas online rápidas, privadas y gratuitas.",
