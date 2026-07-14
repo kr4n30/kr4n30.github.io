@@ -2,9 +2,9 @@
    app.js
    Lógica específica de la página de inicio:
    renderiza el grid de herramientas y el buscador.
-   Por ahora solo existe "Video a Imagen" (próximamente),
-   pero está preparado para agregar más herramientas
-   simplemente añadiéndolas al array `tools`.
+   Para agregar una herramienta nueva basta con sumar
+   una entrada al array `tools` (y crear su propio
+   assets/js/tools/<id>.js + assets/css/tools/<id>.css).
    ============================================ */
 (function () {
     'use strict';
@@ -14,7 +14,7 @@
             id: 'video-to-image',
             icon: 'fa-film',
             href: '/tools/video-to-image.html',
-            comingSoon: true,
+            comingSoon: false,
             i18n: {
                 name: 'tools.videoToImage.name',
                 desc: 'tools.videoToImage.desc'
