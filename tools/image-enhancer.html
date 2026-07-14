@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Mejorar Imagen con IA Gratis · Real-ESRGAN + Restauración Facial | kR4N30 Toolbox</title>
+    <meta name="description" content="Aumenta la resolución de tus fotos y restaura rostros con IA (Real-ESRGAN, GFPGAN, CodeFormer), 100% en tu navegador. Sin subir archivos a ningún servidor, gratis y privado." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080c1a" />
+    <link rel="canonical" href="https://kr4n30.github.io/tools/image-enhancer.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mejorar Imagen con IA · kR4N30 Toolbox" />
+    <meta property="og:description" content="Aumenta resolución y restaura rostros con IA, directamente en tu navegador. Sin subir archivos, gratis y privado." />
+    <meta property="og:url" content="https://kr4n30.github.io/tools/image-enhancer.html" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="kR4N30 Toolbox" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+
+    <!--
+        Seguridad: esta página corre 4 modelos de IA en el navegador
+        (onnxruntime-web para Real-ESRGAN/GFPGAN/CodeFormer, @huggingface/transformers
+        para el paso opcional de reducción de ruido con Swin2SR, y @mediapipe/tasks-vision
+        para detectar rostros). Todo se descarga desde CDN/Hugging Face/Google Storage
+        la primera vez y queda en caché del navegador. Nada se sube a un servidor propio.
+          - script-src: cdn.jsdelivr.net (librerías) + 'wasm-unsafe-eval' (WASM)
+          - connect-src: huggingface.co/hf.co (pesos de los modelos ONNX),
+            storage.googleapis.com (modelo del detector de rostros de MediaPipe)
+          - worker-src: blob: (onnxruntime-web y mediapipe corren en Web Workers)
+          - img-src: blob: (los canvas intermedios se exportan como blobs locales)
+        Si el navegador bloquea algo, revisa la consola.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn.jsdelivr.net https://storage.googleapis.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Fuentes / iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/tools-common.css" />
+    <link rel="stylesheet" href="/assets/css/tools/image-enhancer.css" />
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6818233483684146" crossorigin="anonymous"></script>
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mejorar Imagen con IA",
+        "url": "https://kr4n30.github.io/tools/image-enhancer.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (navegador web, recomendado Chrome/Edge para WebGPU)",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Aumenta la resolución de una imagen y restaura rostros con IA (Real-ESRGAN, GFPGAN/CodeFormer) directamente en el navegador."
+    }
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <div id="header-placeholder"></div>
+
+    <main id="main" class="tool-main">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Miga de pan">
+                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page">Mejorar Imagen</span>
+            </nav>
+
+            <div class="tool-hero">
+                <h1>✨ Mejorar Imagen con IA</h1>
+                <p>Aumenta la resolución 4x y restaura rostros con IA. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
+                <button id="infoBtn" class="btn btn-secondary btn-small" type="button">ℹ️ Cómo funciona</button>
+            </div>
+
+            <div class="ie-warning">
+                ⚠️ Los modelos de IA pesan varios cientos de MB en total (se descargan una sola vez y quedan en caché). El procesamiento puede tardar bastante en celulares o sin GPU — recomendamos Chrome o Edge en computadora.
+            </div>
+
+            <!-- ANUNCIO SUPERIOR -->
+            <div class="ad-slot" id="topAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000009"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Drop Zone -->
+            <section class="panel drop-zone-panel" id="dropZone">
+                <div class="drop-content">
+                    <div class="drop-icon" aria-hidden="true">🖼️</div>
+                    <h2>Arrastra una imagen aquí</h2>
+                    <p class="drop-hint">o haz clic para seleccionar</p>
+                    <div class="drop-formats">JPG · PNG · WebP</div>
+                    <label for="fileInput" class="visually-hidden">Seleccionar imagen</label>
+                    <input type="file" id="fileInput" accept="image/*" />
+                </div>
+            </section>
+
+            <!-- Panel de configuración + preview -->
+            <section class="panel hidden" id="setupPanel">
+                <div class="ie-preview-wrap">
+                    <img id="sourcePreview" alt="Imagen original" />
+                    <div class="ie-preview-meta" id="sourceMeta">-</div>
+                </div>
+
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="denoiseToggle" />
+                            <span>🧹 Reducir ruido antes de escalar (SwinIR)</span>
+                        </label>
+                        <span class="ie-hint">Paso opcional, más lento. Útil en fotos con ruido/JPEG muy comprimidas.</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="faceRestoreToggle" checked />
+                            <span>🙂 Restaurar rostros con IA</span>
+                        </label>
+                        <span class="ie-hint">Detecta caras y las mejora aparte, después del escalado general.</span>
+                    </div>
+
+                    <div class="control-group" id="restorerModelGroup">
+                        <label class="control-label" id="restorerLabel">Modelo de restauración facial</label>
+                        <div class="radio-group" role="radiogroup" aria-labelledby="restorerLabel">
+                            <label class="radio-label">
+                                <input type="radio" name="restorer" value="gfpgan" checked />
+                                <span>GFPGAN</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="restorer" value="codeformer" />
+                                <span>CodeFormer</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group hidden" id="fidelityGroup">
+                        <label class="control-label" for="fidelitySlider">Fidelidad (CodeFormer): <span id="fidelityDisplay">0.50</span></label>
+                        <input type="range" id="fidelitySlider" min="0" max="100" value="50" />
+                        <span class="ie-hint">Bajo = más "limpieza" IA. Alto = más fiel a la cara original.</span>
+                    </div>
+
+                    <div class="control-group full-width">
+                        <button id="enhanceBtn" class="btn-primary btn-lg" type="button">✨ Mejorar imagen</button>
+                        <button id="resetBtn" class="btn-secondary btn-sm" type="button">🔄 Elegir otra imagen</button>
+                    </div>
+                </div>
+
+                <div class="progress-wrap hidden" id="progressWrap">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"><div id="progressFill"></div></div>
+                        <div class="progress-percent" id="progressPercent">0%</div>
+                    </div>
+                    <div class="progress-label" id="progressLabel">Preparando...</div>
+                </div>
+            </section>
+
+            <!-- ANUNCIO ENTRE CONFIGURACIÓN Y RESULTADO -->
+            <div class="ad-slot" id="middleAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000010"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Resultado -->
+            <section class="panel hidden" id="resultPanel">
+                <h2>🖼️ Resultado</h2>
+                <div class="ie-compare" id="ieCompare">
+                    <img id="resultAfter" alt="Imagen mejorada" />
+                    <div class="ie-compare-before" id="ieCompareBefore">
+                        <img id="resultBefore" alt="Imagen original" />
+                    </div>
+                    <input type="range" id="compareSlider" min="0" max="100" value="50" aria-label="Comparar antes y después" />
+                    <div class="ie-compare-handle" id="ieCompareHandle" aria-hidden="true">↔</div>
+                </div>
+                <div class="ie-result-meta" id="resultMeta">-</div>
+
+                <div class="ie-result-actions">
+                    <button id="downloadBtn" class="btn-primary btn-lg" type="button">⬇️ Descargar imagen mejorada</button>
+                </div>
+            </section>
+
+            <!-- ANUNCIO FINAL -->
+            <div class="ad-slot" id="bottomAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000011"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Modal de recompensa (antes de descargar) -->
+            <div class="modal hidden" id="rewardModal" role="dialog" aria-modal="true" aria-labelledby="rewardModalTitle">
+                <div class="modal-content reward-modal-content">
+                    <div class="modal-header">
+                        <h3 id="rewardModalTitle">🎁 Desbloquea tu descarga</h3>
+                        <button class="modal-close" id="rewardCancelBtn" type="button" aria-label="Cancelar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="reward-visual">
+                            <div class="reward-timer" id="rewardTimer"><span id="rewardCountdownLabel">--</span></div>
+                        </div>
+                        <p class="reward-status" id="rewardStatusText" aria-live="polite">Cargando anuncio...</p>
+                        <div class="ad-slot reward-ad-slot" id="rewardAdSlot">
+                            <span class="ad-label">Publicidad</span>
+                            <ins class="adsbygoogle"
+                                 data-ad-lazy="true"
+                                 data-ad-client="ca-pub-6818233483684146"
+                                 data-ad-slot="0000000012"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                        </div>
+                        <div class="reward-actions">
+                            <button id="rewardContinueBtn" class="btn-primary btn-sm" type="button" disabled>✅ Descargar ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de información -->
+            <div class="modal hidden" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="infoModalTitle">ℹ️ Mejorar Imagen con IA</h3>
+                        <button class="modal-close" id="closeModal" type="button" aria-label="Cerrar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Procesamiento:</strong> 100% local, con varios modelos de IA que corren en tu navegador (WebAssembly / WebGPU si tu navegador lo soporta)</p>
+                        <p><strong>Pipeline:</strong></p>
+                        <ul>
+                            <li>🧹 (Opcional) Swin2SR reduce ruido/artefactos JPEG</li>
+                            <li>🔍 Real-ESRGAN x4plus escala y mejora nitidez/texturas de toda la imagen</li>
+                            <li>🧑 MediaPipe detecta los rostros en la imagen ya escalada</li>
+                            <li>🙂 GFPGAN o CodeFormer restauran únicamente esos rostros</li>
+                            <li>🖼️ Todo se combina en la imagen final</li>
+                        </ul>
+                        <p>La primera vez, los modelos de IA (varios cientos de MB en total) se descargan y quedan en caché de tu navegador para que las siguientes veces sea más rápido. Solo se descarga el modelo de restauración facial que elijas.</p>
+                        <p><strong>Créditos y licencias de los modelos:</strong></p>
+                        <ul>
+                            <li>Real-ESRGAN (BSD-3-Clause) — <a href="https://github.com/xinntao/Real-ESRGAN" target="_blank" rel="noopener">xinntao/Real-ESRGAN</a></li>
+                            <li>GFPGAN (Apache-2.0, con componentes derivados de código no-comercial) — <a href="https://github.com/TencentARC/GFPGAN" target="_blank" rel="noopener">TencentARC/GFPGAN</a></li>
+                            <li>CodeFormer (licencia NTU S-Lab 1.0, uso no comercial) — <a href="https://github.com/sczhou/CodeFormer" target="_blank" rel="noopener">sczhou/CodeFormer</a></li>
+                            <li>Swin2SR (Apache-2.0) — <a href="https://github.com/mv-lab/swin2sr" target="_blank" rel="noopener">mv-lab/swin2sr</a></li>
+                            <li>MediaPipe Face Detector (Apache-2.0) — <a href="https://github.com/google-ai-edge/mediapipe" target="_blank" rel="noopener">Google MediaPipe</a></li>
+                        </ul>
+                        <p>Gratis, gracias a los anuncios que ves en la página 💙</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-footer-note">
+                <p>⚡ Procesamiento 100% local · Sin servidores</p>
+                <p>🤖 Real-ESRGAN + GFPGAN/CodeFormer + MediaPipe (+ Swin2SR opcional)</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/assets/js/include.js" defer></script>
+    <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/adsense.js" defer></script>
+    <script src="/assets/js/reward-gate.js" defer></script>
+    <script type="module" src="/assets/js/tools/image-enhancer.js"></script>
+</body>
+</html>

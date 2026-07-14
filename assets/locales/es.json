@@ -40,6 +40,10 @@
       "name": "Quitar Fondo",
       "desc": "Elimina el fondo de una imagen con IA, directo en tu navegador."
     },
+    "imageEnhancer": {
+      "name": "Mejorar Imagen",
+      "desc": "Aumenta la resolución y restaura rostros con IA, directo en tu navegador."
+    },
     "comingSoon": "Próximamente",
     "comingSoonAction": "En construcción",
     "open": "Abrir herramienta",
@@ -65,7 +69,7 @@
     "step3": { "title": "Descarga el resultado", "desc": "Obtén tu archivo listo al instante, directo a tu dispositivo." }
   },
   "highlights": {
-    "item1": { "value": "2", "label": "Herramientas disponibles" },
+    "item1": { "value": "3", "label": "Herramientas disponibles" },
     "item2": { "value": "0%", "label": "Archivos subidos a servidores" },
     "item3": { "value": "100%", "label": "Gratis" },
     "item4": { "value": "ES / EN", "label": "Idiomas disponibles" }

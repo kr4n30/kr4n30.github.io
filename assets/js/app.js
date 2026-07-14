@@ -29,6 +29,16 @@
                 name: 'tools.backgroundRemover.name',
                 desc: 'tools.backgroundRemover.desc'
             }
+        },
+        {
+            id: 'image-enhancer',
+            icon: 'fa-wand-magic-sparkles',
+            href: '/tools/image-enhancer.html',
+            comingSoon: false,
+            i18n: {
+                name: 'tools.imageEnhancer.name',
+                desc: 'tools.imageEnhancer.desc'
+            }
         }
     ];
 
