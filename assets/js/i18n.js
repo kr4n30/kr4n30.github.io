@@ -65,8 +65,10 @@
             var titleValue = resolveKey(dict, 'meta.title');
             if (titleValue) document.title = titleValue;
 
-            var toggle = document.getElementById('langToggle');
-            if (toggle) toggle.textContent = lang === 'es' ? 'ES / EN' : 'EN / ES';
+            // El texto va en un <span> interno (no en el botón entero) para
+            // no borrar el icono de Font Awesome que vive junto a él.
+            var toggleText = document.getElementById('langToggleText');
+            if (toggleText) toggleText.textContent = lang === 'es' ? 'ES / EN' : 'EN / ES';
 
             document.dispatchEvent(new CustomEvent('i18n:applied', { detail: { lang: lang } }));
         });

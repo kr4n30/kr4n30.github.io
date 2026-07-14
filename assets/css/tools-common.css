@@ -410,7 +410,19 @@ button:disabled {
 /* ===== RESPONSIVE (reglas genéricas) ===== */
 @media (max-width: 768px) {
     .breadcrumb { padding-top: 90px; }
-    .tool-hero h1 { font-size: 1.7rem; }
+    .tool-hero h1 { font-size: clamp(1.4rem, 5vw, 1.7rem); }
     .panel { padding: 18px; }
     .modal-content { max-height: 90vh; }
+    .controls-grid { grid-template-columns: 1fr; }
+}
+@media (hover: none) and (pointer: coarse) {
+    /* En táctil, los chips/botones pequeños ganan algo de alto para
+       evitar toques fallidos, sin afectar la densidad en desktop. */
+    .btn-xs, .btn-sm, .preset-btn, .zoom-btn {
+        min-height: 36px;
+    }
+    input[type="checkbox"], input[type="radio"] {
+        width: 18px;
+        height: 18px;
+    }
 }

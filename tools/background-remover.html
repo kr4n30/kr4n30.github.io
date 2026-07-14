@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Quitar Fondo de Imagen Gratis · IA en tu Navegador | kR4N30 Toolbox</title>
+    <meta name="description" content="Elimina el fondo de cualquier imagen con inteligencia artificial, 100% en tu navegador. Sin subir archivos a ningún servidor, gratis y privado." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080c1a" />
+    <link rel="canonical" href="https://kr4n30.github.io/tools/background-remover.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Quitar Fondo de Imagen · kR4N30 Toolbox" />
+    <meta property="og:description" content="Elimina el fondo de cualquier imagen con IA, directamente en tu navegador. Sin subir archivos, gratis y privado." />
+    <meta property="og:url" content="https://kr4n30.github.io/tools/background-remover.html" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="kR4N30 Toolbox" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+
+    <!--
+        Seguridad: además de lo habitual (AdSense), esta página carga el
+        componente @ligrila/background-remover desde jsDelivr, que usa
+        @huggingface/transformers (onnxruntime-web) para correr el modelo
+        briaai/RMBG-1.4 en el navegador. Eso implica:
+          - script-src: cdn.jsdelivr.net (el módulo) + 'wasm-unsafe-eval' (WASM)
+          - connect-src: huggingface.co / hf.co (descarga de los pesos del
+            modelo la primera vez; luego quedan en caché del navegador)
+          - worker-src: blob: (onnxruntime-web corre en un Web Worker)
+          - img-src: blob: (la imagen procesada se genera como blob local)
+        Si el navegador bloquea algo, revisa la consola: puede que haga
+        falta ampliar un dominio concreto de Hugging Face.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn.jsdelivr.net; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Fuentes / iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/tools-common.css" />
+    <link rel="stylesheet" href="/assets/css/tools/background-remover.css" />
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6818233483684146" crossorigin="anonymous"></script>
+
+    <!-- Componente de eliminación de fondo (procesa la imagen 100% local) -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ligrila/background-remover@0.3.8/dist/background-remover.es.js"></script>
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Quitar Fondo de Imagen",
+        "url": "https://kr4n30.github.io/tools/background-remover.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (navegador web)",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Elimina el fondo de una imagen con IA directamente en el navegador, sin subir archivos a ningún servidor."
+    }
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <div id="header-placeholder"></div>
+
+    <main id="main" class="tool-main">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Miga de pan">
+                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page">Quitar Fondo</span>
+            </nav>
+
+            <div class="tool-hero">
+                <h1>🖼️ Quitar Fondo de Imagen</h1>
+                <p>Elimina el fondo de cualquier imagen con IA. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
+                <button id="infoBtn" class="btn btn-secondary btn-small" type="button">ℹ️ Cómo funciona</button>
+            </div>
+
+            <!-- ANUNCIO SUPERIOR -->
+            <div class="ad-slot" id="topAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000005"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Componente: quitar fondo (arrastrar y soltar, zoom, comparar) -->
+            <section class="panel bg-remover-panel" id="bgRemoverPanel">
+                <background-remover
+                    id="bgRemover"
+                    data-theme="dark"
+                    data-device="wasm"
+                    data-locale="es"
+                ></background-remover>
+                <noscript>Esta herramienta necesita JavaScript para funcionar.</noscript>
+            </section>
+
+            <!-- Acción de descarga propia (gateada por anuncio recompensado), -->
+            <!-- aparece en cuanto el componente termina de procesar la imagen -->
+            <div class="bg-result-actions hidden" id="bgResultActions">
+                <p class="bg-result-hint">✅ Imagen procesada. Puedes seguir ajustando el zoom/comparación arriba.</p>
+                <button id="bgDownloadBtn" class="btn-primary btn-lg" type="button">⬇️ Descargar imagen sin fondo</button>
+            </div>
+
+            <!-- ANUNCIO ENTRE LA HERRAMIENTA Y EL PIE -->
+            <div class="ad-slot" id="middleAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000006"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- ANUNCIO FINAL -->
+            <div class="ad-slot" id="bottomAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000007"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Modal de recompensa (antes de descargar) -->
+            <div class="modal hidden" id="rewardModal" role="dialog" aria-modal="true" aria-labelledby="rewardModalTitle">
+                <div class="modal-content reward-modal-content">
+                    <div class="modal-header">
+                        <h3 id="rewardModalTitle">🎁 Desbloquea tu descarga</h3>
+                        <button class="modal-close" id="rewardCancelBtn" type="button" aria-label="Cancelar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="reward-visual">
+                            <div class="reward-timer" id="rewardTimer"><span id="rewardCountdownLabel">--</span></div>
+                        </div>
+                        <p class="reward-status" id="rewardStatusText" aria-live="polite">Cargando anuncio...</p>
+                        <div class="ad-slot reward-ad-slot" id="rewardAdSlot">
+                            <span class="ad-label">Publicidad</span>
+                            <ins class="adsbygoogle"
+                                 data-ad-lazy="true"
+                                 data-ad-client="ca-pub-6818233483684146"
+                                 data-ad-slot="0000000008"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                        </div>
+                        <div class="reward-actions">
+                            <button id="rewardContinueBtn" class="btn-primary btn-sm" type="button" disabled>✅ Descargar ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de información -->
+            <div class="modal hidden" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="infoModalTitle">ℹ️ Quitar Fondo de Imagen</h3>
+                        <button class="modal-close" id="closeModal" type="button" aria-label="Cerrar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Procesamiento:</strong> 100% local, con un modelo de IA que corre en tu navegador (WebAssembly)</p>
+                        <ul>
+                            <li>✅ Arrastra o selecciona cualquier imagen</li>
+                            <li>✅ Elimina el fondo automáticamente</li>
+                            <li>✅ Zoom y comparación antes/después</li>
+                            <li>✅ Descarga el resultado en PNG</li>
+                            <li>✅ Sin subir tu imagen a ningún servidor</li>
+                        </ul>
+                        <p>La primera vez, el modelo de IA (unos MB) se descarga y queda en caché de tu navegador para que las siguientes veces sea instantáneo.</p>
+                        <p>Gratis, gracias a los anuncios que ves en la página 💙</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-footer-note">
+                <p>⚡ Procesamiento 100% local · Sin servidores</p>
+                <p>🤖 Modelo: briaai/RMBG-1.4</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/assets/js/include.js" defer></script>
+    <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/adsense.js" defer></script>
+    <script src="/assets/js/reward-gate.js" defer></script>
+    <script src="/assets/js/tools/background-remover.js" defer></script>
+</body>
+</html>

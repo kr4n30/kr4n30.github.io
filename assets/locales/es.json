@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "Toolbox · Herramientas Online Gratis y Privadas",
+    "title": "kR4N30 Toolbox · Herramientas Online Gratis y Privadas",
     "description": "Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos a ningún servidor, sin instalar nada. 100% gratis y privado.",
-    "ogTitle": "Toolbox · Herramientas Online"
+    "ogTitle": "kR4N30 Toolbox · Herramientas Online"
   },
   "nav": {
     "home": "Inicio",
@@ -36,6 +36,10 @@
       "name": "Video a Imagen",
       "desc": "Extrae fotogramas de un video y descárgalos como imágenes."
     },
+    "backgroundRemover": {
+      "name": "Quitar Fondo",
+      "desc": "Elimina el fondo de una imagen con IA, directo en tu navegador."
+    },
     "comingSoon": "Próximamente",
     "comingSoonAction": "En construcción",
     "open": "Abrir herramienta",
@@ -43,7 +47,7 @@
   },
   "features": {
     "heading": "¿Por qué",
-    "headingHighlight": "Toolbox",
+    "headingHighlight": "kR4N30 Toolbox",
     "subheading": "Así cuidamos tu tiempo y tus archivos",
     "fast": { "title": "Procesamiento rápido", "desc": "Todo ocurre en tu navegador, sin esperas de subida ni descarga." },
     "private": { "title": "Privado por diseño", "desc": "Tus archivos nunca salen de tu dispositivo." },
@@ -61,14 +65,14 @@
     "step3": { "title": "Descarga el resultado", "desc": "Obtén tu archivo listo al instante, directo a tu dispositivo." }
   },
   "highlights": {
-    "item1": { "value": "1", "label": "Herramienta disponible" },
+    "item1": { "value": "2", "label": "Herramientas disponibles" },
     "item2": { "value": "0%", "label": "Archivos subidos a servidores" },
     "item3": { "value": "100%", "label": "Gratis" },
     "item4": { "value": "ES / EN", "label": "Idiomas disponibles" }
   },
   "cta": {
     "heading": "¿List@ para",
-    "headingHighlight": "probar Toolbox",
+    "headingHighlight": "probar kR4N30 Toolbox",
     "description": "Sin registro, sin instalación. Empieza ahora mismo, desde tu PC o tu móvil.",
     "button": "Úsalo gratis"
   },

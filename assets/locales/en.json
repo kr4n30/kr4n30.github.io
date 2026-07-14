@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "Toolbox · Free & Private Online Tools",
+    "title": "kR4N30 Toolbox · Free & Private Online Tools",
     "description": "Convert and transform your files directly in your browser. Nothing gets uploaded to a server, nothing to install. 100% free and private.",
-    "ogTitle": "Toolbox · Online Tools"
+    "ogTitle": "kR4N30 Toolbox · Online Tools"
   },
   "nav": {
     "home": "Home",
@@ -36,6 +36,10 @@
       "name": "Video to Image",
       "desc": "Extract frames from a video and download them as images."
     },
+    "backgroundRemover": {
+      "name": "Background Remover",
+      "desc": "Remove the background from an image with AI, right in your browser."
+    },
     "comingSoon": "Coming soon",
     "comingSoonAction": "In progress",
     "open": "Open tool",
@@ -43,7 +47,7 @@
   },
   "features": {
     "heading": "Why",
-    "headingHighlight": "Toolbox",
+    "headingHighlight": "kR4N30 Toolbox",
     "subheading": "This is how we protect your time and your files",
     "fast": { "title": "Fast processing", "desc": "Everything happens in your browser, no upload or download waiting." },
     "private": { "title": "Private by design", "desc": "Your files never leave your device." },
@@ -61,14 +65,14 @@
     "step3": { "title": "Download the result", "desc": "Get your file ready instantly, straight to your device." }
   },
   "highlights": {
-    "item1": { "value": "1", "label": "Tool available" },
+    "item1": { "value": "2", "label": "Tools available" },
     "item2": { "value": "0%", "label": "Files uploaded to servers" },
     "item3": { "value": "100%", "label": "Free" },
     "item4": { "value": "ES / EN", "label": "Languages available" }
   },
   "cta": {
     "heading": "Ready to",
-    "headingHighlight": "try Toolbox",
+    "headingHighlight": "try kR4N30 Toolbox",
     "description": "No sign-up, no install. Start right now, from your PC or your phone.",
     "button": "Use it free"
   },

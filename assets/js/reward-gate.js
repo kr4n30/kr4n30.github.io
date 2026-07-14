@@ -35,13 +35,14 @@
 
     var REWARD_VALID_MS = 10 * 60 * 1000; // el "desbloqueo" dura 10 minutos
     var FALLBACK_SECONDS = 15; // cuenta regresiva simulada si no hay anuncio real
-    var PROBE_TIMEOUT_MS = 1200; // cuánto esperamos a que Google confirme que hay anuncio
+    var PROBE_TIMEOUT_MS = 2500; // cuánto esperamos a que Google confirme que hay anuncio
 
     var rewardExpiresAt = 0;
     var countdownInterval = null;
     var pendingUnlock = null;
+    var usingFallback = false; // evita que un anuncio real "tardío" pise la cuenta regresiva ya iniciada
 
-    var modal, cancelBtn, continueBtn, timerEl, countdownLabel, statusText;
+    var modal, cancelBtn, continueBtn, timerEl, countdownLabel, statusText, adSlotEl;
 
     function cacheElements() {
         modal = document.getElementById('rewardModal');
@@ -50,6 +51,7 @@
         timerEl = document.getElementById('rewardTimer');
         countdownLabel = document.getElementById('rewardCountdownLabel');
         statusText = document.getElementById('rewardStatusText');
+        adSlotEl = document.getElementById('rewardAdSlot');
     }
 
     function hasValidReward() {
@@ -70,7 +72,16 @@
     }
 
     function openModal() {
-        if (modal) modal.classList.remove('hidden');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        // El slot de anuncio de este modal está marcado data-ad-lazy en el
+        // HTML (adsense.js lo salta en la carga inicial porque estaba
+        // oculto). Ahora que el modal es visible, pedimos el anuncio.
+        if (adSlotEl) {
+            var ins = adSlotEl.querySelector('ins.adsbygoogle');
+            if (ins && window.ToolboxAds) window.ToolboxAds.fillSlot(ins);
+        }
+        if (window.ToolboxA11y) window.ToolboxA11y.trapFocus(modal);
     }
 
     function closeModal() {
@@ -83,6 +94,8 @@
             continueBtn.disabled = true;
             continueBtn.classList.add('hidden');
         }
+        usingFallback = false;
+        if (modal && window.ToolboxA11y) window.ToolboxA11y.releaseFocus(modal);
     }
 
     function unlockNow() {
@@ -96,6 +109,8 @@
     }
 
     function startFallbackCountdown() {
+        if (usingFallback) return; // ya está corriendo, no reiniciar
+        usingFallback = true;
         setStatus('No encontramos un anuncio disponible todavía. Espera unos segundos para desbloquear tu descarga.');
         var remaining = FALLBACK_SECONDS;
         setTimerProgress(0, String(remaining));
@@ -134,6 +149,16 @@
             name: 'download-unlock',
             beforeReward: function (showAdFn) {
                 adFound = true;
+                // Si el anuncio real llegó tarde (después del timeout) y ya
+                // habíamos arrancado la cuenta regresiva de respaldo, la
+                // cancelamos para no mezclar los dos flujos en la UI.
+                if (usingFallback) {
+                    usingFallback = false;
+                    if (countdownInterval) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                    }
+                }
                 setStatus('Anuncio listo. Pulsa "Ver anuncio" para desbloquear tu descarga.');
                 if (continueBtn) {
                     continueBtn.disabled = false;

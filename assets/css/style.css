@@ -36,6 +36,9 @@ body {
     color: var(--color-white);
     line-height: 1.6;
     overflow-x: hidden;
+    /* Respeta el notch/isla dinámica en móviles con viewport-fit=cover */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 img {
     max-width: 100%;
@@ -43,6 +46,11 @@ img {
 }
 a {
     color: inherit;
+}
+
+/* Bloquea el scroll de fondo mientras hay un modal abierto (ver include.js) */
+body.no-scroll {
+    overflow: hidden;
 }
 
 /* ===== ACCESIBILIDAD ===== */
@@ -211,20 +219,34 @@ body::before {
     50% { opacity: 0.4; transform: scale(0.8); }
 }
 .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     background: var(--color-glass);
     border: 1px solid var(--color-glass-border);
     color: var(--color-white);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.5px;
-    padding: 6px 14px;
+    padding: 6px 16px;
     border-radius: var(--radius-full);
     cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+}
+.lang-toggle i {
+    font-size: 0.85rem;
+    color: var(--color-blue-electric);
     transition: var(--transition);
 }
 .lang-toggle:hover {
     border-color: var(--color-blue-electric);
     color: var(--color-blue-electric);
+    background: var(--color-blue-electric-dim);
+    transform: translateY(-1px);
+}
+.lang-toggle:hover i {
+    transform: rotate(-8deg) scale(1.1);
 }
 
 /* ===== BOTONES ===== */
@@ -309,7 +331,7 @@ body::before {
     margin-bottom: 20px;
 }
 .hero-title {
-    font-size: 4.2rem;
+    font-size: clamp(2.1rem, 5vw + 1.2rem, 4.2rem);
     font-weight: 800;
     line-height: 1.05;
     margin-bottom: 18px;
@@ -441,7 +463,7 @@ body::before {
     margin-bottom: 50px;
 }
 .section-header h2 {
-    font-size: 2.4rem;
+    font-size: clamp(1.5rem, 3vw + 1rem, 2.4rem);
     font-weight: 700;
     margin-bottom: 10px;
 }
@@ -794,8 +816,16 @@ body::before {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-    .hero-title { font-size: 3.2rem; }
     .features-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+    /* Punto medio para tablets: la rejilla del hero pasa a una columna
+       un poco antes que en móvil para que no se vea apretada. */
+    .hero-container { grid-template-columns: 1fr; text-align: center; }
+    .hero-description { margin-left: auto; margin-right: auto; }
+    .hero-buttons { justify-content: center; }
+    .hero-devices { text-align: center; }
+    .device-badges { justify-content: center; }
 }
 @media (max-width: 768px) {
     .menu-toggle { display: block; }
@@ -814,10 +844,6 @@ body::before {
     }
     .nav.open { display: flex; }
     .header-actions .online-indicator { display: none; }
-    .hero-container { grid-template-columns: 1fr; text-align: center; }
-    .hero-title { font-size: 2.6rem; }
-    .hero-description { margin-left: auto; margin-right: auto; }
-    .hero-buttons { justify-content: center; }
     .hero-visual { height: 280px; }
     .floating-card { width: 130px; padding: 14px; }
     .card-1 { left: 2%; }
@@ -829,13 +855,10 @@ body::before {
     .features-grid { grid-template-columns: 1fr 1fr; }
     .footer-container { flex-direction: column; text-align: center; }
     .cta-content h2 { font-size: 2.2rem; }
-    .hero-devices { text-align: center; }
-    .device-badges { justify-content: center; }
     .steps-grid { grid-template-columns: 1fr; }
     .step-arrow { display: none; }
 }
 @media (max-width: 480px) {
-    .hero-title { font-size: 2rem; }
     .tools-grid { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -847,4 +870,21 @@ body::before {
     .btn-small { padding: 5px 14px; font-size: 0.65rem; }
     .lang-toggle { font-size: 0.65rem; padding: 5px 10px; }
     .search-input { font-size: 0.85rem; padding: 12px 0; }
+}
+@media (max-width: 400px) {
+    /* En pantallas muy pequeñas, el botón "Explorar" es redundante con el
+       menú hamburguesa: lo ocultamos para que el header nunca se rompa. */
+    .header-actions .btn-primary { display: none; }
+}
+@media (hover: none) and (pointer: coarse) {
+    /* Objetivos táctiles más generosos en dispositivos táctiles, sin
+       cambiar la densidad visual en desktop. */
+    .lang-toggle,
+    .btn-small,
+    .menu-toggle {
+        min-height: 40px;
+    }
+    .nav-link {
+        padding: 8px 0;
+    }
 }

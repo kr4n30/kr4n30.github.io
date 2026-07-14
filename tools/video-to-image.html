@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video a Imagen · Extrae Fotogramas Gratis | Toolbox</title>
+    <title>Video a Imagen · Extrae Fotogramas Gratis | kR4N30 Toolbox</title>
     <meta name="description" content="Extrae fotogramas de cualquier video directamente en tu navegador. Elige intervalo, cantidad de frames, formato y calidad. Sin subir archivos, gratis y privado." />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#080c1a" />
@@ -11,11 +11,11 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Video a Imagen · Toolbox" />
+    <meta property="og:title" content="Video a Imagen · kR4N30 Toolbox" />
     <meta property="og:description" content="Extrae fotogramas de cualquier video directamente en tu navegador. Sin subir archivos, gratis y privado." />
     <meta property="og:url" content="https://kr4n30.github.io/tools/video-to-image.html" />
     <meta property="og:locale" content="es_ES" />
-    <meta property="og:site_name" content="Toolbox" />
+    <meta property="og:site_name" content="kR4N30 Toolbox" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
@@ -315,10 +315,10 @@
             </div>
 
             <!-- Modal de Zoom -->
-            <div class="modal hidden" id="zoomModal">
+            <div class="modal hidden" id="zoomModal" role="dialog" aria-modal="true" aria-labelledby="zoomModalTitle">
                 <div class="modal-content zoom-modal-content">
                     <div class="modal-header">
-                        <h3>🔍 Zoom</h3>
+                        <h3 id="zoomModalTitle">🔍 Zoom</h3>
                         <button class="modal-close" id="closeZoomModal" type="button" aria-label="Cerrar">✕</button>
                     </div>
                     <div class="modal-body">
@@ -341,20 +341,21 @@
             </div>
 
             <!-- Modal de recompensa (antes de descargar) -->
-            <div class="modal hidden" id="rewardModal">
+            <div class="modal hidden" id="rewardModal" role="dialog" aria-modal="true" aria-labelledby="rewardModalTitle">
                 <div class="modal-content reward-modal-content">
                     <div class="modal-header">
-                        <h3>🎁 Desbloquea tu descarga</h3>
+                        <h3 id="rewardModalTitle">🎁 Desbloquea tu descarga</h3>
                         <button class="modal-close" id="rewardCancelBtn" type="button" aria-label="Cancelar">✕</button>
                     </div>
                     <div class="modal-body">
                         <div class="reward-visual">
                             <div class="reward-timer" id="rewardTimer"><span id="rewardCountdownLabel">--</span></div>
                         </div>
-                        <p class="reward-status" id="rewardStatusText">Cargando anuncio...</p>
+                        <p class="reward-status" id="rewardStatusText" aria-live="polite">Cargando anuncio...</p>
                         <div class="ad-slot reward-ad-slot" id="rewardAdSlot">
                             <span class="ad-label">Publicidad</span>
                             <ins class="adsbygoogle"
+                                 data-ad-lazy="true"
                                  data-ad-client="ca-pub-6818233483684146"
                                  data-ad-slot="0000000004"
                                  data-ad-format="auto"
@@ -368,10 +369,10 @@
             </div>
 
             <!-- Modal de información -->
-            <div class="modal hidden" id="infoModal">
+            <div class="modal hidden" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3>ℹ️ Video a Imagen</h3>
+                        <h3 id="infoModalTitle">ℹ️ Video a Imagen</h3>
                         <button class="modal-close" id="closeModal" type="button" aria-label="Cerrar">✕</button>
                     </div>
                     <div class="modal-body">

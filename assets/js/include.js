@@ -26,15 +26,30 @@
             });
     }
 
+    // Agrupa los listeners de scroll en un único rAF por frame en vez de
+    // ejecutar cada callback de inmediato en cada evento "scroll" (que
+    // puede dispararse decenas de veces por segundo).
+    function onScrollThrottled(callback) {
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(function () {
+                callback();
+                ticking = false;
+            });
+        }, { passive: true });
+    }
+
     function initHeaderBehavior() {
         var header = document.getElementById('header');
         var menuToggle = document.getElementById('menuToggle');
         var nav = document.getElementById('nav');
 
         if (header) {
-            window.addEventListener('scroll', function () {
+            onScrollThrottled(function () {
                 header.classList.toggle('scrolled', window.scrollY > 50);
-            }, { passive: true });
+            });
         }
 
         if (menuToggle && nav) {
@@ -58,7 +73,7 @@
         var sections = document.querySelectorAll('main section[id]');
         var navLinks = document.querySelectorAll('.nav-link[href*="#"]');
         if (sections.length && navLinks.length) {
-            window.addEventListener('scroll', function () {
+            onScrollThrottled(function () {
                 var current = '';
                 sections.forEach(function (section) {
                     if (window.scrollY >= section.offsetTop - 120) current = section.id;
@@ -67,9 +82,69 @@
                     var href = link.getAttribute('href') || '';
                     link.classList.toggle('active', current !== '' && href.endsWith('#' + current));
                 });
-            }, { passive: true });
+            });
         }
     }
+
+    // ============================================
+    // ACCESIBILIDAD DE MODALES (compartido)
+    // Cualquier página con .modal puede usar:
+    //   window.ToolboxA11y.trapFocus(modalEl)
+    //   window.ToolboxA11y.releaseFocus(modalEl)
+    // para bloquear el scroll de fondo, mover el foco
+    // dentro del modal y devolverlo al cerrar.
+    // ============================================
+    (function initModalA11y() {
+        var openModals = [];
+        var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        function getFocusable(modalEl) {
+            return Array.prototype.slice.call(modalEl.querySelectorAll(FOCUSABLE))
+                .filter(function (el) { return el.offsetParent !== null; });
+        }
+
+        function handleKeydown(e) {
+            if (e.key !== 'Tab' || !openModals.length) return;
+            var modalEl = openModals[openModals.length - 1];
+            var focusable = getFocusable(modalEl);
+            if (!focusable.length) return;
+            var first = focusable[0];
+            var last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        function trapFocus(modalEl) {
+            if (!modalEl || openModals.indexOf(modalEl) !== -1) return;
+            modalEl.dataset.previousFocus = '';
+            modalEl._previousActiveElement = document.activeElement;
+            openModals.push(modalEl);
+            document.body.classList.add('no-scroll');
+            document.addEventListener('keydown', handleKeydown, true);
+            var focusable = getFocusable(modalEl);
+            if (focusable.length) focusable[0].focus();
+        }
+
+        function releaseFocus(modalEl) {
+            var idx = openModals.indexOf(modalEl);
+            if (idx !== -1) openModals.splice(idx, 1);
+            if (!openModals.length) {
+                document.body.classList.remove('no-scroll');
+                document.removeEventListener('keydown', handleKeydown, true);
+            }
+            if (modalEl && modalEl._previousActiveElement && typeof modalEl._previousActiveElement.focus === 'function') {
+                modalEl._previousActiveElement.focus();
+                modalEl._previousActiveElement = null;
+            }
+        }
+
+        window.ToolboxA11y = { trapFocus: trapFocus, releaseFocus: releaseFocus };
+    })();
 
     function initFooterBehavior() {
         var yearEl = document.getElementById('currentYear');

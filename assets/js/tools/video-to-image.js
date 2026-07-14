@@ -118,13 +118,21 @@ function getCanvas(width, height) {
 // ============================================
 // MODAL DE INFO
 // ============================================
+function openInfoModal() {
+    infoModal.classList.remove('hidden');
+    if (window.ToolboxA11y) window.ToolboxA11y.trapFocus(infoModal);
+}
+function closeInfoModal() {
+    infoModal.classList.add('hidden');
+    if (window.ToolboxA11y) window.ToolboxA11y.releaseFocus(infoModal);
+}
 if (infoBtn && infoModal) {
-    infoBtn.addEventListener('click', () => infoModal.classList.remove('hidden'));
+    infoBtn.addEventListener('click', openInfoModal);
 }
 if (closeModal && infoModal) {
-    closeModal.addEventListener('click', () => infoModal.classList.add('hidden'));
+    closeModal.addEventListener('click', closeInfoModal);
     infoModal.addEventListener('click', (e) => {
-        if (e.target === infoModal) infoModal.classList.add('hidden');
+        if (e.target === infoModal) closeInfoModal();
     });
 }
 
@@ -138,11 +146,13 @@ function openZoom(frame) {
     zoomLevel.textContent = '100%';
     zoomResolution.textContent = frame.blob.size ? formatFileSize(frame.blob.size) : '-';
     zoomModal.classList.remove('hidden');
+    if (window.ToolboxA11y) window.ToolboxA11y.trapFocus(zoomModal);
     applyZoom(1);
 }
 
 function closeZoom() {
     zoomModal.classList.add('hidden');
+    if (window.ToolboxA11y) window.ToolboxA11y.releaseFocus(zoomModal);
     if (zoomImage.src) {
         URL.revokeObjectURL(zoomImage.src);
         zoomImage.src = '';
@@ -347,48 +357,64 @@ function estimateMemoryUsage() {
 // ============================================
 function detectFps(video) {
     return new Promise((resolve) => {
-        let frameCount = 0;
-        let startTime = performance.now();
+        const wasMuted = video.muted;
+        const wasPaused = video.paused;
+        let settled = false;
         let timerId = null;
 
-        function countFrame() {
-            frameCount++;
-            const elapsed = (performance.now() - startTime) / 1000;
-            if (elapsed >= 1) {
-                const fps = frameCount / elapsed;
-                resolve(Math.round(fps));
-                if (timerId) cancelAnimationFrame(timerId);
-            } else {
-                timerId = requestAnimationFrame(countFrame);
-            }
+        function finish(fps) {
+            if (settled) return;
+            settled = true;
+            if (timerId) cancelAnimationFrame(timerId);
+            video.muted = wasMuted;
+            if (wasPaused) video.pause();
+            resolve(fps);
         }
+
+        // La detección necesita que el video reproduzca frames de verdad.
+        // Lo silenciamos temporalmente para evitar que las políticas de
+        // autoplay-con-sonido del navegador bloqueen el play().
+        video.muted = true;
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => { /* autoplay bloqueado: seguimos con el timeout de seguridad */ });
+        }
+
+        // Red de seguridad: si por lo que sea nunca llegan frames (video
+        // pausado, callback que no se dispara, etc.), no nos quedamos
+        // colgados en "Detectando..." para siempre.
+        const safetyTimeout = setTimeout(() => finish(null), 2500);
 
         if (video.requestVideoFrameCallback) {
             let count = 0;
-            let start = performance.now();
+            const start = performance.now();
             function frameCallback() {
+                if (settled) return;
                 count++;
                 const elapsed = (performance.now() - start) / 1000;
                 if (elapsed >= 1) {
-                    resolve(Math.round(count / elapsed));
+                    clearTimeout(safetyTimeout);
+                    finish(Math.round(count / elapsed));
                 } else {
                     video.requestVideoFrameCallback(frameCallback);
                 }
             }
             video.requestVideoFrameCallback(frameCallback);
         } else {
-            video.play();
-            timerId = requestAnimationFrame(countFrame);
-            setTimeout(() => {
-                if (timerId) cancelAnimationFrame(timerId);
-                video.pause();
+            let frameCount = 0;
+            const startTime = performance.now();
+            function countFrame() {
+                if (settled) return;
+                frameCount++;
                 const elapsed = (performance.now() - startTime) / 1000;
-                if (frameCount > 0 && elapsed > 0) {
-                    resolve(Math.round(frameCount / elapsed));
+                if (elapsed >= 1) {
+                    clearTimeout(safetyTimeout);
+                    finish(frameCount > 0 ? Math.round(frameCount / elapsed) : null);
                 } else {
-                    resolve(null);
+                    timerId = requestAnimationFrame(countFrame);
                 }
-            }, 1500);
+            }
+            timerId = requestAnimationFrame(countFrame);
         }
     });
 }
@@ -413,9 +439,25 @@ function areFramesSimilar(frame1, frame2, threshold) {
         const img2 = new Image();
         let loaded1 = false;
         let loaded2 = false;
+        let settled = false;
+
+        // Red de seguridad: si una imagen falla en cargar (blob corrupto,
+        // memoria agotada, etc.) no queremos que la extracción entera se
+        // quede colgada esperando un "onload" que nunca llega.
+        const safetyTimeout = setTimeout(() => finish(false), 3000);
+
+        function finish(result) {
+            if (settled) return;
+            settled = true;
+            clearTimeout(safetyTimeout);
+            resolve(result);
+            if (img1.src) URL.revokeObjectURL(img1.src);
+            if (img2.src) URL.revokeObjectURL(img2.src);
+        }
 
         function checkDone() {
-            if (loaded1 && loaded2) {
+            if (!loaded1 || !loaded2) return;
+            try {
                 ctx1.drawImage(img1, 0, 0, size, size);
                 ctx2.drawImage(img2, 0, 0, size, size);
                 const data1 = ctx1.getImageData(0, 0, size, size).data;
@@ -428,14 +470,16 @@ function areFramesSimilar(frame1, frame2, threshold) {
                     diff += Math.abs(data1[i + 2] - data2[i + 2]);
                 }
                 const similarity = 1 - (diff / (total * 255));
-                resolve(similarity >= threshold);
-                URL.revokeObjectURL(img1.src);
-                URL.revokeObjectURL(img2.src);
+                finish(similarity >= threshold);
+            } catch (e) {
+                finish(false);
             }
         }
 
         img1.onload = () => { loaded1 = true; checkDone(); };
         img2.onload = () => { loaded2 = true; checkDone(); };
+        img1.onerror = () => finish(false);
+        img2.onerror = () => finish(false);
         img1.src = URL.createObjectURL(frame1.blob);
         img2.src = URL.createObjectURL(frame2.blob);
     });
@@ -1087,15 +1131,20 @@ downloadAllBtn.addEventListener('click', () => {
 // TECLAS RÁPIDAS
 // ============================================
 document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'e') { e.preventDefault(); extractBtn.click(); }
-    if (e.ctrlKey && e.key === 'd') { e.preventDefault(); downloadAllBtn.click(); }
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.key === ' ') {
+    const inField = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT' || e.target.isContentEditable;
+    // Ctrl+D es el atajo nativo de "guardar marcador" del navegador y Ctrl+E
+    // también se usa en varios navegadores/extensiones: solo los capturamos
+    // cuando el foco NO está en un campo de texto, para no interferir con
+    // la escritura normal ni sorprender al usuario.
+    if (!inField && e.ctrlKey && e.key === 'e') { e.preventDefault(); extractBtn.click(); }
+    if (!inField && e.ctrlKey && e.key === 'd') { e.preventDefault(); downloadAllBtn.click(); }
+    if (!inField && e.key === ' ') {
         e.preventDefault();
         videoPreview.paused ? videoPreview.play() : videoPreview.pause();
     }
     if (e.key === 'Escape') {
         if (!zoomModal.classList.contains('hidden')) closeZoom();
-        if (infoModal && !infoModal.classList.contains('hidden')) infoModal.classList.add('hidden');
+        if (infoModal && !infoModal.classList.contains('hidden')) closeInfoModal();
     }
 });
 

@@ -335,3 +335,16 @@
     .frame-grid { grid-template-columns: repeat(2, 1fr); }
     .video-info-grid { grid-template-columns: repeat(2, 1fr); }
 }
+@media (hover: none) and (pointer: coarse) {
+    .zoom-btn-small {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        min-height: 32px;
+    }
+    .checkbox-wrap input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+}

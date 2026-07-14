@@ -19,6 +19,16 @@
                 name: 'tools.videoToImage.name',
                 desc: 'tools.videoToImage.desc'
             }
+        },
+        {
+            id: 'background-remover',
+            icon: 'fa-eraser',
+            href: '/tools/background-remover.html',
+            comingSoon: false,
+            i18n: {
+                name: 'tools.backgroundRemover.name',
+                desc: 'tools.backgroundRemover.desc'
+            }
         }
     ];
 

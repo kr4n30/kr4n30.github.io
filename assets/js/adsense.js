@@ -21,18 +21,31 @@
         window.adsbygoogle.push(o);
     };
 
-    function fillDisplayAds() {
-        var slots = document.querySelectorAll('ins.adsbygoogle');
-        slots.forEach(function () {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                // AdSense no cargó (bloqueador de anuncios, sin conexión, etc).
-                // No es un error fatal para el resto de la herramienta.
-                console.warn('AdSense: no se pudo solicitar un anuncio.', e);
-            }
-        });
+    // Rellena un <ins class="adsbygoogle"> concreto, evitando pedir un
+    // anuncio dos veces para el mismo slot (Google lanza un TagError si
+    // se hace push({}) sobre un <ins> que ya tiene anuncio).
+    function fillSlot(el) {
+        if (!el || el.dataset.adFillRequested === 'true') return;
+        el.dataset.adFillRequested = 'true';
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            // AdSense no cargó (bloqueador de anuncios, sin conexión, etc).
+            // No es un error fatal para el resto de la herramienta.
+            console.warn('AdSense: no se pudo solicitar un anuncio.', e);
+        }
     }
+
+    function fillDisplayAds() {
+        // Los slots marcados como data-ad-lazy viven dentro de contenedores
+        // ocultos al cargar la página (ej. el modal de recompensa). AdSense
+        // no puede medir un <ins> con display:none, así que esos se rellenan
+        // bajo demanda (ver reward-gate.js) en lugar de aquí.
+        var slots = document.querySelectorAll('ins.adsbygoogle:not([data-ad-lazy])');
+        slots.forEach(fillSlot);
+    }
+
+    window.ToolboxAds = { fillSlot: fillSlot };
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', fillDisplayAds);
