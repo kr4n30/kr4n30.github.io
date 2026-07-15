@@ -1,15 +1,16 @@
 {
   "id": "deoldify",
-  "name": "DeOldify (quantized)",
-  "format": "onnx",
-  "url": "https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx",
-  "size_approx_mb": 61,
-  "loaded_by": "onnxruntime-web",
+  "name": "DeOldify (artistic)",
+  "format": "onnx (formato 'external data': grafo .onnx chico + pesos en un .onnx.data aparte)",
+  "url": "https://huggingface.co/thookham/DeOldify/resolve/main/deoldify-artistic.onnx",
+  "external_data_url": "https://huggingface.co/thookham/DeOldify/resolve/main/deoldify-artistic.onnx.data",
+  "size_approx_mb": 250,
+  "loaded_by": "onnxruntime-web (con la opción externalData)",
   "used_by": ["colorize-image"],
-  "used_for": "Predecir el color de una foto en blanco y negro (a 256x256; el resultado se combina con la luminancia original a resolución completa)",
+  "used_for": "Predecir el color de una foto en blanco y negro (el resultado se combina con la luminancia original a resolución completa)",
   "license": "MIT",
   "license_note": "Permisiva, sin restricciones de uso comercial.",
-  "source_repo": "https://github.com/jantic/DeOldify (modelo original) / https://github.com/instant-high/deoldify-onnx (conversión a ONNX)",
-  "hardcoded_in": "assets/js/tools/colorize-image.js (MODEL_URL)",
-  "note": "Alojado en el CDN de Glitch (no Hugging Face) porque es la fuente que usa la implementación de referencia verificada (github.com/am9zZWY/deoldify). Es un host de terceros menos robusto que Hugging Face; si en el futuro desaparece, buscar un mirror en Hugging Face y actualizar la URL acá y en el .js."
+  "source_repo": "https://github.com/jantic/DeOldify (modelo original)",
+  "hardcoded_in": "assets/js/tools/colorize-image.js (MODEL_URL, EXTERNAL_DATA_URL, EXTERNAL_DATA_FILENAME)",
+  "note": "Se cambió del modelo 'quantized' (~61MB, alojado en cdn.glitch.me) a este porque Glitch no manda headers CORS y el navegador bloqueaba la descarga. Este export no viene del mismo pipeline que el anterior (que sí estaba verificado contra una demo pública funcionando) — el preprocesamiento (normalización estilo ImageNet, tamaño de entrada 512x512) es un puerto de la convención oficial de DeOldify/fastai, NO verificado en un navegador real. Si el resultado sale mal, ver la nota de incertidumbre al principio de assets/js/tools/colorize-image.js."
 }

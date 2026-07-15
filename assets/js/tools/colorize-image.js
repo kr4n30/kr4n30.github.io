@@ -1,41 +1,72 @@
 /* ============================================
    tools/colorize-image.js
    Colorea fotos en blanco y negro con DeOldify
-   (modelo cuantizado, ONNX), 100% en el navegador.
+   (modelo "artistic"), 100% en el navegador.
 
      Imagen original (B&N)
         │
         ▼
-   Redimensionar a 256×256 (tamaño fijo que espera el modelo)
+   Redimensionar a MODEL_SIZE×MODEL_SIZE (ver nota de INCERTIDUMBRE abajo)
         │
         ▼
-   DeOldify (onnxruntime-web) → predice el color a 256×256
+   DeOldify (onnxruntime-web) → predice el color
         │
         ▼
    Fusión de luminancia: tomamos el BRILLO de la foto ORIGINAL a
    resolución completa + el COLOR (croma) que predijo la IA, y las
    combinamos en espacio YCbCr. Así el resultado no sale borroso
-   por simplemente estirar una imagen de 256×256.
+   por simplemente estirar la salida (más chica) del modelo.
         │
         ▼
    Imagen final coloreada, a la resolución original
 
-   Referencia de implementación (preprocesamiento/postprocesamiento
-   del modelo verificados contra una demo pública funcionando):
-   https://github.com/am9zZWY/deoldify (fork de akbartus/DeOldify-on-Browser)
-
-   Modelo: DeOldify (MIT license, jantic/DeOldify), convertido a ONNX por
-   instant-high/deoldify-onnx. Se usa la versión "quantized" (~61MB) alojada
-   en el CDN de Glitch, que es la misma fuente que usa la demo de referencia.
+   ⚠️ NOTA DE INCERTIDUMBRE (leer antes de tocar este archivo):
+   La primera versión de esta tool usaba el modelo "quantized" (~61MB)
+   alojado en cdn.glitch.me, con preprocesamiento verificado contra una
+   demo pública funcionando (github.com/am9zZWY/deoldify). Ese host
+   resultó NO mandar headers CORS, así que no se puede usar desde fetch().
+   Se cambió a alojar el modelo "artistic" en Hugging Face (thookham/DeOldify,
+   que sí soporta CORS — mismo host que ya usan los modelos de Mejorar
+   Imagen), pero es una conversión ONNX distinta a la validada antes, así
+   que el preprocesamiento de acá abajo es un PORT de la convención oficial
+   de DeOldify (normalización estilo ImageNet, la misma que usa fastai en
+   el entrenamiento original), NO algo verificado contra una demo en vivo.
+   No se pudo probar en un navegador real desde el entorno donde se escribió
+   este código. Puntos concretos que pueden necesitar ajuste si el resultado
+   sale mal (gris, negro, ruido, o tira un error de "shape mismatch"):
+     - MODEL_SIZE: si tira error de dimensiones, el mensaje de error de
+       onnxruntime-web suele decir el tamaño esperado exacto — poner ese
+       valor acá.
+     - EXTERNAL_DATA_FILENAME: el nombre que el modelo espera para su
+       archivo de pesos externo puede no coincidir exactamente con lo que
+       está seteado; si tira un error de "external data" ese es el lugar.
+     - Normalización: si los colores salen muy desaturados/planos, probar
+       sin dividir por 255 antes de restar la media (algunas conversiones
+       hornean esa parte distinto).
    ============================================ */
 
 const ORT_VERSION = '1.20.1';
 const ORT_JS = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/ort.min.js`;
 const ORT_WASM_DIR = `https://cdn.jsdelivr.net/npm/onnxruntime-web@${ORT_VERSION}/dist/`;
-const MODEL_URL = 'https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx';
 
-const MODEL_SIZE = 256;     // DeOldify (esta conversión) espera siempre 256x256
+// Modelo "artistic" de DeOldify, alojado en Hugging Face (CORS OK).
+// Formato "external data": el grafo (.onnx) es chico, los pesos reales
+// viven en un archivo .onnx.data aparte que hay que cargar junto.
+const MODEL_BASE_URL = 'https://huggingface.co/thookham/DeOldify/resolve/main/';
+const MODEL_URL = MODEL_BASE_URL + 'deoldify-artistic.onnx';
+const EXTERNAL_DATA_FILENAME = 'deoldify-artistic.onnx.data'; // ver nota de incertidumbre arriba
+const EXTERNAL_DATA_URL = MODEL_BASE_URL + EXTERNAL_DATA_FILENAME;
+
+// Tamaño de entrada asumido (múltiplo de 16, como espera la arquitectura
+// U-Net de DeOldify). Es un valor razonable típico, NO confirmado contra
+// este export puntual — ver nota de incertidumbre arriba.
+const MODEL_SIZE = 512;
 const MAX_INPUT_DIM = 2000; // tope razonable para no colgar el navegador con fotos enormes
+
+// Normalización estilo ImageNet (la que usa fastai/DeOldify en el
+// entrenamiento original), aplicada sobre valores en [0,1].
+const IMAGENET_MEAN = [0.485, 0.456, 0.406];
+const IMAGENET_STD = [0.229, 0.224, 0.225];
 
 const state = {
     sourceCanvas: null,
@@ -155,17 +186,28 @@ function ensureOrt() {
 async function getSession(onProgress) {
     if (state.session) return state.session;
     await ensureOrt();
-    if (onProgress) onProgress(0, '⬇️ Descargando el modelo de IA (~61MB, solo la primera vez)...');
+    if (onProgress) onProgress(0, '⬇️ Descargando el modelo de IA (~250MB, solo la primera vez)...');
     const executionProviders = navigator.gpu ? ['webgpu', 'wasm'] : ['wasm'];
-    state.session = await window.ort.InferenceSession.create(MODEL_URL, { executionProviders });
+    try {
+        state.session = await window.ort.InferenceSession.create(MODEL_URL, {
+            executionProviders,
+            externalData: [{ path: EXTERNAL_DATA_FILENAME, data: EXTERNAL_DATA_URL }],
+        });
+    } catch (err) {
+        console.error('No se pudo crear la sesión de ONNX (revisar EXTERNAL_DATA_FILENAME / MODEL_SIZE, ver nota al principio del archivo):', err);
+        throw err;
+    }
     return state.session;
 }
 
 // ============================================
 // PRE / POST PROCESAMIENTO DEL MODELO
-// (formato verificado contra la implementación de referencia:
-// entrada 256x256 RGB planar en valores crudos 0-255, sin normalizar;
-// tensor de entrada "input", de salida "out", también en 0-255)
+// ⚠️ Puerto de la convención OFICIAL de DeOldify/fastai (normalización
+// ImageNet), NO verificado contra este export puntual. Ver nota de
+// incertidumbre al principio del archivo si el resultado sale mal.
+// Asume tensor de entrada/salida en RGB, NCHW, nombres por defecto del
+// grafo (se usan session.inputNames/outputNames en vez de hardcodear
+// "input"/"out" porque este export puede nombrarlos distinto).
 // ============================================
 function clamp255(v) { return v < 0 ? 0 : (v > 255 ? 255 : v); }
 
@@ -174,9 +216,12 @@ function preprocess(imgData) {
     const plane = size * size;
     const out = new Float32Array(3 * plane);
     for (let i = 0; i < plane; i++) {
-        out[i] = imgData.data[i * 4];           // R
-        out[plane + i] = imgData.data[i * 4 + 1]; // G
-        out[2 * plane + i] = imgData.data[i * 4 + 2]; // B
+        const r = imgData.data[i * 4] / 255;
+        const g = imgData.data[i * 4 + 1] / 255;
+        const b = imgData.data[i * 4 + 2] / 255;
+        out[i] = (r - IMAGENET_MEAN[0]) / IMAGENET_STD[0];
+        out[plane + i] = (g - IMAGENET_MEAN[1]) / IMAGENET_STD[1];
+        out[2 * plane + i] = (b - IMAGENET_MEAN[2]) / IMAGENET_STD[2];
     }
     return new window.ort.Tensor('float32', out, [1, 3, size, size]);
 }
@@ -188,9 +233,12 @@ function postprocessToCanvas(tensor) {
     const plane = h * w;
     const imgData = new ImageData(w, h);
     for (let i = 0; i < plane; i++) {
-        imgData.data[i * 4] = clamp255(Math.round(data[i]));
-        imgData.data[i * 4 + 1] = clamp255(Math.round(data[plane + i]));
-        imgData.data[i * 4 + 2] = clamp255(Math.round(data[2 * plane + i]));
+        const r = (data[i] * IMAGENET_STD[0] + IMAGENET_MEAN[0]) * 255;
+        const g = (data[plane + i] * IMAGENET_STD[1] + IMAGENET_MEAN[1]) * 255;
+        const b = (data[2 * plane + i] * IMAGENET_STD[2] + IMAGENET_MEAN[2]) * 255;
+        imgData.data[i * 4] = clamp255(Math.round(r));
+        imgData.data[i * 4 + 1] = clamp255(Math.round(g));
+        imgData.data[i * 4 + 2] = clamp255(Math.round(b));
         imgData.data[i * 4 + 3] = 255;
     }
     const canvas = document.createElement('canvas');
@@ -200,9 +248,9 @@ function postprocessToCanvas(tensor) {
 }
 
 // Combina el BRILLO de la foto original a resolución completa con el COLOR
-// que predijo la IA (a 256x256, estirado), usando el espacio YCbCr (BT.601).
-// Esto evita que el resultado se vea borroso, que es lo que pasaría si
-// simplemente estirásemos la salida de 256x256 del modelo.
+// que predijo la IA (a MODEL_SIZE×MODEL_SIZE, estirado), usando el espacio
+// YCbCr (BT.601). Esto evita que el resultado se vea borroso, que es lo que
+// pasaría si simplemente estirásemos la salida (más chica) del modelo.
 function blendLuminance(originalCanvas, colorCanvas256) {
     const w = originalCanvas.width, h = originalCanvas.height;
 
@@ -262,9 +310,10 @@ async function runPipeline() {
         const inputData = smallCanvas.getContext('2d').getImageData(0, 0, MODEL_SIZE, MODEL_SIZE);
 
         const inputTensor = preprocess(inputData);
-        const feeds = { input: inputTensor };
+        const feeds = {};
+        feeds[session.inputNames[0]] = inputTensor; // nombre real del grafo, no asumimos "input"
         const results = await session.run(feeds);
-        const outputTensor = results.out || results[session.outputNames[0]];
+        const outputTensor = results[session.outputNames[0]]; // ídem para la salida
         const colorCanvas256 = postprocessToCanvas(outputTensor);
 
         updateProgress(0.85, '🖼️ Combinando color con el detalle original...');

@@ -21,20 +21,24 @@
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
 
     <!--
-        Seguridad: esta página corre DeOldify (modelo cuantizado, ~61MB) en el
-        navegador vía onnxruntime-web. El modelo se descarga desde el CDN de
-        Glitch (fuente pública usada por la implementación de referencia de
-        este modelo en el navegador) y queda en caché. Nada se sube a un
-        servidor propio.
+        Seguridad: esta página corre DeOldify (modelo "artistic", ~250MB) en el
+        navegador vía onnxruntime-web. El modelo se descarga desde Hugging Face
+        (thookham/DeOldify) y queda en caché. Nada se sube a un servidor propio.
+
+        NOTA: la versión original de esta tool usaba un modelo más liviano
+        (~61MB) alojado en cdn.glitch.me, pero ese host no manda headers CORS
+        y el navegador bloqueaba la descarga (ver git log / README si hace
+        falta más contexto). Se cambió a Hugging Face, que sí soporta CORS.
           - script-src: cdn.jsdelivr.net (onnxruntime-web) + 'wasm-unsafe-eval' +
             'unsafe-eval' (onnxruntime-web usa new Function() internamente para
             generar código optimizado en tiempo de ejecución; wasm-unsafe-eval
             solo no alcanza, hay que sumar este también)
-          - connect-src: cdn.glitch.me (pesos del modelo .onnx)
+          - connect-src: huggingface.co / hf.co (pesos del modelo, en dos
+            archivos: el grafo .onnx y sus pesos externos .onnx.data)
           - worker-src: blob: (onnxruntime-web puede correr en un Web Worker)
         Si el navegador bloquea algo, revisa la consola.
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob: https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://cdn.jsdelivr.net https://cdn.glitch.me; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob: https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn.jsdelivr.net; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- Fuentes / iconos -->
@@ -205,8 +209,8 @@
                             <li>🎨 DeOldify analiza una versión reducida (256×256) de tu foto y predice los colores</li>
                             <li>🖼️ Combinamos ese color con el brillo/detalle de tu foto original a resolución completa, para que el resultado no salga borroso</li>
                         </ul>
-                        <p>La primera vez, el modelo de IA (~61MB) se descarga y queda en caché de tu navegador para que las siguientes veces sea instantáneo.</p>
-                        <p><strong>Créditos:</strong> DeOldify (licencia MIT) — <a href="https://github.com/jantic/DeOldify" target="_blank" rel="noopener">jantic/DeOldify</a>, modelo ONNX convertido por <a href="https://github.com/instant-high/deoldify-onnx" target="_blank" rel="noopener">instant-high/deoldify-onnx</a>.</p>
+                        <p>La primera vez, el modelo de IA (~250MB) se descarga y queda en caché de tu navegador para que las siguientes veces sea instantáneo.</p>
+                        <p><strong>Créditos:</strong> DeOldify (licencia MIT) — <a href="https://github.com/jantic/DeOldify" target="_blank" rel="noopener">jantic/DeOldify</a>, modelo ONNX alojado por <a href="https://huggingface.co/thookham/DeOldify" target="_blank" rel="noopener">thookham/DeOldify</a>.</p>
                         <p>Gratis, gracias a los anuncios que ves en la página 💙</p>
                     </div>
                 </div>
@@ -214,7 +218,7 @@
 
             <div class="tool-footer-note">
                 <p>⚡ Procesamiento 100% local · Sin servidores</p>
-                <p>🤖 Modelo: DeOldify (cuantizado)</p>
+                <p>🤖 Modelo: DeOldify (artistic)</p>
             </div>
         </div>
     </main>

@@ -43,7 +43,8 @@ Pipeline de varios pasos, todo en el navegador:
 ⚠️ Nota de licencia: CodeFormer es explícitamente no comercial (NTU S-Lab 1.0); GFPGAN es Apache-2.0 pero con partes derivadas de código no comercial. Riesgo asumido a pedido del dueño del sitio. Real-ESRGAN, Swin2SR y MediaPipe son permisivos sin restricciones.
 
 ### 4. Colorear Fotos Antiguas (`tools/colorize-image.html`)
-Coloriza fotos en blanco y negro con **DeOldify** (modelo cuantizado, ONNX, licencia MIT — sin restricciones). El modelo predice el color sobre una versión reducida (256×256) de la foto; el resultado se combina con el brillo/detalle de la foto ORIGINAL a resolución completa (fusión en espacio YCbCr) para que no salga borroso.
+Coloriza fotos en blanco y negro con **DeOldify** (modelo "artistic", ONNX, licencia MIT — sin restricciones). El modelo predice el color sobre una versión reducida de la foto; el resultado se combina con el brillo/detalle de la foto ORIGINAL a resolución completa (fusión en espacio YCbCr) para que no salga borroso.
+⚠️ El modelo se aloja en Hugging Face (antes en Glitch, que no soportaba CORS). El preprocesamiento de este export puntual no se pudo verificar en un navegador real — ver la nota al principio de `assets/js/tools/colorize-image.js` si el color sale mal.
 
 ## Modelos de IA usados (resumen — detalle completo en `models/`)
 
@@ -55,7 +56,7 @@ Coloriza fotos en blanco y negro con **DeOldify** (modelo cuantizado, ONNX, lice
 | Mejorar Imagen | CodeFormer | onnxruntime-web | 🚫 No comercial explícito |
 | Mejorar Imagen | Swin2SR (opcional) | `@huggingface/transformers` | ✅ Apache-2.0 |
 | Mejorar Imagen | MediaPipe Face Detector | `@mediapipe/tasks-vision` | ✅ Apache-2.0 |
-| Colorear Fotos | DeOldify (cuantizado) | onnxruntime-web | ✅ MIT |
+| Colorear Fotos | DeOldify (artistic) | onnxruntime-web | ✅ MIT (preprocesamiento no verificado) |
 
 ## Cosas a tener en mente para el futuro
 

@@ -24,6 +24,6 @@ Las URLs reales que usa cada herramienta están **hardcodeadas en su `assets/js/
 | `swin2sr/` | Swin2SR realworld-sr-x4 | Mejorar Imagen (paso opcional de reducción de ruido) | Apache-2.0 ✅ |
 | `face-detector/` | MediaPipe BlazeFace (short range) | Mejorar Imagen (detección de rostros) | Apache-2.0 ✅ |
 | `rmbg/` | RMBG-1.4 (briaai) | Quitar Fondo | No comercial (bria-rmbg-1.4) ⚠️ |
-| `deoldify/` | DeOldify (cuantizado) | Colorear Fotos Antiguas | MIT ✅ |
+| `deoldify/` | DeOldify (artistic) | Colorear Fotos Antiguas | MIT ✅ (pero preprocesamiento no verificado, ver nota en el `.json`) |
 
 ⚠️/🚫 = revisar la nota de licencia dentro del `model.json` antes de asumir que es 100% seguro para uso comercial (el sitio tiene AdSense).
