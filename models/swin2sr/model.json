@@ -1,0 +1,14 @@
+{
+  "id": "swin2sr",
+  "name": "Swin2SR realworld-sr-x4-64-bsrgan-psnr",
+  "format": "onnx (resuelto automáticamente por @huggingface/transformers, sin URL fija)",
+  "hf_model_id": "Xenova/swin2SR-realworld-sr-x4-64-bsrgan-psnr",
+  "loaded_by": "@huggingface/transformers (pipeline 'image-to-image')",
+  "used_by": ["image-enhancer"],
+  "used_for": "Paso OPCIONAL de reducción de ruido antes del escalado (se corre a x4 y luego se reescala hacia abajo al tamaño original, quedándonos solo con el efecto de limpieza)",
+  "license": "Apache-2.0",
+  "license_note": "Permisiva, sin restricciones de uso comercial.",
+  "source_repo": "https://github.com/mv-lab/swin2sr",
+  "hardcoded_in": "assets/js/tools/image-enhancer.js (SWIN2SR_MODEL_ID)",
+  "note": "A diferencia de los otros modelos de esta carpeta, este no se descarga desde una URL .onnx directa: @huggingface/transformers resuelve el repo de Hugging Face (hf_model_id) internamente."
+}

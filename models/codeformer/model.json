@@ -1,0 +1,14 @@
+{
+  "id": "codeformer",
+  "name": "CodeFormer (fp16)",
+  "format": "onnx",
+  "url": "https://huggingface.co/netrunner-exe/Face-Upscalers-onnx/resolve/main/codeformer.fp16.onnx",
+  "size_approx_mb": 189,
+  "loaded_by": "onnxruntime-web",
+  "used_by": ["image-enhancer"],
+  "used_for": "Restauración de rostros detectados (opción B, junto a GFPGAN), con slider de fidelidad",
+  "license": "NTU S-Lab License 1.0",
+  "license_note": "Uso NO comercial de forma EXPLÍCITA (no es zona gris como GFPGAN). El sitio tiene AdSense. Aceptado como riesgo asumido por el dueño del sitio (ver README.md de la raíz, sección 7). Si en algún momento se quiere sacar el riesgo legal, esta es la primera opción a eliminar.",
+  "source_repo": "https://github.com/sczhou/CodeFormer",
+  "hardcoded_in": "assets/js/tools/image-enhancer.js (MODEL_URLS.codeformer)"
+}

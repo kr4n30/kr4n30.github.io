@@ -1,0 +1,14 @@
+{
+  "id": "gfpgan",
+  "name": "GFPGAN v1.4",
+  "format": "onnx",
+  "url": "https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.4.onnx",
+  "size_approx_mb": 340,
+  "loaded_by": "onnxruntime-web",
+  "used_by": ["image-enhancer"],
+  "used_for": "Restauración de rostros detectados (opción A, junto a CodeFormer)",
+  "license": "Apache-2.0",
+  "license_note": "El repo oficial es Apache-2.0, PERO parte del código está modificado a partir de DFDNet, que es CC BY-NC-SA (no comercial). Zona gris para un sitio con ads. Aceptado como riesgo asumido por el dueño del sitio (ver README.md de la raíz, sección 7).",
+  "source_repo": "https://github.com/TencentARC/GFPGAN",
+  "hardcoded_in": "assets/js/tools/image-enhancer.js (MODEL_URLS.gfpgan)"
+}

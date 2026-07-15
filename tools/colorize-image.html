@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Colorear Fotos Antiguas con IA Gratis · DeOldify | kR4N30 Toolbox</title>
+    <meta name="description" content="Coloreá fotos en blanco y negro con IA (DeOldify), 100% en tu navegador. Sin subir archivos a ningún servidor, gratis y privado." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080c1a" />
+    <link rel="canonical" href="https://kr4n30.github.io/tools/colorize-image.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Colorear Fotos Antiguas con IA · kR4N30 Toolbox" />
+    <meta property="og:description" content="Coloreá fotos en blanco y negro con IA, directamente en tu navegador. Sin subir archivos, gratis y privado." />
+    <meta property="og:url" content="https://kr4n30.github.io/tools/colorize-image.html" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="kR4N30 Toolbox" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+
+    <!--
+        Seguridad: esta página corre DeOldify (modelo cuantizado, ~61MB) en el
+        navegador vía onnxruntime-web. El modelo se descarga desde el CDN de
+        Glitch (fuente pública usada por la implementación de referencia de
+        este modelo en el navegador) y queda en caché. Nada se sube a un
+        servidor propio.
+          - script-src: cdn.jsdelivr.net (onnxruntime-web) + 'wasm-unsafe-eval'
+          - connect-src: cdn.glitch.me (pesos del modelo .onnx)
+          - worker-src: blob: (onnxruntime-web puede correr en un Web Worker)
+        Si el navegador bloquea algo, revisa la consola.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob: https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://cdn.jsdelivr.net https://cdn.glitch.me; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Fuentes / iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/tools-common.css" />
+    <link rel="stylesheet" href="/assets/css/tools/colorize-image.css" />
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6818233483684146" crossorigin="anonymous"></script>
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Colorear Fotos Antiguas",
+        "url": "https://kr4n30.github.io/tools/colorize-image.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (navegador web)",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Coloreá fotos en blanco y negro con IA (DeOldify) directamente en el navegador."
+    }
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+
+    <div id="header-placeholder"></div>
+
+    <main id="main" class="tool-main">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Miga de pan">
+                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page">Colorear Fotos</span>
+            </nav>
+
+            <div class="tool-hero">
+                <h1>🎨 Colorear Fotos Antiguas</h1>
+                <p>Coloreá fotos en blanco y negro con IA (DeOldify). Todo ocurre en tu navegador: nada se sube a un servidor.</p>
+                <button id="infoBtn" class="btn btn-secondary btn-small" type="button">ℹ️ Cómo funciona</button>
+            </div>
+
+            <!-- ANUNCIO SUPERIOR -->
+            <div class="ad-slot" id="topAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000013"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Drop Zone -->
+            <section class="panel drop-zone-panel" id="dropZone">
+                <div class="drop-content">
+                    <div class="drop-icon" aria-hidden="true">🖼️</div>
+                    <h2>Arrastra una foto en blanco y negro aquí</h2>
+                    <p class="drop-hint">o haz clic para seleccionar</p>
+                    <div class="drop-formats">JPG · PNG · WebP</div>
+                    <label for="fileInput" class="visually-hidden">Seleccionar imagen</label>
+                    <input type="file" id="fileInput" accept="image/*" />
+                </div>
+            </section>
+
+            <!-- Panel de configuración + preview -->
+            <section class="panel hidden" id="setupPanel">
+                <div class="col-preview-wrap">
+                    <img id="sourcePreview" alt="Imagen original" />
+                    <div class="col-preview-meta" id="sourceMeta">-</div>
+                </div>
+
+                <div class="controls-grid">
+                    <div class="control-group full-width">
+                        <button id="colorizeBtn" class="btn-primary btn-lg" type="button">🎨 Colorear imagen</button>
+                        <button id="resetBtn" class="btn-secondary btn-sm" type="button">🔄 Elegir otra imagen</button>
+                    </div>
+                </div>
+
+                <div class="progress-wrap hidden" id="progressWrap">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar"><div id="progressFill"></div></div>
+                        <div class="progress-percent" id="progressPercent">0%</div>
+                    </div>
+                    <div class="progress-label" id="progressLabel">Preparando...</div>
+                </div>
+            </section>
+
+            <!-- ANUNCIO ENTRE CONFIGURACIÓN Y RESULTADO -->
+            <div class="ad-slot" id="middleAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000014"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Resultado -->
+            <section class="panel hidden" id="resultPanel">
+                <h2>🖼️ Resultado</h2>
+                <div class="col-compare" id="colCompare">
+                    <img id="resultAfter" alt="Imagen coloreada" />
+                    <div class="col-compare-before" id="colCompareBefore">
+                        <img id="resultBefore" alt="Imagen original" />
+                    </div>
+                    <input type="range" id="compareSlider" min="0" max="100" value="50" aria-label="Comparar antes y después" />
+                    <div class="col-compare-handle" aria-hidden="true">↔</div>
+                </div>
+                <div class="col-result-meta" id="resultMeta">-</div>
+
+                <div class="col-result-actions">
+                    <button id="downloadBtn" class="btn-primary btn-lg" type="button">⬇️ Descargar imagen coloreada</button>
+                </div>
+            </section>
+
+            <!-- ANUNCIO FINAL -->
+            <div class="ad-slot" id="bottomAdSlot">
+                <span class="ad-label">Publicidad</span>
+                <ins class="adsbygoogle"
+                     data-ad-client="ca-pub-6818233483684146"
+                     data-ad-slot="0000000015"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <!-- Modal de recompensa (antes de descargar) -->
+            <div class="modal hidden" id="rewardModal" role="dialog" aria-modal="true" aria-labelledby="rewardModalTitle">
+                <div class="modal-content reward-modal-content">
+                    <div class="modal-header">
+                        <h3 id="rewardModalTitle">🎁 Desbloquea tu descarga</h3>
+                        <button class="modal-close" id="rewardCancelBtn" type="button" aria-label="Cancelar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="reward-visual">
+                            <div class="reward-timer" id="rewardTimer"><span id="rewardCountdownLabel">--</span></div>
+                        </div>
+                        <p class="reward-status" id="rewardStatusText" aria-live="polite">Cargando anuncio...</p>
+                        <div class="ad-slot reward-ad-slot" id="rewardAdSlot">
+                            <span class="ad-label">Publicidad</span>
+                            <ins class="adsbygoogle"
+                                 data-ad-lazy="true"
+                                 data-ad-client="ca-pub-6818233483684146"
+                                 data-ad-slot="0000000016"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                        </div>
+                        <div class="reward-actions">
+                            <button id="rewardContinueBtn" class="btn-primary btn-sm" type="button" disabled>✅ Descargar ahora</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de información -->
+            <div class="modal hidden" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="infoModalTitle">ℹ️ Colorear Fotos Antiguas</h3>
+                        <button class="modal-close" id="closeModal" type="button" aria-label="Cerrar">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Procesamiento:</strong> 100% local, con el modelo de IA DeOldify corriendo en tu navegador (WebAssembly)</p>
+                        <p><strong>Cómo funciona:</strong></p>
+                        <ul>
+                            <li>🎨 DeOldify analiza una versión reducida (256×256) de tu foto y predice los colores</li>
+                            <li>🖼️ Combinamos ese color con el brillo/detalle de tu foto original a resolución completa, para que el resultado no salga borroso</li>
+                        </ul>
+                        <p>La primera vez, el modelo de IA (~61MB) se descarga y queda en caché de tu navegador para que las siguientes veces sea instantáneo.</p>
+                        <p><strong>Créditos:</strong> DeOldify (licencia MIT) — <a href="https://github.com/jantic/DeOldify" target="_blank" rel="noopener">jantic/DeOldify</a>, modelo ONNX convertido por <a href="https://github.com/instant-high/deoldify-onnx" target="_blank" rel="noopener">instant-high/deoldify-onnx</a>.</p>
+                        <p>Gratis, gracias a los anuncios que ves en la página 💙</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-footer-note">
+                <p>⚡ Procesamiento 100% local · Sin servidores</p>
+                <p>🤖 Modelo: DeOldify (cuantizado)</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="/assets/js/include.js" defer></script>
+    <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/adsense.js" defer></script>
+    <script src="/assets/js/reward-gate.js" defer></script>
+    <script type="module" src="/assets/js/tools/colorize-image.js"></script>
+</body>
+</html>

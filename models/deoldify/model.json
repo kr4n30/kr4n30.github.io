@@ -1,0 +1,15 @@
+{
+  "id": "deoldify",
+  "name": "DeOldify (quantized)",
+  "format": "onnx",
+  "url": "https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx",
+  "size_approx_mb": 61,
+  "loaded_by": "onnxruntime-web",
+  "used_by": ["colorize-image"],
+  "used_for": "Predecir el color de una foto en blanco y negro (a 256x256; el resultado se combina con la luminancia original a resolución completa)",
+  "license": "MIT",
+  "license_note": "Permisiva, sin restricciones de uso comercial.",
+  "source_repo": "https://github.com/jantic/DeOldify (modelo original) / https://github.com/instant-high/deoldify-onnx (conversión a ONNX)",
+  "hardcoded_in": "assets/js/tools/colorize-image.js (MODEL_URL)",
+  "note": "Alojado en el CDN de Glitch (no Hugging Face) porque es la fuente que usa la implementación de referencia verificada (github.com/am9zZWY/deoldify). Es un host de terceros menos robusto que Hugging Face; si en el futuro desaparece, buscar un mirror en Hugging Face y actualizar la URL acá y en el .js."
+}

@@ -44,6 +44,10 @@
       "name": "Image Enhancer",
       "desc": "Upscale resolution and restore faces with AI, right in your browser."
     },
+    "colorizeImage": {
+      "name": "Colorize Photos",
+      "desc": "Colorize black & white photos with AI (DeOldify), right in your browser."
+    },
     "comingSoon": "Coming soon",
     "comingSoonAction": "In progress",
     "open": "Open tool",
@@ -69,7 +73,7 @@
     "step3": { "title": "Download the result", "desc": "Get your file ready instantly, straight to your device." }
   },
   "highlights": {
-    "item1": { "value": "3", "label": "Tools available" },
+    "item1": { "value": "4", "label": "Tools available" },
     "item2": { "value": "0%", "label": "Files uploaded to servers" },
     "item3": { "value": "100%", "label": "Free" },
     "item4": { "value": "ES / EN", "label": "Languages available" }

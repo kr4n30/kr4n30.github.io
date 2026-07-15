@@ -1,0 +1,14 @@
+{
+  "id": "realesrgan",
+  "name": "Real-ESRGAN x4plus (fp16)",
+  "format": "onnx",
+  "url": "https://huggingface.co/OwlMaster/AllFilesRope/resolve/main/RealESRGAN_x4plus.fp16.onnx",
+  "size_approx_mb": 34,
+  "loaded_by": "onnxruntime-web",
+  "used_by": ["image-enhancer"],
+  "used_for": "Escalado x4 de la imagen completa (nitidez/texturas)",
+  "license": "BSD-3-Clause",
+  "license_note": "Permisiva, sin restricciones de uso comercial.",
+  "source_repo": "https://github.com/xinntao/Real-ESRGAN",
+  "hardcoded_in": "assets/js/tools/image-enhancer.js (MODEL_URLS.realesrgan)"
+}

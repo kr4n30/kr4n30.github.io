@@ -1,0 +1,130 @@
+/* ============================================
+   TOOLBOX · css/tools/colorize-image.css
+   Estilos EXCLUSIVOS de la herramienta Colorear Fotos.
+   Requiere que tools-common.css esté cargado antes
+   (paneles, botones, modales, ad-slots, formularios).
+   ============================================ */
+
+/* ===== DROP ZONE (mismo patrón que las otras tools) ===== */
+.drop-zone-panel {
+    text-align: center;
+    padding: 60px 24px;
+    border: 2px dashed var(--color-glass-border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.drop-zone-panel:hover,
+.drop-zone-panel.dragover {
+    border-color: var(--color-blue-electric);
+    box-shadow: var(--shadow-glow);
+}
+.drop-content .drop-icon {
+    font-size: 2.6rem;
+    margin-bottom: 14px;
+}
+.drop-content h2 {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+}
+.drop-hint {
+    color: var(--color-gray);
+    margin-bottom: 10px;
+}
+.drop-formats {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--color-gray);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 4px 14px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-glass-border);
+}
+#fileInput {
+    display: none;
+}
+
+/* ===== PREVIEW DE LA IMAGEN ORIGINAL ===== */
+.col-preview-wrap {
+    text-align: center;
+    margin-bottom: 22px;
+}
+.col-preview-wrap img {
+    max-width: 100%;
+    max-height: 380px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-glass-border);
+    /* Las fotos de entrada suelen ser en B&N; si el navegador aplica algún
+       filtro de color por defecto no queremos interferir con el preview. */
+}
+.col-preview-meta,
+.col-result-meta {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--color-gray);
+}
+
+/* ===== COMPARADOR ANTES/DESPUÉS ===== */
+.col-compare {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--color-glass-border);
+    user-select: none;
+    line-height: 0;
+}
+.col-compare img {
+    width: 100%;
+    display: block;
+}
+.col-compare-before {
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    overflow: hidden;
+}
+.col-compare-before img {
+    width: var(--col-compare-img-width, 100%);
+    max-width: none;
+}
+.col-compare #compareSlider {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.col-compare-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--color-dark);
+    border: 2px solid var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.col-result-actions {
+    margin-top: 18px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .col-preview-wrap img {
+        max-height: 260px;
+    }
+}

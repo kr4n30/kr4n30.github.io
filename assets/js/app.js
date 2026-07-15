@@ -39,6 +39,16 @@
                 name: 'tools.imageEnhancer.name',
                 desc: 'tools.imageEnhancer.desc'
             }
+        },
+        {
+            id: 'colorize-image',
+            icon: 'fa-palette',
+            href: '/tools/colorize-image.html',
+            comingSoon: false,
+            i18n: {
+                name: 'tools.colorizeImage.name',
+                desc: 'tools.colorizeImage.desc'
+            }
         }
     ];
 

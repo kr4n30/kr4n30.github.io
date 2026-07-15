@@ -1,0 +1,13 @@
+{
+  "id": "rmbg",
+  "name": "RMBG-1.4",
+  "format": "onnx (descargado y resuelto internamente por el componente @ligrila/background-remover)",
+  "hf_model_id": "briaai/RMBG-1.4",
+  "loaded_by": "@ligrila/background-remover (web component de terceros, usa @huggingface/transformers por debajo)",
+  "used_by": ["background-remover"],
+  "used_for": "Eliminar el fondo de la imagen subida",
+  "license": "bria-rmbg-1.4 (licencia propia de BRIA, no un estándar OSS)",
+  "license_note": "⚠️ MÁS restrictiva que GFPGAN/CodeFormer: es explícitamente NO comercial, y el uso comercial requiere comprar una licencia aparte a BRIA (no hay versión gratuita para esto, a diferencia de la 'zona gris' de GFPGAN). El sitio tiene AdSense. Esto no fue una decisión tomada en las sesiones donde se armó este manifiesto — el componente ya traía este modelo por defecto desde antes. Vale la pena que el dueño del sitio lo revise específicamente, es la licencia más restrictiva de todas las usadas en el sitio.",
+  "source_repo": "https://huggingface.co/briaai/RMBG-1.4",
+  "hardcoded_in": "tools/background-remover.html (atributo data-model del componente <background-remover>, que si no se especifica cae en este modelo por default)"
+}

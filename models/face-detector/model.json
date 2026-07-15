@@ -1,0 +1,13 @@
+{
+  "id": "face-detector",
+  "name": "MediaPipe Face Detector (BlazeFace, short range, float16)",
+  "format": "tflite",
+  "url": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+  "loaded_by": "@mediapipe/tasks-vision (FaceDetector)",
+  "used_by": ["image-enhancer"],
+  "used_for": "Detectar los rostros en la imagen ya escalada, antes de pasarlos por GFPGAN/CodeFormer",
+  "license": "Apache-2.0",
+  "license_note": "Permisiva, sin restricciones de uso comercial. Alojado directamente por Google.",
+  "source_repo": "https://github.com/google-ai-edge/mediapipe",
+  "hardcoded_in": "assets/js/tools/image-enhancer.js (MODEL_URLS.faceDetector)"
+}
