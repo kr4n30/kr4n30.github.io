@@ -28,12 +28,14 @@
         la primera vez y queda en caché del navegador. Nada se sube a un servidor propio.
           - script-src: cdn.jsdelivr.net (librerías) + 'wasm-unsafe-eval' (WASM)
           - connect-src: huggingface.co/hf.co (pesos de los modelos ONNX),
-            storage.googleapis.com (modelo del detector de rostros de MediaPipe)
+            storage.googleapis.com (modelo del detector de rostros de MediaPipe),
+            blob: (Swin2SR/@huggingface/transformers lee la imagen subida vía
+            un blob: URL interno; sin esto tira "Failed to fetch")
           - worker-src: blob: (onnxruntime-web y mediapipe corren en Web Workers)
           - img-src: blob: (los canvas intermedios se exportan como blobs locales)
         Si el navegador bloquea algo, revisa la consola.
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn.jsdelivr.net https://storage.googleapis.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com 'wasm-unsafe-eval'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; media-src 'self' blob:; worker-src 'self' blob:; connect-src 'self' blob: https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com https://huggingface.co https://*.huggingface.co https://*.hf.co https://cdn.jsdelivr.net https://storage.googleapis.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- Fuentes / iconos -->
