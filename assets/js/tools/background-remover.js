@@ -72,11 +72,12 @@ document.addEventListener('keydown', (e) => {
 // ============================================
 function syncLocale(lang) {
     // NOTA: la versión actual de @ligrila/background-remover (0.3.8) tiene un bug
-    // al cargar su locale "es" (dynamic import roto: "./locales/es.ts"), lo que
-    // tira un error en consola y deja el widget sin textos. Hasta que se
-    // corrija upstream, evitamos pedirle el locale "es" y dejamos que use su
-    // default (inglés) en vez de romperse. El resto de la página sigue en español.
-    if (bgRemover && lang && lang !== 'es') bgRemover.setAttribute('data-locale', lang);
+    // al cargar cualquier locale que empiece con "es" (dynamic import roto:
+    // "./locales/es.ts"), lo que tira un error en consola y rompe el widget.
+    // Por eso el HTML fija data-locale="en" por defecto (si no, el componente
+    // detecta el idioma del navegador y crashea igual). Acá solo lo pisamos
+    // si el idioma del sitio NO es español, para no reintroducir el bug.
+    if (bgRemover && lang && !lang.toLowerCase().startsWith('es')) bgRemover.setAttribute('data-locale', lang);
 }
 document.addEventListener('i18n:applied', (e) => {
     syncLocale(e.detail && e.detail.lang);

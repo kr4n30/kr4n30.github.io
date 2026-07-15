@@ -23,6 +23,13 @@ background-remover {
        (ver HTML) es lo más cercano que ofrece su API pública. */
 }
 
+.bg-remover-instructions {
+    text-align: center;
+    color: var(--color-gray);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
 .bg-result-actions {
     margin: 22px 0;
     padding: 20px;
