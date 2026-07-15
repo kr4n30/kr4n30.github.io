@@ -109,7 +109,7 @@ Refused to load/connect because it violates the following Content Security Polic
 
 hay que agregar el dominio (o `blob:`, o `'unsafe-inline'`, etc.) a la directiva correspondiente **en ese HTML puntual**:
 
-- `script-src` → de dónde se cargan archivos `.js`
+- `script-src` → de dónde se cargan archivos `.js`. Si usás `onnxruntime-web` o `@huggingface/transformers`, no alcanza con `'wasm-unsafe-eval'` (que solo cubre WebAssembly): esas librerías usan `new Function()` en JS puro para generar código optimizado en tiempo de ejecución, así que también hace falta `'unsafe-eval'` en `script-src`, si no Chrome tira el warning "Content Security Policy of your site blocks the use of 'eval'" y algunas rutas de esas librerías fallan en silencio. Es un trade-off de seguridad conocido y aceptado para estas tools (el resto del CSP sigue restringiendo bastante qué puede correr).
 - `connect-src` → a dónde puede hacer `fetch()`/`XHR`/WebSocket el JS (incluye `blob:` si algo lee un Blob URL internamente — pasó tanto en el componente de background-remover como en el paso de Swin2SR de image-enhancer, los dos usan `@huggingface/transformers` por debajo y esa librería siempre lee la imagen de entrada vía un `blob:` URL. **Cualquier tool nueva que use `@huggingface/transformers` va a necesitar `blob:` en `connect-src` desde el día uno.**)
 - `worker-src` → si algo corre en Web Workers (ONNX, modelos de IA)
 - `img-src` → de dónde pueden venir `<img>`/`background-image`
