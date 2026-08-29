@@ -42,7 +42,7 @@
     <script src="/assets/js/consent-default.js"></script>
 
     <!-- Seguridad (incluye dominios de Google AdSense para los anuncios) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; connect-src 'self' https://api.countapi.xyz https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- Fuentes / iconos -->
@@ -276,6 +276,30 @@
             </div>
         </section>
 
+        <!-- ===== CONTADOR + PUBLICIDAD ===== -->
+        <section class="visit-section">
+            <div class="container">
+                <div class="visit-counter-wrap">
+                    <div class="visit-counter">
+                        <div class="visit-icon" aria-hidden="true"><i class="fas fa-eye"></i></div>
+                        <div class="visit-text">
+                            <span class="visit-number" id="visitCount">0</span>
+                            <span class="visit-label" id="visitCountLabel">visitas</span>
+                        </div>
+                        <span class="visit-live"><span class="dot"></span> en vivo</span>
+                    </div>
+                    <div class="visit-ad-slot ad-slot" id="visitAdSlot">
+                        <span class="ad-label">Publicidad</span>
+                        <ins class="adsbygoogle"
+                             data-ad-client="ca-pub-6818233483684146"
+                             data-ad-slot="0000000020"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ANUNCIO -->
         <div class="container">
             <div class="ad-slot" id="bottomAdSlot">
@@ -308,6 +332,8 @@
     <script src="/assets/js/i18n.js" defer></script>
     <script src="/assets/js/consent.js" defer></script>
     <script src="/assets/js/adsense.js" defer></script>
+    <script src="/assets/js/visits.js" defer></script>
+    <script src="/assets/js/interstitial.js" defer></script>
     <script src="/assets/js/app.js" defer></script>
     <script src="/assets/js/sw-register.js" defer></script>
 </body>

@@ -521,7 +521,8 @@ async function runPipeline() {
         }
 
         updateProgress(1, '✅ ¡Listo!');
-        showResult(working, facesFound);
+        var doShow = function(){ showResult(working, facesFound); };
+        if (window.showInterstitial) window.showInterstitial(doShow); else doShow();
     } catch (err) {
         console.error('image-enhancer pipeline error:', err);
         showToast('⚠️ Hubo un problema procesando la imagen: ' + (err && err.message ? err.message : 'error desconocido'), 5000);

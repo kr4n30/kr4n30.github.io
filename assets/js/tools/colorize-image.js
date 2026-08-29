@@ -321,7 +321,8 @@ async function runPipeline() {
         await new Promise((r) => setTimeout(r, 0));
 
         updateProgress(1, '✅ ¡Listo!');
-        showResult(finalCanvas);
+        var doShow = function(){ showResult(finalCanvas); };
+        if (window.showInterstitial) window.showInterstitial(doShow); else doShow();
     } catch (err) {
         console.error('colorize-image pipeline error:', err);
         showToast('⚠️ Hubo un problema coloreando la imagen: ' + (err && err.message ? err.message : 'error desconocido'), 5000);

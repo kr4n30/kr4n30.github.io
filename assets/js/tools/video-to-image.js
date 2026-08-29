@@ -831,8 +831,8 @@ extractBtn.addEventListener('click', async () => {
     }
 
     state.currentPage = 1;
-    renderFrames();
-    showToast('✅ Extracción completada! ' + state.frames.length + ' frames', 3000);
+    var doShow = function(){ renderFrames(); showToast('✅ Extracción completada! ' + state.frames.length + ' frames', 3000); };
+    if (window.showInterstitial) window.showInterstitial(doShow); else doShow();
 });
 
 // ============================================

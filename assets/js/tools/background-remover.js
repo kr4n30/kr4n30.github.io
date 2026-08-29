@@ -116,9 +116,12 @@ if (bgRemover) {
             console.warn('background-remover: no se reconoció el formato del resultado en event.detail:', e.detail);
             return;
         }
-        if (bgResultActions) bgResultActions.classList.remove('hidden');
-        showToast('✅ ¡Fondo eliminado!', 2000);
-        if (bgResultActions) bgResultActions.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        var doShow = function(){
+            if (bgResultActions) bgResultActions.classList.remove('hidden');
+            showToast('✅ ¡Fondo eliminado!', 2000);
+            if (bgResultActions) bgResultActions.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+        if (window.showInterstitial) window.showInterstitial(doShow); else doShow();
     });
 }
 
