@@ -8,6 +8,9 @@
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#080c1a" />
     <link rel="canonical" href="https://kr4n30.github.io/" />
+    <link rel="alternate" hreflang="es" href="https://kr4n30.github.io/" />
+    <link rel="alternate" hreflang="en" href="https://kr4n30.github.io/" />
+    <link rel="alternate" hreflang="x-default" href="https://kr4n30.github.io/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -15,23 +18,37 @@
     <meta property="og:description" content="Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos, sin instalar nada." data-i18n-attr="content:meta.description" />
     <meta property="og:url" content="https://kr4n30.github.io/" />
     <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content="kR4N30 Toolbox" />
+    <meta property="og:image" content="https://kr4n30.github.io/assets/icons/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="kR4N30 Toolbox · Herramientas Online Gratis y Privadas" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="kR4N30 Toolbox · Herramientas Online" />
     <meta name="twitter:description" content="Convierte y transforma tus archivos directamente en el navegador. Sin subir archivos, sin instalar nada." />
+    <meta name="twitter:image" content="https://kr4n30.github.io/assets/icons/og-image.png" />
 
-    <!-- Favicon -->
+    <!-- Favicon / PWA -->
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Consent Mode v2 (default denied) -->
+    <script src="/assets/js/consent-default.js"></script>
 
     <!-- Seguridad (incluye dominios de Google AdSense para los anuncios) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https://*.googlesyndication.com https://*.gstatic.com https://*.doubleclick.net; connect-src 'self' https://pagead2.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com; base-uri 'self'; form-action 'self'; object-src 'none';" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- Fuentes / iconos -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/assets/css/style.css" />
@@ -47,7 +64,21 @@
         "name": "kR4N30 Toolbox",
         "url": "https://kr4n30.github.io/",
         "inLanguage": ["es", "en"],
-        "description": "Herramientas online rápidas, privadas y gratuitas que corren 100% en el navegador."
+        "description": "Herramientas online rápidas, privadas y gratuitas que corren 100% en el navegador.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://kr4n30.github.io/#tools?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "kR4N30 Toolbox",
+        "url": "https://kr4n30.github.io/",
+        "logo": "https://kr4n30.github.io/assets/icons/icon-512.png"
     }
     </script>
 </head>
@@ -55,6 +86,7 @@
     <a class="skip-link" href="#main">Saltar al contenido</a>
 
     <div id="header-placeholder"></div>
+    <noscript><header class="header noscript-header"><div class="container"><a href="/" class="logo"><span class="logo-icon">◆</span><span class="logo-text">kR4N30 Toolbox</span></a><nav class="noscript-nav"><a href="/">Inicio</a><a href="/#tools">Herramientas</a><a href="/about.html">Sobre</a><a href="/contact.html">Contacto</a><a href="/privacy.html">Privacidad</a></nav></div></header></noscript>
 
     <main id="main">
         <!-- ===== HERO ===== -->
@@ -274,7 +306,9 @@
 
     <script src="/assets/js/include.js" defer></script>
     <script src="/assets/js/i18n.js" defer></script>
+    <script src="/assets/js/consent.js" defer></script>
     <script src="/assets/js/adsense.js" defer></script>
     <script src="/assets/js/app.js" defer></script>
+    <script src="/assets/js/sw-register.js" defer></script>
 </body>
 </html>
