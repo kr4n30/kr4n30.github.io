@@ -607,6 +607,19 @@ function updateCompareSlider() {
 }
 window.addEventListener('resize', updateCompareWidth);
 if (compareSlider) compareSlider.addEventListener('input', updateCompareSlider);
+// Swipe táctil para el comparador (móvil)
+if (ieCompare && compareSlider) {
+    var startX=0, startPct=50;
+    ieCompare.addEventListener('touchstart', function(e){ if(e.touches.length!==1) return; startX=e.touches[0].clientX; startPct=parseInt(compareSlider.value,10)||50; }, {passive:true});
+    ieCompare.addEventListener('touchmove', function(e){
+        if(e.touches.length!==1) return;
+        var dx=e.touches[0].clientX - startX;
+        var pct=Math.max(0, Math.min(100, startPct + (dx / ieCompare.offsetWidth)*100));
+        compareSlider.value=Math.round(pct);
+        updateCompareSlider();
+        e.preventDefault();
+    }, {passive:false});
+}
 
 // ============================================
 // DESCARGA (gateada por anuncio recompensado)

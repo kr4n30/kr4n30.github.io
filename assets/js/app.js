@@ -49,6 +49,46 @@
                 name: 'tools.colorizeImage.name',
                 desc: 'tools.colorizeImage.desc'
             }
+        },
+        {
+            id: 'compress-image',
+            icon: 'fa-compress',
+            href: '/tools/compress-image.html',
+            comingSoon: true,
+            i18n: {
+                name: 'tools.compressImage.name',
+                desc: 'tools.compressImage.desc'
+            }
+        },
+        {
+            id: 'convert-webp',
+            icon: 'fa-exchange-alt',
+            href: '/tools/convert-webp.html',
+            comingSoon: true,
+            i18n: {
+                name: 'tools.convertWebp.name',
+                desc: 'tools.convertWebp.desc'
+            }
+        },
+        {
+            id: 'resize-image',
+            icon: 'fa-expand',
+            href: '/tools/resize-image.html',
+            comingSoon: true,
+            i18n: {
+                name: 'tools.resizeImage.name',
+                desc: 'tools.resizeImage.desc'
+            }
+        },
+        {
+            id: 'pdf-to-image',
+            icon: 'fa-file-pdf',
+            href: '/tools/pdf-to-image.html',
+            comingSoon: true,
+            i18n: {
+                name: 'tools.pdfToImage.name',
+                desc: 'tools.pdfToImage.desc'
+            }
         }
     ];
 

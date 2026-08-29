@@ -151,12 +151,56 @@
         if (yearEl) yearEl.textContent = String(new Date().getFullYear());
     }
 
+    // FOUC fix: oculta fallback noscript cuando el header real ya cargó
+    function markHeaderLoaded(){
+        document.body.classList.add('header-loaded');
+        // anchor ad: mostrar solo si hay consent y no hay adblock
+        var anchor = document.getElementById('anchorAd');
+        var closeBtn = document.getElementById('anchorClose');
+        if(anchor){
+            var hasConsent=false; try{hasConsent=localStorage.getItem('consentMode')==='granted';}catch(e){}
+            // mostrar anchor si hay consent o si no hay elección aún (para medir)
+            if(hasConsent || !localStorage.getItem('consentMode')) {
+                // esperar un poco para no tapar LCP
+                setTimeout(function(){
+                    anchor.classList.remove('hidden');
+                    anchor.removeAttribute('aria-hidden');
+                    document.body.classList.add('has-anchor-ad');
+                    var slot=document.getElementById('anchorAdSlot');
+                    if(slot && window.ToolboxAds) window.ToolboxAds.fillSlot(slot);
+                }, 1200);
+            }
+            if(closeBtn) closeBtn.addEventListener('click', function(){
+                anchor.classList.add('hidden');
+                document.body.classList.remove('has-anchor-ad');
+                try{ sessionStorage.setItem('anchorClosed','1'); }catch(e){}
+            });
+            try{ if(sessionStorage.getItem('anchorClosed')==='1'){ anchor.classList.add('hidden'); } }catch(e){}
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        var headerReady = loadPartial('/partials/header.html', 'header-placeholder').then(initHeaderBehavior);
+        var headerReady = loadPartial('/partials/header.html', 'header-placeholder').then(initHeaderBehavior).then(markHeaderLoaded);
         var footerReady = loadPartial('/partials/footer.html', 'footer-placeholder').then(initFooterBehavior);
 
         Promise.all([headerReady, footerReady]).then(function () {
             document.dispatchEvent(new CustomEvent('partials:loaded'));
+        });
+
+        // adblock friendly: si se detecta bloqueador, mostrar modal suave
+        window.addEventListener('adblock:detected', function(){
+            // no molestar cada visita: 1 vez por sesión
+            try{ if(sessionStorage.getItem('adblockShown')) return; sessionStorage.setItem('adblockShown','1'); }catch(e){}
+            var existing=document.getElementById('adblockModal');
+            if(existing) return;
+            var html='<div class="modal" id="adblockModal" role="dialog" aria-modal="true"><div class="modal-content" style="max-width:480px;text-align:center"><div class="modal-header"><h3>💙 Apoya kR4N30 Toolbox</h3><button class="modal-close" id="adblockClose" type="button">✕</button></div><div class="modal-body"><p style="color:var(--color-gray)">Detectamos bloqueador de anuncios. Entendemos — pero los anuncios mantienen las herramientas <strong>gratis y privadas</strong> (todo corre en tu navegador).</p><p style="color:var(--color-gray)">Si te es útil, considera desactivarlo solo aquí o <a href="https://github.com/sponsors/kr4n30" target="_blank" rel="noopener" style="color:var(--color-blue-electric)">invitarnos un café</a>.</p><div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn btn-secondary btn-small" id="adblockContinue" type="button">Seguir con bloqueador</button><button class="btn btn-primary btn-small" id="adblockDisable" type="button">Entendido</button></div></div></div></div>';
+            var w=document.createElement('div'); w.innerHTML=html; var m=w.firstElementChild; document.body.appendChild(m);
+            function close(){ m.classList.add('hidden'); if(window.ToolboxA11y) window.ToolboxA11y.releaseFocus(m); document.body.classList.remove('no-scroll'); }
+            document.getElementById('adblockClose').addEventListener('click', close);
+            document.getElementById('adblockContinue').addEventListener('click', close);
+            document.getElementById('adblockDisable').addEventListener('click', close);
+            m.addEventListener('click', function(e){ if(e.target===m) close(); });
+            if(window.ToolboxA11y) window.ToolboxA11y.trapFocus(m);
         });
     });
 })();

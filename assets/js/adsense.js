@@ -47,9 +47,53 @@
 
     window.ToolboxAds = { fillSlot: fillSlot };
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fillDisplayAds);
-    } else {
-        fillDisplayAds();
+    // Refresh cada 30s si el usuario está inactivo (sin scroll) y tiene consent
+    var lastScrollAt = Date.now();
+    var refreshInterval = null;
+    window.addEventListener('scroll', function(){ lastScrollAt = Date.now(); }, {passive:true});
+    function startRefresh(){
+        if(refreshInterval) return;
+        refreshInterval = setInterval(function(){
+            // solo refresca si lleva 30s sin scroll y hay consent
+            if(Date.now() - lastScrollAt < 30000) return;
+            var hasConsent = false;
+            try{ hasConsent = localStorage.getItem('consentMode')==='granted'; }catch(e){}
+            if(!hasConsent) return;
+            // refresca solo slots visibles y ya llenos (re-push seguro: AdSense ignora si ya está lleno, pero evitamos duplicar)
+            document.querySelectorAll('ins.adsbygoogle[data-ad-fill-requested="true"]').forEach(function(el){
+                // marcamos para permitir re-push: quitar flag y volver a pedir (solo para anchor/visit slots)
+                if(el.closest('#anchorAdSlot') || el.closest('#visitAdSlot')){
+                    el.removeAttribute('data-ad-fill-requested');
+                    fillSlot(el);
+                }
+            });
+        }, 30000);
     }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ fillDisplayAds(); startRefresh(); });
+    } else {
+        fillDisplayAds(); startRefresh();
+    }
+
+    // Detección AdBlock amigable: si adsbygoogle.js fue bloqueado, mostramos aviso suave
+    setTimeout(function(){
+        var blocked = false;
+        try{ blocked = typeof window.adsbygoogle === 'undefined' || document.querySelector('script[src*="adsbygoogle.js"]') && window.adsbygoogle && window.adsbygoogle.loaded!==true; }catch(e){}
+        // check sencillo: si no hay ins con data-ad-status
+        var anyFilled = document.querySelector('ins.adsbygoogle[data-ad-status]');
+        if(!anyFilled){
+            // no es 100% fiable, pero si hay bloqueador, todos los ins quedan vacíos
+            var test = document.createElement('div');
+            test.className = 'adsbygoogle';
+            test.style.cssText='height:1px;width:1px;position:absolute;left:-9999px';
+            document.body.appendChild(test);
+            var isHidden = window.getComputedStyle(test).display==='none' || test.offsetHeight===0;
+            // si está oculto por bloqueador, mostrar toast suave
+            if(isHidden || !anyFilled){
+                window.dispatchEvent(new CustomEvent('adblock:detected'));
+            }
+            test.remove();
+        }
+    }, 2500);
 })();

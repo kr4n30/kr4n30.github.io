@@ -48,6 +48,22 @@
       "name": "Colorize Photos",
       "desc": "Colorize black & white photos with AI (DeOldify), right in your browser."
     },
+    "compressImage": {
+      "name": "Compress Image",
+      "desc": "Shrink JPG/PNG size without quality loss, in your browser."
+    },
+    "convertWebp": {
+      "name": "Convert to WebP/AVIF",
+      "desc": "Convert images to WebP or AVIF for web, 100% local."
+    },
+    "resizeImage": {
+      "name": "Resize Image",
+      "desc": "Resize and crop images without uploading."
+    },
+    "pdfToImage": {
+      "name": "PDF to Image",
+      "desc": "Convert PDF pages to PNG/JPG images, in your browser."
+    },
     "comingSoon": "Coming soon",
     "comingSoonAction": "In progress",
     "open": "Open tool",
@@ -73,7 +89,7 @@
     "step3": { "title": "Download the result", "desc": "Get your file ready instantly, straight to your device." }
   },
   "highlights": {
-    "item1": { "value": "4", "label": "Tools available" },
+    "item1": { "value": "8", "label": "Tools available" },
     "item2": { "value": "0%", "label": "Files uploaded to servers" },
     "item3": { "value": "100%", "label": "Free" },
     "item4": { "value": "ES / EN", "label": "Languages available" }

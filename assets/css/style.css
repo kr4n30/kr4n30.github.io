@@ -331,11 +331,15 @@ body::before {
     margin-bottom: 20px;
 }
 .hero-title {
-    font-size: clamp(2.1rem, 5vw + 1.2rem, 4.2rem);
+    font-size: clamp(1.9rem, 4vw + 1rem, 4.2rem);
     font-weight: 800;
     line-height: 1.05;
     margin-bottom: 18px;
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
+    word-break: break-word;
+}
+@media (max-width: 360px) {
+    .hero-title { letter-spacing: -0.5px; font-size: clamp(1.6rem, 6vw, 2rem); }
 }
 .hero-title-gradient {
     background: linear-gradient(135deg, var(--color-blue-electric), var(--color-purple));
@@ -357,12 +361,21 @@ body::before {
 }
 
 /* ===== HERO VISUAL ===== */
+.hero {
+    max-width: 1400px;
+    margin: 0 auto;
+}
 .hero-visual {
     position: relative;
     height: 480px;
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
+}
+@media (min-width: 1600px) {
+    .hero-visual { height: 520px; }
+    .container { max-width: 1400px; }
 }
 .floating-card {
     position: absolute;
@@ -809,6 +822,9 @@ body::before {
     transform: translateX(-50%) translateY(20px);
     max-width: 720px;
     width: calc(100% - 32px);
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: var(--color-dark);
     border: 1px solid var(--color-glass-border);
     border-radius: var(--radius);
@@ -975,6 +991,31 @@ body::before {
 .visit-ad-slot { margin: 0 !important; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
 .interstitial-modal-content { max-width: 500px; text-align: center; }
 .interstitial-ad-slot { margin-bottom: 16px; }
+/* ===== ANCHOR STICKY AD ===== */
+.anchor-ad {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--color-dark);
+    border-top: 1px solid var(--color-glass-border);
+    padding: 6px 12px 10px;
+    z-index: 3500;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+.anchor-ad.hidden { transform: translateY(100%); display: block !important; pointer-events: none; }
+.anchor-ad-inner { max-width: 800px; margin: 0 auto; }
+.anchor-close {
+    position: absolute; top: 6px; right: 10px;
+    background: var(--color-glass); border: 1px solid var(--color-glass-border);
+    color: var(--color-gray); width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.8rem;
+}
+.anchor-close:hover { color: var(--color-white); }
+body.has-anchor-ad { padding-bottom: 90px; }
+/* FOUC: oculta noscript cuando el JS ya cargó header */
+body.header-loaded noscript { display: none; }
 
 @media (max-width: 768px) {
     .visit-counter-wrap { grid-template-columns: 1fr; }
