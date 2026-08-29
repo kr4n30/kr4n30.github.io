@@ -147,13 +147,27 @@
 
     var currentDict = null;
 
-    function loadDictAndRender(lang) {
+    function loadDictAndRender(lang, dict) {
+        if (dict) {
+            currentDict = dict;
+            var searchInput = document.getElementById('searchInput');
+            renderTools(dict, searchInput ? searchInput.value : '');
+            return;
+        }
+        // fallback: si i18n.js ya cacheó el dict, reusarlo sin fetch
+        if (window.__i18nCache && window.__i18nCache[lang]) {
+            currentDict = window.__i18nCache[lang];
+            var si = document.getElementById('searchInput');
+            renderTools(currentDict, si ? si.value : '');
+            return;
+        }
         fetch('/assets/locales/' + lang + '.json')
             .then(function (res) { return res.json(); })
-            .then(function (dict) {
-                currentDict = dict;
-                var searchInput = document.getElementById('searchInput');
-                renderTools(dict, searchInput ? searchInput.value : '');
+            .then(function (d) {
+                currentDict = d;
+                if (window.__i18nCache) window.__i18nCache[lang] = d;
+                var searchInput2 = document.getElementById('searchInput');
+                renderTools(d, searchInput2 ? searchInput2.value : '');
             });
     }
 
@@ -167,6 +181,6 @@
     });
 
     document.addEventListener('i18n:applied', function (e) {
-        loadDictAndRender(e.detail.lang);
+        loadDictAndRender(e.detail.lang, e.detail.dict);
     });
 })();

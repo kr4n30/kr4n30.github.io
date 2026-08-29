@@ -70,7 +70,10 @@
             var toggleText = document.getElementById('langToggleText');
             if (toggleText) toggleText.textContent = lang === 'es' ? 'ES / EN' : 'EN / ES';
 
-            document.dispatchEvent(new CustomEvent('i18n:applied', { detail: { lang: lang } }));
+            // Exponemos dict para que app.js no tenga que hacer segundo fetch (ahorra 1 request)
+            window.__i18nCache = window.__i18nCache || {};
+            window.__i18nCache[lang] = dict;
+            document.dispatchEvent(new CustomEvent('i18n:applied', { detail: { lang: lang, dict: dict } }));
         });
     }
 

@@ -29,6 +29,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" as="image" href="/assets/icons/og-image.webp" type="image/webp" />
 
     <!--
         Seguridad: esta página corre 4 modelos de IA en el navegador
@@ -81,6 +82,11 @@
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://kr4n30.github.io/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://kr4n30.github.io/#tools"},{"@type":"ListItem","position":3,"name":"Herramienta"}]}
     </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué hace exactamente la IA?","acceptedAnswer":{"@type":"Answer","text":"Pipeline local: (opcional) Swin2SR limpia ruido, Real-ESRGAN x4 escala nitidez, MediaPipe detecta rostros y GFPGAN/CodeFormer los restaura con feather blend. Todo en WebAssembly/WebGPU."}},
+{"@type":"Question","name":"¿Cuánto pesa y cuánto tarda?","acceptedAnswer":{"@type":"Answer","text":"Los modelos suman varios cientos de MB la primera vez y quedan en caché. En móvil o sin GPU puede tardar minutos. Recomendamos Chrome/Edge en PC."}},
+{"@type":"Question","name":"¿Se sube mi foto a algún sitio?","acceptedAnswer":{"@type":"Answer","text":"No. Nada se envía a servidor propio. Los modelos vienen de jsDelivr/Hugging Face/Google Storage directo a tu navegador."}}]}
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -91,12 +97,12 @@
     <main id="main" class="tool-main">
         <div class="container">
             <nav class="breadcrumb" aria-label="Miga de pan">
-                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page">Mejorar Imagen</span>
+                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page" data-i18n="tools.imageEnhancer.page.breadcrumb">Mejorar Imagen</span>
             </nav>
 
             <div class="tool-hero">
-                <h1>✨ Mejorar Imagen con IA</h1>
-                <p>Aumenta la resolución 4x y restaura rostros con IA. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
+                <h1 data-i18n="tools.imageEnhancer.page.heroTitle">✨ Mejorar Imagen con IA</h1>
+                <p data-i18n="tools.imageEnhancer.page.heroDesc">Aumenta la resolución 4x y restaura rostros con IA. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
                 <button id="infoBtn" class="btn btn-secondary btn-small" type="button">ℹ️ Cómo funciona</button>
             </div>
 
@@ -118,9 +124,9 @@
             <section class="panel drop-zone-panel" id="dropZone">
                 <div class="drop-content">
                     <div class="drop-icon" aria-hidden="true">🖼️</div>
-                    <h2>Arrastra una imagen aquí</h2>
-                    <p class="drop-hint">o haz clic para seleccionar</p>
-                    <div class="drop-formats">JPG · PNG · WebP</div>
+                    <h2 data-i18n="tools.imageEnhancer.page.dropTitle">Arrastra una imagen aquí</h2>
+                    <p class="drop-hint" data-i18n="tools.imageEnhancer.page.dropHint">o haz clic para seleccionar</p>
+                    <div class="drop-formats" data-i18n="tools.imageEnhancer.page.dropFormats">JPG · PNG · WebP</div>
                     <label for="fileInput" class="visually-hidden">Seleccionar imagen</label>
                     <input type="file" id="fileInput" accept="image/*" />
                 </div>
@@ -281,6 +287,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- FAQ indexable (SEO) -->
+            <section class="panel" id="faq" aria-labelledby="faqTitle">
+                <h2 id="faqTitle" data-i18n="tools.imageEnhancer.page.faqTitle">❓ Preguntas frecuentes — Mejorar Imagen</h2>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.imageEnhancer.page.q1">¿Qué hace exactamente la IA?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.imageEnhancer.page.a1">Pipeline local: (opcional) Swin2SR limpia ruido, Real-ESRGAN x4 escala nitidez, MediaPipe detecta rostros y GFPGAN/CodeFormer los restaura con feather blend. Todo en WebAssembly/WebGPU.</p></details>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.imageEnhancer.page.q2">¿Cuánto pesa y cuánto tarda?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.imageEnhancer.page.a2">Los modelos suman varios cientos de MB la primera vez y quedan en caché. En móvil o sin GPU puede tardar minutos. Recomendamos Chrome/Edge en PC.</p></details>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.imageEnhancer.page.q3">¿Se sube mi foto a algún sitio?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.imageEnhancer.page.a3">No. Nada se envía a servidor propio. Los modelos vienen de jsDelivr/Hugging Face/Google Storage directo a tu navegador.</p></details>
+            </section>
 
             <div class="tool-footer-note">
                 <p>⚡ Procesamiento 100% local · Sin servidores</p>

@@ -29,6 +29,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" as="image" href="/assets/icons/og-image.webp" type="image/webp" />
 
     <!-- Seguridad: permite JSZip (cdnjs) y Google AdSense (anuncios + video/blob locales) -->
     <script src="/assets/js/consent-default.js"></script>
@@ -65,6 +66,11 @@
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://kr4n30.github.io/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://kr4n30.github.io/#tools"},{"@type":"ListItem","position":3,"name":"Herramienta"}]}
     </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Mis videos se suben a un servidor?","acceptedAnswer":{"@type":"Answer","text":"No. Todo se procesa 100% en tu navegador (canvas + JS). Tu video nunca sale de tu dispositivo, por eso también funciona offline tras cargar la página."}},
+{"@type":"Question","name":"¿Qué formatos y calidad puedo elegir?","acceptedAnswer":{"@type":"Answer","text":"MP4, WebM, MOV, AVI. Elige intervalo (0.05s a 5s) o cantidad exacta, formato PNG/JPEG/WebP y calidad 1-100%. También puedes eliminar duplicados y capturar frames manualmente."}},
+{"@type":"Question","name":"¿Hay límite de tamaño o frames?","acceptedAnswer":{"@type":"Answer","text":"No hay límite impuesto por nosotros, pero +1000 frames puede consumir mucha RAM. Te avisamos si estimamos >100MB y puedes cancelar en cualquier momento. Recomendamos Chrome/Edge en PC para videos largos."}}]}
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -75,12 +81,12 @@
     <main id="main" class="tool-main">
         <div class="container">
             <nav class="breadcrumb" aria-label="Miga de pan">
-                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page">Video a Imagen</span>
+                <a href="/">Inicio</a> / <a href="/#tools">Herramientas</a> / <span aria-current="page" data-i18n="tools.videoToImage.page.breadcrumb">Video a Imagen</span>
             </nav>
 
             <div class="tool-hero">
-                <h1>🎬 Video a Imagen</h1>
-                <p>Extrae fotogramas de un video y descárgalos como imágenes. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
+                <h1 data-i18n="tools.videoToImage.page.heroTitle">🎬 Video a Imagen</h1>
+                <p data-i18n="tools.videoToImage.page.heroDesc">Extrae fotogramas de un video y descárgalos como imágenes. Todo ocurre en tu navegador: nada se sube a un servidor.</p>
                 <button id="infoBtn" class="btn btn-secondary btn-small" type="button">ℹ️ Cómo funciona</button>
             </div>
 
@@ -98,9 +104,9 @@
             <section class="panel drop-zone-panel" id="dropZone">
                 <div class="drop-content">
                     <div class="drop-icon" aria-hidden="true">📁</div>
-                    <h2>Arrastra un video aquí</h2>
-                    <p class="drop-hint">o haz clic para seleccionar</p>
-                    <div class="drop-formats">MP4 · WebM · MOV · AVI</div>
+                    <h2 data-i18n="tools.videoToImage.page.dropTitle">Arrastra un video aquí</h2>
+                    <p class="drop-hint" data-i18n="tools.videoToImage.page.dropHint">o haz clic para seleccionar</p>
+                    <div class="drop-formats" data-i18n="tools.videoToImage.page.dropFormats">MP4 · WebM · MOV · AVI</div>
                     <label for="fileInput" class="visually-hidden">Seleccionar archivo de video</label>
                     <input type="file" id="fileInput" accept="video/*" />
                 </div>
@@ -410,6 +416,14 @@
                     </div>
                 </div>
             </div>
+
+            <!-- FAQ indexable (SEO) -->
+            <section class="panel" id="faq" aria-labelledby="faqTitle">
+                <h2 id="faqTitle" data-i18n="tools.videoToImage.page.faqTitle">❓ Preguntas frecuentes — Video a Imagen</h2>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.videoToImage.page.q1">¿Mis videos se suben a un servidor?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.videoToImage.page.a1">No. Todo se procesa 100% en tu navegador (canvas + JS). Tu video nunca sale de tu dispositivo, por eso también funciona offline tras cargar la página.</p></details>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.videoToImage.page.q2">¿Qué formatos y calidad puedo elegir?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.videoToImage.page.a2">MP4, WebM, MOV, AVI. Elige intervalo (0.05s a 5s) o cantidad exacta, formato PNG/JPEG/WebP y calidad 1-100%. También puedes eliminar duplicados y capturar frames manualmente.</p></details>
+                <details style="margin:14px 0;border:1px solid var(--color-glass-border);border-radius:10px;padding:12px 16px;background:var(--color-glass)"><summary style="cursor:pointer;font-weight:600" data-i18n="tools.videoToImage.page.q3">¿Hay límite de tamaño o frames?</summary><p style="color:var(--color-gray);margin-top:8px;line-height:1.6" data-i18n="tools.videoToImage.page.a3">No hay límite impuesto por nosotros, pero +1000 frames puede consumir mucha RAM. Te avisamos si estimamos >100MB y puedes cancelar en cualquier momento. Recomendamos Chrome/Edge en PC para videos largos.</p></details>
+            </section>
 
             <div class="tool-footer-note">
                 <p>⚡ Procesamiento 100% local · Sin servidores</p>

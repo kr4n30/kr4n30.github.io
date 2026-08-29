@@ -34,19 +34,79 @@
     "subheading": "Cada herramienta corre 100% en tu navegador",
     "videoToImage": {
       "name": "Video a Imagen",
-      "desc": "Extrae fotogramas de un video y descárgalos como imágenes."
+      "desc": "Extrae fotogramas de un video y descárgalos como imágenes.",
+      "page": {
+        "heroTitle": "🎬 Video a Imagen",
+        "heroDesc": "Extrae fotogramas de un video y descárgalos como imágenes. Todo ocurre en tu navegador: nada se sube a un servidor.",
+        "breadcrumb": "Video a Imagen",
+        "dropTitle": "Arrastra un video aquí",
+        "dropHint": "o haz clic para seleccionar",
+        "dropFormats": "MP4 · WebM · MOV · AVI",
+        "faqTitle": "❓ Preguntas frecuentes — Video a Imagen",
+        "q1": "¿Mis videos se suben a un servidor?",
+        "a1": "No. Todo se procesa 100% en tu navegador (canvas + JS). Tu video nunca sale de tu dispositivo, por eso también funciona offline tras cargar la página.",
+        "q2": "¿Qué formatos y calidad puedo elegir?",
+        "a2": "MP4, WebM, MOV, AVI. Elige intervalo (0.05s a 5s) o cantidad exacta, formato PNG/JPEG/WebP y calidad 1-100%. También puedes eliminar duplicados y capturar frames manualmente.",
+        "q3": "¿Hay límite de tamaño o frames?",
+        "a3": "No hay límite impuesto por nosotros, pero +1000 frames puede consumir mucha RAM. Te avisamos si estimamos >100MB y puedes cancelar en cualquier momento. Recomendamos Chrome/Edge en PC para videos largos."
+      }
     },
     "backgroundRemover": {
       "name": "Quitar Fondo",
-      "desc": "Elimina el fondo de una imagen con IA, directo en tu navegador."
+      "desc": "Elimina el fondo de una imagen con IA, directo en tu navegador.",
+      "page": {
+        "heroTitle": "🖼️ Quitar Fondo de Imagen",
+        "heroDesc": "Elimina el fondo de cualquier imagen con IA. Todo ocurre en tu navegador: nada se sube a un servidor.",
+        "breadcrumb": "Quitar Fondo",
+        "dropTitle": "Arrastra tu imagen aquí",
+        "dropHint": "o haz clic para seleccionarla",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ Preguntas frecuentes — Quitar Fondo",
+        "q1": "¿Cómo elimina el fondo sin subir la imagen?",
+        "a1": "Usa el modelo RMBG-1.4 que se descarga la primera vez desde Hugging Face y corre en tu navegador vía WebAssembly. Tu foto nunca se envía a un servidor.",
+        "q2": "¿Qué imágenes funcionan mejor?",
+        "a2": "JPG, PNG, WebP con sujeto bien definido. El modelo recorta con precisión y puedes hacer zoom/comparar antes/después antes de descargar en PNG transparente.",
+        "q3": "¿Por qué tarda la primera vez?",
+        "a3": "Descarga ~50MB de modelo IA y queda en caché. La segunda vez es instantáneo. Si ves 'Cargando modelo', espera con buena conexión."
+      }
     },
     "imageEnhancer": {
       "name": "Mejorar Imagen",
-      "desc": "Aumenta la resolución y restaura rostros con IA, directo en tu navegador."
+      "desc": "Aumenta la resolución y restaura rostros con IA, directo en tu navegador.",
+      "page": {
+        "heroTitle": "✨ Mejorar Imagen con IA",
+        "heroDesc": "Aumenta la resolución 4x y restaura rostros con IA. Todo ocurre en tu navegador: nada se sube a un servidor.",
+        "breadcrumb": "Mejorar Imagen",
+        "dropTitle": "Arrastra una imagen aquí",
+        "dropHint": "o haz clic para seleccionar",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ Preguntas frecuentes — Mejorar Imagen",
+        "q1": "¿Qué hace exactamente la IA?",
+        "a1": "Pipeline local: (opcional) Swin2SR limpia ruido, Real-ESRGAN x4 escala nitidez, MediaPipe detecta rostros y GFPGAN/CodeFormer los restaura con feather blend. Todo en WebAssembly/WebGPU.",
+        "q2": "¿Cuánto pesa y cuánto tarda?",
+        "a2": "Los modelos suman varios cientos de MB la primera vez y quedan en caché. En móvil o sin GPU puede tardar minutos. Recomendamos Chrome/Edge en PC.",
+        "q3": "¿Se sube mi foto a algún sitio?",
+        "a3": "No. Nada se envía a servidor propio. Los modelos vienen de jsDelivr/Hugging Face/Google Storage directo a tu navegador."
+      }
     },
     "colorizeImage": {
       "name": "Colorear Fotos",
-      "desc": "Coloreá fotos en blanco y negro con IA (DeOldify), directo en tu navegador."
+      "desc": "Coloreá fotos en blanco y negro con IA (DeOldify), directo en tu navegador.",
+      "page": {
+        "heroTitle": "🎨 Colorear Fotos Antiguas",
+        "heroDesc": "Coloreá fotos en blanco y negro con IA (DeOldify). Todo ocurre en tu navegador: nada se sube a un servidor.",
+        "breadcrumb": "Colorear Fotos",
+        "dropTitle": "Arrastra una foto en blanco y negro aquí",
+        "dropHint": "o haz clic para seleccionar",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ Preguntas frecuentes — Colorear Fotos",
+        "q1": "¿Cómo colorea fotos en blanco y negro?",
+        "a1": "DeOldify (artistic) predice el color sobre una versión 512x512 y lo fusiona con el brillo de tu foto original a resolución completa en espacio YCbCr para no perder nitidez.",
+        "q2": "¿Qué fotos funcionan mejor?",
+        "a2": "Retratos y escenas con buen contraste. JPG/PNG/WebP de hasta 2000px (redimensionamos automáticamente si es más grande).",
+        "q3": "¿De dónde sale el color, es real?",
+        "a3": "Es una predicción IA, no el color original histórico. Puedes comparar antes/después con el slider y ajustar si el resultado no te convence."
+      }
     },
     "compressImage": {
       "name": "Comprimir Imagen",
@@ -73,26 +133,65 @@
     "heading": "¿Por qué",
     "headingHighlight": "kR4N30 Toolbox",
     "subheading": "Así cuidamos tu tiempo y tus archivos",
-    "fast": { "title": "Procesamiento rápido", "desc": "Todo ocurre en tu navegador, sin esperas de subida ni descarga." },
-    "private": { "title": "Privado por diseño", "desc": "Tus archivos nunca salen de tu dispositivo." },
-    "noUpload": { "title": "Sin subir archivos", "desc": "Ningún archivo se envía a un servidor externo." },
-    "crossPlatform": { "title": "PC y móvil", "desc": "Funciona igual de bien en tu computadora y en tu teléfono, sin instalar nada." },
-    "quality": { "title": "Alta calidad", "desc": "Resultados profesionales sin pérdida de calidad." },
-    "free": { "title": "Gratis", "desc": "Sin límites ocultos ni registros obligatorios." }
+    "fast": {
+      "title": "Procesamiento rápido",
+      "desc": "Todo ocurre en tu navegador, sin esperas de subida ni descarga."
+    },
+    "private": {
+      "title": "Privado por diseño",
+      "desc": "Tus archivos nunca salen de tu dispositivo."
+    },
+    "noUpload": {
+      "title": "Sin subir archivos",
+      "desc": "Ningún archivo se envía a un servidor externo."
+    },
+    "crossPlatform": {
+      "title": "PC y móvil",
+      "desc": "Funciona igual de bien en tu computadora y en tu teléfono, sin instalar nada."
+    },
+    "quality": {
+      "title": "Alta calidad",
+      "desc": "Resultados profesionales sin pérdida de calidad."
+    },
+    "free": {
+      "title": "Gratis",
+      "desc": "Sin límites ocultos ni registros obligatorios."
+    }
   },
   "steps": {
     "heading": "Así de",
     "headingHighlight": "fácil",
     "subheading": "Tres pasos y listo, sin curva de aprendizaje",
-    "step1": { "title": "Sube tu archivo", "desc": "Arrástralo o selecciónalo desde tu PC o tu teléfono. Nunca sale de tu dispositivo." },
-    "step2": { "title": "Ajusta las opciones", "desc": "Elige formato, calidad y demás detalles según lo que necesites." },
-    "step3": { "title": "Descarga el resultado", "desc": "Obtén tu archivo listo al instante, directo a tu dispositivo." }
+    "step1": {
+      "title": "Sube tu archivo",
+      "desc": "Arrástralo o selecciónalo desde tu PC o tu teléfono. Nunca sale de tu dispositivo."
+    },
+    "step2": {
+      "title": "Ajusta las opciones",
+      "desc": "Elige formato, calidad y demás detalles según lo que necesites."
+    },
+    "step3": {
+      "title": "Descarga el resultado",
+      "desc": "Obtén tu archivo listo al instante, directo a tu dispositivo."
+    }
   },
   "highlights": {
-    "item1": { "value": "8", "label": "Herramientas disponibles" },
-    "item2": { "value": "0%", "label": "Archivos subidos a servidores" },
-    "item3": { "value": "100%", "label": "Gratis" },
-    "item4": { "value": "ES / EN", "label": "Idiomas disponibles" }
+    "item1": {
+      "value": "8",
+      "label": "Herramientas disponibles"
+    },
+    "item2": {
+      "value": "0%",
+      "label": "Archivos subidos a servidores"
+    },
+    "item3": {
+      "value": "100%",
+      "label": "Gratis"
+    },
+    "item4": {
+      "value": "ES / EN",
+      "label": "Idiomas disponibles"
+    }
   },
   "cta": {
     "heading": "¿List@ para",

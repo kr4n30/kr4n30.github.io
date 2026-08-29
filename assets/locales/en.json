@@ -34,19 +34,79 @@
     "subheading": "Every tool runs 100% in your browser",
     "videoToImage": {
       "name": "Video to Image",
-      "desc": "Extract frames from a video and download them as images."
+      "desc": "Extract frames from a video and download them as images.",
+      "page": {
+        "heroTitle": "🎬 Video to Image",
+        "heroDesc": "Extract frames from a video and download them as images. Everything happens in your browser: nothing is uploaded.",
+        "breadcrumb": "Video to Image",
+        "dropTitle": "Drop a video here",
+        "dropHint": "or click to select",
+        "dropFormats": "MP4 · WebM · MOV · AVI",
+        "faqTitle": "❓ FAQ — Video to Image",
+        "q1": "Are my videos uploaded to a server?",
+        "a1": "No. Everything is processed 100% in your browser (canvas + JS). Your video never leaves your device, so it even works offline after loading.",
+        "q2": "What formats and quality can I choose?",
+        "a2": "MP4, WebM, MOV, AVI. Choose interval (0.05s to 5s) or exact count, format PNG/JPEG/WebP and quality 1-100%. You can also remove duplicates and capture frames manually.",
+        "q3": "Is there a size or frame limit?",
+        "a3": "No limit from us, but 1000+ frames can use a lot of RAM. We warn you if we estimate >100MB and you can cancel anytime. Chrome/Edge on PC is recommended for long videos."
+      }
     },
     "backgroundRemover": {
       "name": "Background Remover",
-      "desc": "Remove the background from an image with AI, right in your browser."
+      "desc": "Remove the background from an image with AI, right in your browser.",
+      "page": {
+        "heroTitle": "🖼️ Background Remover",
+        "heroDesc": "Remove the background from any image with AI. Everything happens in your browser: nothing is uploaded.",
+        "breadcrumb": "Remove Background",
+        "dropTitle": "Drop your image here",
+        "dropHint": "or click to select",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ FAQ — Background Remover",
+        "q1": "How does it remove the background without uploading?",
+        "a1": "It uses the RMBG-1.4 model downloaded once from Hugging Face and running in your browser via WebAssembly. Your photo is never sent to a server.",
+        "q2": "What images work best?",
+        "a2": "JPG, PNG, WebP with a well-defined subject. The model crops precisely and you can zoom/compare before downloading as transparent PNG.",
+        "q3": "Why is the first time slow?",
+        "a3": "It downloads ~50MB of AI model and caches it. The second time is instant. If you see 'Loading model', wait with a good connection."
+      }
     },
     "imageEnhancer": {
       "name": "Image Enhancer",
-      "desc": "Upscale resolution and restore faces with AI, right in your browser."
+      "desc": "Upscale resolution and restore faces with AI, right in your browser.",
+      "page": {
+        "heroTitle": "✨ AI Image Enhancer",
+        "heroDesc": "Upscale 4x and restore faces with AI. Everything happens in your browser: nothing is uploaded.",
+        "breadcrumb": "Image Enhancer",
+        "dropTitle": "Drop an image here",
+        "dropHint": "or click to select",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ FAQ — Image Enhancer",
+        "q1": "What does the AI actually do?",
+        "a1": "Local pipeline: (optional) Swin2SR denoises, Real-ESRGAN x4 upscales, MediaPipe detects faces and GFPGAN/CodeFormer restores them with feather blend. All in WebAssembly/WebGPU.",
+        "q2": "How big is it and how long does it take?",
+        "a2": "Models total several hundred MB the first time and stay cached. On mobile or without GPU it can take minutes. Chrome/Edge on PC is recommended.",
+        "q3": "Is my photo uploaded anywhere?",
+        "a3": "No. Nothing is sent to our server. Models come from jsDelivr/Hugging Face/Google Storage directly to your browser."
+      }
     },
     "colorizeImage": {
       "name": "Colorize Photos",
-      "desc": "Colorize black & white photos with AI (DeOldify), right in your browser."
+      "desc": "Colorize black & white photos with AI (DeOldify), right in your browser.",
+      "page": {
+        "heroTitle": "🎨 Colorize Old Photos",
+        "heroDesc": "Colorize black & white photos with AI (DeOldify). Everything happens in your browser: nothing is uploaded.",
+        "breadcrumb": "Colorize Photos",
+        "dropTitle": "Drop a black & white photo here",
+        "dropHint": "or click to select",
+        "dropFormats": "JPG · PNG · WebP",
+        "faqTitle": "❓ FAQ — Colorize Photos",
+        "q1": "How does it colorize black & white photos?",
+        "a1": "DeOldify (artistic) predicts color on a 512x512 version and merges it with the brightness of your original at full resolution in YCbCr space to keep sharpness.",
+        "q2": "What photos work best?",
+        "a2": "Portraits and scenes with good contrast. JPG/PNG/WebP up to 2000px (we auto-resize if larger).",
+        "q3": "Where does the color come from, is it real?",
+        "a3": "It's an AI prediction, not the historical original color. You can compare before/after with the slider."
+      }
     },
     "compressImage": {
       "name": "Compress Image",
@@ -73,26 +133,65 @@
     "heading": "Why",
     "headingHighlight": "kR4N30 Toolbox",
     "subheading": "This is how we protect your time and your files",
-    "fast": { "title": "Fast processing", "desc": "Everything happens in your browser, no upload or download waiting." },
-    "private": { "title": "Private by design", "desc": "Your files never leave your device." },
-    "noUpload": { "title": "No file uploads", "desc": "No file is ever sent to an external server." },
-    "crossPlatform": { "title": "PC and mobile", "desc": "Works just as well on your computer and your phone, nothing to install." },
-    "quality": { "title": "High quality", "desc": "Professional results with no quality loss." },
-    "free": { "title": "Free", "desc": "No hidden limits and no mandatory sign-up." }
+    "fast": {
+      "title": "Fast processing",
+      "desc": "Everything happens in your browser, no upload or download waiting."
+    },
+    "private": {
+      "title": "Private by design",
+      "desc": "Your files never leave your device."
+    },
+    "noUpload": {
+      "title": "No file uploads",
+      "desc": "No file is ever sent to an external server."
+    },
+    "crossPlatform": {
+      "title": "PC and mobile",
+      "desc": "Works just as well on your computer and your phone, nothing to install."
+    },
+    "quality": {
+      "title": "High quality",
+      "desc": "Professional results with no quality loss."
+    },
+    "free": {
+      "title": "Free",
+      "desc": "No hidden limits and no mandatory sign-up."
+    }
   },
   "steps": {
     "heading": "This",
     "headingHighlight": "easy",
     "subheading": "Three steps and you're done, no learning curve",
-    "step1": { "title": "Upload your file", "desc": "Drag it in or pick it from your PC or your phone. It never leaves your device." },
-    "step2": { "title": "Adjust the options", "desc": "Choose format, quality, and any other details you need." },
-    "step3": { "title": "Download the result", "desc": "Get your file ready instantly, straight to your device." }
+    "step1": {
+      "title": "Upload your file",
+      "desc": "Drag it in or pick it from your PC or your phone. It never leaves your device."
+    },
+    "step2": {
+      "title": "Adjust the options",
+      "desc": "Choose format, quality, and any other details you need."
+    },
+    "step3": {
+      "title": "Download the result",
+      "desc": "Get your file ready instantly, straight to your device."
+    }
   },
   "highlights": {
-    "item1": { "value": "8", "label": "Tools available" },
-    "item2": { "value": "0%", "label": "Files uploaded to servers" },
-    "item3": { "value": "100%", "label": "Free" },
-    "item4": { "value": "ES / EN", "label": "Languages available" }
+    "item1": {
+      "value": "8",
+      "label": "Tools available"
+    },
+    "item2": {
+      "value": "0%",
+      "label": "Files uploaded to servers"
+    },
+    "item3": {
+      "value": "100%",
+      "label": "Free"
+    },
+    "item4": {
+      "value": "ES / EN",
+      "label": "Languages available"
+    }
   },
   "cta": {
     "heading": "Ready to",
